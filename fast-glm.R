@@ -85,8 +85,10 @@ yotov_fast_glm <- function(formula, data, family = gaussian(), weights = NULL,
   if (model) rval$model <- M
   if (x) rval$x <- X
   if (target) rval$y <- y
+
   if (fitted.values) rval$fitted.values <- predict.fast_glm(rval, newdata = M, type = "response")
   if (linear.predictors) rval$linear.predictors <- predict.fast_glm(rval, newdata = M, type = "link")
+
   if ((rval$iter == maxit) & (!rval$convergence)) {
     warning("Maximum number of iterations reached without convergence")
   }
@@ -193,11 +195,27 @@ fast_glm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
   }
   names(coefficients) <- col.names
   rval <- list(
-    "coefficients" = coefficients, "logLik" = ll.new, "iter" = iter,
-    "tol" = tol, "family" = family, "link" = link, "df" = dfr, "XTX" = XTX,
-    "dispersion" = dispersion, "ok" = ok, "rank" = rank, "RSS" = RSS, method = method,
-    "aic" = aic.model, "deviance" = dev, "nulldf" = nulldf,
-    "nulldev" = nulldev, "ngoodobs" = n.ok, "n" = nobs, "intercept" = intercept,
+    "coefficients" = coefficients,
+    "residuals" = res,
+    "logLik" = ll.new,
+    "iter" = iter,
+    "tol" = tol,
+    "family" = family,
+    "link" = link,
+    "df.residual" = dfr,
+    "XTX" = XTX,
+    "dispersion" = dispersion,
+    "ok" = ok,
+    "rank" = rank,
+    "RSS" = RSS,
+    method = method,
+    "aic" = aic.model,
+    "deviance" = dev,
+    "df.null" = nulldf,
+    "null.deviance" = nulldev,
+    "ngoodobs" = n.ok,
+    "n" = nobs,
+    "intercept" = intercept,
     "convergence" = (!(tol > tol.estimation))
   )
   class(rval) <- "fast_glm"

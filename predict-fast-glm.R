@@ -26,8 +26,7 @@ predict.fast_glm <- function(object, newdata, type = c("link", "response"),
   pred
 }
 
-predict.fast_lm <- function (object, newdata, na.action = na.pass, ...)
-{
+predict.fast_lm <- function (object, newdata, na.action = na.pass, ...) {
   tt <- terms(object)
   if (!inherits(object, c("fast_lm","fast_glm")))
     warning("calling predict.fast_lm(<fake-fast_lm/fast_glm-object>) ...")
@@ -65,10 +64,14 @@ predict.fast_lm <- function (object, newdata, na.action = na.pass, ...)
   predictor
 }
 
+#' @export
+#' @keywords internal
 family.fast_glm <- function(object, ...) {
   object$family
 }
 
+#' @export
+#' @keywords internal
 fitted.fast_glm <- function(object, ...) {
   return(family(object)$linkinv(object$linear.predictors))
 }
