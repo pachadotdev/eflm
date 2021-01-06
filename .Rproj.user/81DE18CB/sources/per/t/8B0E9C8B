@@ -1,0 +1,24 @@
+{
+    "id": "8B0E9C8B",
+    "path": "~/github/hermes/R/predict.R",
+    "project_path": "R/predict.R",
+    "type": "r_source",
+    "hash": "314308491",
+    "contents": "",
+    "dirty": false,
+    "created": 1609906830659.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "cursorPosition": "33,3",
+        "scrollLine": "21"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1609909136,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1609909136890,
+    "read_only": false,
+    "read_only_alternatives": []
+}

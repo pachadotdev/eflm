@@ -1,0 +1,24 @@
+{
+    "id": "6E18A4B4",
+    "path": "~/github/hermes/R/fglm.R",
+    "project_path": "R/fglm.R",
+    "type": "r_source",
+    "hash": "401317591",
+    "contents": "",
+    "dirty": false,
+    "created": 1609906400710.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "cursorPosition": "23,55",
+        "scrollLine": "16"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1609907266,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1609907266,
+    "read_only": false,
+    "read_only_alternatives": []
+}

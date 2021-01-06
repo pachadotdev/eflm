@@ -1,0 +1,24 @@
+{
+    "id": "3BB1BB35",
+    "path": "~/github/hermes/R/internals.R",
+    "project_path": "R/internals.R",
+    "type": "r_source",
+    "hash": "353118850",
+    "contents": "",
+    "dirty": false,
+    "created": 1609906772110.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "cursorPosition": "883,0",
+        "scrollLine": "869"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1609909010,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1609909011000,
+    "read_only": false,
+    "read_only_alternatives": []
+}
