@@ -1,18 +1,48 @@
 Package: hermes
-Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Efficient Fitting of Generalized Linear Models.
+Version: 0.1
+Authors@R: c( 
+        person(given = "Mauricio",
+               family = "Vargas",
+               role = c("aut", "cre"),
+               email = "mvargas@dcc.uchile.cl",
+               comment = c(ORCID = "0000-0003-1017-7574")),
+        person(given = "Alexey",
+               family = "Kravchenko",
+               role = c("ths"),
+               email = "kravchenkoa@un.org"),
+        person(given = "Constanza",
+               family = "Prado",
+               role = c("ths"),
+               email = "mcprado@uc.cl"),
+        person(given = "Yoto",
+               family = "Yotov",
+               role = c("ths"),
+               email = "yvy23@drexel.edu"),
+        person(family = "The United Nations",
+               role = c("dtc", "cph", "fnd")
+        )
+    )
+Description: Efficient Fitting of Generalized Linear Models by using just base 
+  R. As an alternative to "glm", this package provides "fglm" (fast glm), with a 
+  significant speedup when the number of observations is larger than the number 
+  of parameters to estimate, as it reduces the NxP model matrix to a PxP matrix. 
+  The best computational performance is obtained when R is linked against 
+  OpenBLAS, Intel MKL or other optimized BLAS library. This implementation aims 
+  at being compatible with broom, sandwich and other packages for summary 
+  statistics and clustering by providing S3 methods.
+URL: https://pacha.dev/hermes/
+BugReports: https://github.com/pachamaltese/hermes/issues/
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Suggests: 
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
-Imports: 
+Imports:
     stats
+Suggests:
+    devtools,
+    testthat,
+    covr
+Depends: 
+    R (>= 3.5)

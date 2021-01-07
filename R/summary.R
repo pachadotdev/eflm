@@ -1,17 +1,11 @@
+#' Summarizing Generalized Linear Model Fits
+#'
+#' This function is a method for class fglm objects.
+#'
+#' @param object an object of class "fglm", usually, a result of a call to fglm
+#' @param \dots further arguments passed to or from other methods
 #' @export
-#' @keywords internal
-family.fglm <- function(object, ...) {
-  object$family
-}
 
-#' @export
-#' @keywords internal
-fitted.fglm <- function(object, ...) {
-  return(family(object)$linkinv(object$linear.predictors))
-}
-
-#' @export
-#' @keywords internal
 summary.fglm <- function(object, ...) {
   if (!inherits(object, "fglm")) {
     stop("object is not of class fglm")

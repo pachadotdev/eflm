@@ -2,12 +2,7 @@
 #'
 #' fglm is used to fit generalized linear models, specified by giving a symbolic
 #' description of the linear predictor and a description of the error
-#' distribution. It provides an alternative to \code{glm()}, with a significant
-#' speedup when the number of observations is larger than the number of
-#' parameters to estimate (\code{N >> P}), as it reduces the \code{N x P} model
-#' matrix to a \code{P x P} matrix. Otherwise, if you have \code{N == p}, there
-#' is no effective reduction. The best computational performance is obtained
-#' when R is linked against OpenBLAS, Intel MKL or other optimized BLAS library.
+#' distribution.
 #'
 #' @param formula A formula for the model
 #' @param data A tibble or data.frame
@@ -42,7 +37,7 @@
 
 fglm <- function(formula, data, family = gaussian(), weights = NULL,
                            start = NULL, etastart = NULL, mustart = NULL, offset = NULL, maxit = 25, k = 2,
-                           model = FALSE, method = "eigen",
+                           model = TRUE, method = c("eigen", "Cholesky", "qr"),
                            x = FALSE, y = TRUE,
                            tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
                            tol.values = 1e-7, tol.vectors = 1e-7, ...) {

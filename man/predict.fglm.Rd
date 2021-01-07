@@ -6,7 +6,7 @@
 \usage{
 \method{predict}{fglm}(
   object,
-  newdata,
+  newdata = NULL,
   type = c("link", "response"),
   na.action = na.pass,
   ...
@@ -15,9 +15,24 @@
 \arguments{
 \item{object}{a fitted object of class inheriting from "fglm"}
 
+\item{newdata}{optionally, a data frame in which to look for variables with
+which to predict. If omitted, the fitted linear predictors are used}
+
+\item{type}{the type of prediction required. The default is on the scale of
+the linear predictors; the alternative "response" is on the scale of the
+response variable. Thus for a default binomial model the default predictions
+are of log-odds (probabilities on logit scale) and type = "response" gives
+the predicted probabilities. The "terms" option returns a matrix giving the
+fitted values of each term in the model formula on the linear predictor
+scale}
+
+\item{na.action}{function determining what should be done with missing values
+in newdata. The default is to predict NA}
+
 \item{...}{further arguments passed to or from other methods}
 }
 \description{
 Obtains predictions and optionally estimates standard errors of
-those predictions from a fitted generalized linear model object.
+those predictions from a fitted generalized linear model object (see the
+function \link{predict.glm}).
 }

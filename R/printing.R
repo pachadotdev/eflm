@@ -95,3 +95,13 @@ print.fglm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
   cat("\n")
   invisible(x)
 }
+
+#' @export
+#' @keywords internal
+print.logLik.fglm <- function(x, digits = getOption("digits"), ...) {
+  cat("'log Lik.' ", paste(format(logLik(x), digits = digits), collapse = ", "),
+      " (df=", format(attr(x, "df")), ")\n",
+      sep = ""
+  )
+  invisible(x)
+}
