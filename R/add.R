@@ -1,25 +1,9 @@
 #' @export
 #' @keywords internal
 add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
-  "Chisq", "F"), x = NULL, k = 2, weights = rep(1, object$n), ...) {
+  "F"), x = NULL, k = 2, weights = rep(1, object$n), ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")
-  Fstat <- function(table, rdf) {
-    dev <- table$Deviance
-    df <- table$Df
-    diff <- pmax(0, (dev[1L] - dev) / df)
-    Fs <- diff / (dev / (rdf - df))
-    Fs[df < .Machine$double.eps] <- NA
-    P <- Fs
-    nnas <- !is.na(Fs)
-    P[nnas] <- safe_pf(Fs[nnas], df[nnas], rdf - df[nnas],
-                       lower.tail = FALSE
-    )
-    list(Fs = Fs, P = P)
-  }
   test <- match.arg(test)
-  if (test == "Chisq") {
-    test <- "LRT"
-  }
   if (!is.character(scope)) {
     scope <- add.scope(object, update.formula(object, scope))
   }
@@ -117,8 +101,7 @@ add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     } else {
       loglik <- n * log(dev / n)
     }
-  }
-  else {
+  } else {
     loglik <- dev / dispersion
   }
   aic <- loglik + k * dfs
@@ -145,8 +128,7 @@ add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     nas <- !is.na(dev)
     dev[nas] <- safe_pchisq(dev[nas], aod$Df[nas], lower.tail = FALSE)
     aod[, "Pr(>Chi)"] <- dev
-  }
-  else if (test == "Rao") {
+  } else if (test == "Rao") {
     dev <- pmax(0, score)
     dev[1L] <- NA
     nas <- !is.na(dev)
@@ -159,8 +141,7 @@ add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     aod[, SC] <- dev
     dev[nas] <- safe_pchisq(dev[nas], aod$Df[nas], lower.tail = FALSE)
     aod[, "Pr(>Chi)"] <- dev
-  }
-  else if (test == "F") {
+  } else if (test == "F") {
     if (fam == "binomial" || fam == "poisson") {
       warning(gettextf(
         "F test assumes quasi%s family",

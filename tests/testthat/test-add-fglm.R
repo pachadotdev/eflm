@@ -5,5 +5,7 @@ test_that("gaussian add is equivalent to glm", {
   m2 <- fglm(Fertility ~ ., data = swiss, family = gaussian(), model = TRUE)
   add_m2 <- add1(m2, ~ I(Education^2) + .^2)
 
-  # FALTA EL AIC EN M2
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
 })

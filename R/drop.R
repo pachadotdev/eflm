@@ -1,12 +1,9 @@
 #' @export
 #' @keywords internal
 drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
-  "Chisq", "F"), k = 2, weights = rep(1, object$n), ...) {
+  "F"), k = 2, weights = rep(1, object$n), ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")
   test <- match.arg(test)
-  if (test == "Chisq") {
-    test <- "LRT"
-  }
   x <- model.matrix(formula(object), object$model)
   n <- nrow(x)
   asgn <- attr(x, "assign")
@@ -26,7 +23,7 @@ drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
   }
   ndrop <- match(scope, tl)
   ns <- length(scope)
-  rdf <- object$df
+  rdf <- object$df.residual
   chisq <- object$deviance
   dfs <- numeric(ns)
   dev <- numeric(ns)
@@ -76,8 +73,7 @@ drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     } else {
       n * log(dev / n)
     }
-  }
-  else {
+  } else {
     dev / dispersion
   }
   aic <- loglik + k * dfs
@@ -103,8 +99,7 @@ drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     aod[, LRT] <- dev
     dev[nas] <- safe_pchisq(dev[nas], aod$Df[nas], lower.tail = FALSE)
     aod[, "Pr(>Chi)"] <- dev
-  }
-  else if (test == "Rao") {
+  } else if (test == "Rao") {
     dev <- pmax(0, score)
     nas <- !is.na(dev)
     SC <- if (dispersion == 1) {
@@ -116,8 +111,7 @@ drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     aod[, SC] <- dev
     dev[nas] <- safe_pchisq(dev[nas], aod$Df[nas], lower.tail = FALSE)
     aod[, "Pr(>Chi)"] <- dev
-  }
-  else if (test == "F") {
+  } else if (test == "F") {
     if (fam == "binomial" || fam == "poisson") {
       warning(gettextf(
         "F test assumes 'quasi%s' family",
@@ -128,7 +122,7 @@ drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     rms <- dev[1L] / rdf
     dev <- pmax(0, dev - dev[1L])
     dfs <- aod$Df
-    rdf <- object$df
+    rdf <- object$df.residual
     Fs <- (dev / dfs) / rms
     Fs[dfs < 1e-04] <- NA
     P <- Fs
