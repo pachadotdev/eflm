@@ -45,6 +45,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     mu.eta.val <- mu.eta(eta)
     z <- (eta - offset) + (y - mu) / mu.eta.val
     W <- (weights * mu.eta.val * mu.eta.val) / varmu
+    # names(W) <- ynames
     XTX <- cp(X, W)
     XTz <- t(crossprod((W * z), X))
     if (iter == 1 & method != "qr") {
@@ -111,11 +112,12 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     "ok" = ok,
     "rank" = rank,
     "RSS" = RSS,
-    method = method,
+    "method" = method,
     "aic" = aic.model,
     "deviance" = dev,
     "df.null" = nulldf,
     "null.deviance" = nulldev,
+    "weights" = W,
     "ngoodobs" = n.ok,
     "n" = nobs,
     "intercept" = intercept,

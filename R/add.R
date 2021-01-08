@@ -1,9 +1,10 @@
 #' @export
 #' @keywords internal
 add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
-  "F"), x = NULL, k = 2, weights = rep(1, object$n), ...) {
+  "Chisq", "F"), x = NULL, k = 2, weights = rep(1, object$n), ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")
   test <- match.arg(test)
+  if (test == "Chisq") test <- "LRT"
   if (!is.character(scope)) {
     scope <- add.scope(object, update.formula(object, scope))
   }
@@ -115,7 +116,6 @@ add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
   if (all(is.na(aic))) {
     aod <- aod[, -3]
   }
-  test <- match.arg(test)
   if (test == "LRT") {
     dev <- pmax(0, loglik[1L] - loglik)
     dev[1L] <- NA

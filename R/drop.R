@@ -1,9 +1,10 @@
 #' @export
 #' @keywords internal
 drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
-  "F"), k = 2, weights = rep(1, object$n), ...) {
+  "Chisq", "F"), k = 2, weights = rep(1, object$n), ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")
   test <- match.arg(test)
+  if (test == "Chisq") test <- "LRT"
   x <- model.matrix(formula(object), object$model)
   n <- nrow(x)
   asgn <- attr(x, "assign")
@@ -49,9 +50,9 @@ drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     dfs[i] <- z$rank
     dev[i] <- z$deviance
     if (test == "Rao") {
-      r <- object$y - predict(object, newdata = object$model, type = "response")
-      w <- weights
-      zz <- fglm.wfit(r, x, TRUE, w, offset = object$offset)
+      r <- z$residuals
+      w <- z$weights
+      zz <- fglm.wfit(r, x, intercept = TRUE, weights = w, offset = object$offset)
       score[i] <- zz$null.deviance - zz$deviance
     }
   }

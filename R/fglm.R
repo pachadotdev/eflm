@@ -77,11 +77,13 @@ fglm <- function(formula, data, family = gaussian(), weights = NULL,
   rval$call <- call
   class(rval) <- c("fglm", "flm")
   if (model) rval$model <- M
-  if (x) rval$x <- X
-  if (target) rval$y <- y
-
   rval$fitted.values <- predict.fglm(rval, newdata = M, type = "response")
   rval$linear.predictors <- predict.fglm(rval, newdata = M, type = "link")
+  if (x) rval$x <- X
+  if (target) {
+    rval$y <- y
+    names(rval$y) <- names(rval$fitted.values)
+  }
 
   if ((rval$iter == maxit) & (!rval$convergence)) {
     warning("Maximum number of iterations reached without convergence")
