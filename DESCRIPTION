@@ -1,5 +1,5 @@
 Package: hermes
-Title: Efficient Fitting of Generalized Linear Models.
+Title: Efficient Fitting of Generalized Linear Models
 Version: 0.1
 Authors@R: c( 
         person(given = "Mauricio",

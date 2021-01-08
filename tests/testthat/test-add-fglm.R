@@ -68,6 +68,288 @@ test_that("Add: fglm (gaussian) == glm with Rao test", {
   expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
 })
 
+# Inverse-Gaussian ----
+
+test_that("Add: fglm (inverse.gaussian) == glm with no test", {
+  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ I(Education^2) + .^2)
+
+  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ I(Education^2) + .^2)
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+})
+
+test_that("Add: fglm (inverse.gaussian) == glm with F test", {
+  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "F")
+
+  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "F")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (inverse.gaussian) == glm with Chisq test", {
+  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Chisq")
+
+  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Chisq")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (inverse.gaussian) == glm with LRT test", {
+  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "LRT")
+
+  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "LRT")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (inverse.gaussian) == glm with Rao test", {
+  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Rao")
+
+  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Rao")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`scaled Rao sc.`, add_m2$`scaled Rao sc.`)
+  expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
+})
+
+# Binomial ----
+
+test_that("Add: fglm (binomial) == glm with no test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2)
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2)
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+})
+
+test_that("Add: fglm (binomial) == glm with F test", {
+  # F test assumes 'quasibinomial' family
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m1 <- expect_warning(add1(m1, ~ I(mpg^2) + .^2, test = "F"))
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m2 <- expect_warning(add1(m2, ~ I(mpg^2) + .^2, test = "F"))
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (binomial) == glm with Chisq test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (binomial) == glm with LRT test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "LRT")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "LRT")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (binomial) == glm with Rao test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Rao")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Rao")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`scaled Rao sc.`, add_m2$`scaled Rao sc.`)
+  expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
+})
+
+# Quasi-Binomial ----
+
+test_that("Add: fglm (quasibinomial) == glm with no test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2)
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2)
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+})
+
+test_that("Add: fglm (quasibinomial) == glm with F test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "F")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "F")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (quasibinomial) == glm with Chisq test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (quasibinomial) == glm with LRT test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "LRT")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "LRT")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (quasibinomial) == glm with Rao test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Rao")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Rao")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`scaled Rao sc.`, add_m2$`scaled Rao sc.`)
+  expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
+})
+
+# Poisson ----
+
+test_that("Add: fglm (poisson) == glm with no test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2)
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2)
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+})
+
+test_that("Add: fglm (poisson) == glm with F test", {
+  # F test assumes 'quasipoisson' family
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m1 <- expect_warning(add1(m1, ~ I(mpg^2) + .^2, test = "F"))
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m2 <- expect_warning(add1(m2, ~ I(mpg^2) + .^2, test = "F"))
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (poisson) == glm with Chisq test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (poisson) == glm with LRT test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "LRT")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "LRT")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (poisson) == glm with Rao test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Rao")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Rao")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`scaled Rao sc.`, add_m2$`scaled Rao sc.`)
+  expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
+})
+
 # Quasi-Poisson ----
 
 test_that("Add: fglm (quasipoisson) == glm with no test", {
@@ -130,6 +412,76 @@ test_that("Add: fglm (quasipoisson) == glm with Rao test", {
 
   m2 <- fglm(Fertility ~ ., data = swiss, family = quasipoisson())
   add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Rao")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`scaled Rao sc.`, add_m2$`scaled Rao sc.`)
+  expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
+})
+
+# Quasi ----
+
+test_that("Add: fglm (quasi) == glm with no test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2)
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2)
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+})
+
+test_that("Add: fglm (quasi) == glm with F test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "F")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "F")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (quasi) == glm with Chisq test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Chisq")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (quasi) == glm with LRT test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "LRT")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "LRT")
+
+  expect_equal(add_m1$Df, add_m2$Df)
+  expect_equal(add_m1$Deviance, add_m2$Deviance)
+  expect_equal(add_m1$AIC, add_m2$AIC)
+  expect_equal(add_m1$`F value`, add_m2$`F value`)
+  expect_equal(add_m1$`Pr(>F)`, add_m2$`Pr(>F)`)
+})
+
+test_that("Add: fglm (quasi) == glm with Rao test", {
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m1 <- add1(m1, ~ I(mpg^2) + .^2, test = "Rao")
+
+  m2 <- fglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  add_m2 <- add1(m2, ~ I(mpg^2) + .^2, test = "Rao")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
