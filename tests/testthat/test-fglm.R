@@ -431,3 +431,35 @@ test_that("fglm (quasi) == glm with 2 variables", {
     predict(m2, newdata = mtcars, type = "response")
   )
 })
+
+# Convergence ----
+
+test_that("fglm converges the same as glm with a regular model", {
+  m1 <- fglm(am ~ mpg + wt, family = binomial(), data = mtcars)
+  m2 <- fglm(am ~ mpg + wt, family = binomial(), data = mtcars)
+  expect_equal(m2$iter, m1$iter)
+  expect_equal(m2$convergence, m1$convergence)
+})
+
+test_that("fglm logit fails to converge with a large number of variables", {
+  # expect_warning(glm(am ~ ., family = binomial(), data = mtcars))
+  expect_warning(fglm(am ~ ., family = binomial(), data = mtcars))
+})
+
+# Fitting ----
+
+test_that("fglm returns the same fitted values as glm", {
+  m1 <- fglm(am ~ mpg + wt, family = binomial(), data = mtcars)
+  m2 <- fglm(am ~ mpg + wt, family = binomial(), data = mtcars)
+  expect_equal(m1$fitted.values, m2$fitted.values)
+  expect_equal(fitted(m1), fitted(m2))
+})
+
+# Design matrix ----
+
+test_that("fglm returns the design matrix the same as glm", {
+  m1 <- fglm(mpg ~ wt, data = mtcars, x = TRUE)
+  m2 <- glm(mpg ~ wt, data = mtcars, x = TRUE)
+  expect_equal(m1$x, m2$x)
+})
+
