@@ -18,7 +18,6 @@
 #' in newdata. The default is to predict NA
 #' @param ... further arguments passed to or from other methods
 #' @export
-
 predict.fglm <- function(object, newdata = NULL, type = c("link", "response"),
                              na.action = na.pass, ...) {
   type <- match.arg(type)

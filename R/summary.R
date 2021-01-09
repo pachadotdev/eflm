@@ -5,7 +5,6 @@
 #' @param object an object of class "fglm", usually, a result of a call to fglm
 #' @param \dots further arguments passed to or from other methods
 #' @export
-
 summary.fglm <- function(object, ...) {
   if (!inherits(object, "fglm")) {
     stop("object is not of class fglm")

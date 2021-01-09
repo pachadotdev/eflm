@@ -1,11 +1,11 @@
 # Gaussian ----
 
 test_that("Add: fglm (gaussian) == glm with no test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2)
+  m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m1 <- add1(m1, ~ . + am)
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2)
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m2 <- add1(m2, ~ . +  am)
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -13,11 +13,11 @@ test_that("Add: fglm (gaussian) == glm with no test", {
 })
 
 test_that("Add: fglm (gaussian) == glm with F test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "F")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "F")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "F")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "F")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -27,11 +27,11 @@ test_that("Add: fglm (gaussian) == glm with F test", {
 })
 
 test_that("Add: fglm (gaussian) == glm with Chisq test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Chisq")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "Chisq")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Chisq")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "Chisq")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -41,11 +41,11 @@ test_that("Add: fglm (gaussian) == glm with Chisq test", {
 })
 
 test_that("Add: fglm (gaussian) == glm with LRT test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "LRT")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "LRT")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "LRT")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "LRT")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -55,11 +55,11 @@ test_that("Add: fglm (gaussian) == glm with LRT test", {
 })
 
 test_that("Add: fglm (gaussian) == glm with Rao test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Rao")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "Rao")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Rao")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "Rao")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -71,11 +71,11 @@ test_that("Add: fglm (gaussian) == glm with Rao test", {
 # Inverse-Gaussian ----
 
 test_that("Add: fglm (inverse.gaussian) == glm with no test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2)
+  m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ . +  am)
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2)
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ . +  am)
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -83,11 +83,11 @@ test_that("Add: fglm (inverse.gaussian) == glm with no test", {
 })
 
 test_that("Add: fglm (inverse.gaussian) == glm with F test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "F")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "F")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "F")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "F")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -97,11 +97,11 @@ test_that("Add: fglm (inverse.gaussian) == glm with F test", {
 })
 
 test_that("Add: fglm (inverse.gaussian) == glm with Chisq test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Chisq")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "Chisq")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Chisq")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "Chisq")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -111,11 +111,11 @@ test_that("Add: fglm (inverse.gaussian) == glm with Chisq test", {
 })
 
 test_that("Add: fglm (inverse.gaussian) == glm with LRT test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "LRT")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "LRT")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "LRT")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "LRT")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -125,11 +125,11 @@ test_that("Add: fglm (inverse.gaussian) == glm with LRT test", {
 })
 
 test_that("Add: fglm (inverse.gaussian) == glm with Rao test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Rao")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m1 <- add1(m1, ~ . +  am, test = "Rao")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = inverse.gaussian())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Rao")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = inverse.gaussian())
+  add_m2 <- add1(m2, ~ . +  am, test = "Rao")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -353,11 +353,11 @@ test_that("Add: fglm (poisson) == glm with Rao test", {
 # Quasi-Poisson ----
 
 test_that("Add: fglm (quasipoisson) == glm with no test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2)
+  m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m1 <- add1(m1, ~ . +  am)
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2)
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m2 <- add1(m2, ~ . +  am)
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -365,11 +365,11 @@ test_that("Add: fglm (quasipoisson) == glm with no test", {
 })
 
 test_that("Add: fglm (quasipoisson) == glm with F test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "F")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m1 <- add1(m1, ~ . +  am, test = "F")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "F")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m2 <- add1(m2, ~ . +  am, test = "F")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -379,11 +379,11 @@ test_that("Add: fglm (quasipoisson) == glm with F test", {
 })
 
 test_that("Add: fglm (quasipoisson) == glm with Chisq test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Chisq")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m1 <- add1(m1, ~ . +  am, test = "Chisq")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Chisq")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m2 <- add1(m2, ~ . +  am, test = "Chisq")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -393,11 +393,11 @@ test_that("Add: fglm (quasipoisson) == glm with Chisq test", {
 })
 
 test_that("Add: fglm (quasipoisson) == glm with LRT test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "LRT")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m1 <- add1(m1, ~ . +  am, test = "LRT")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "LRT")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m2 <- add1(m2, ~ . +  am, test = "LRT")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -407,11 +407,11 @@ test_that("Add: fglm (quasipoisson) == glm with LRT test", {
 })
 
 test_that("Add: fglm (quasipoisson) == glm with Rao test", {
-  m1 <- glm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m1 <- add1(m1, ~ I(Education^2) + .^2, test = "Rao")
+  m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m1 <- add1(m1, ~ . +  am, test = "Rao")
 
-  m2 <- fglm(Fertility ~ ., data = swiss, family = quasipoisson())
-  add_m2 <- add1(m2, ~ I(Education^2) + .^2, test = "Rao")
+  m2 <- fglm(mpg ~ wt, data = mtcars, family = quasipoisson())
+  add_m2 <- add1(m2, ~ . +  am, test = "Rao")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)

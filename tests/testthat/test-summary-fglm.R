@@ -14,7 +14,3 @@ test_that("gaussian summary with one variable is equivalent to glm", {
   expect_equal(m1$df.null, m2$df.null)
   expect_equal(as.data.frame(m1$coefficients)$Estimate, m2$coefficients$Estimate)
 })
-
-test_that("summary.fglm fails with non-fglm objects", {
-  expect_error(summary.fglm (list()))
-})
