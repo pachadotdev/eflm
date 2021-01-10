@@ -41,12 +41,13 @@
 #' @importFrom stats gaussian na.pass
 #' @export
 
-fglm <- function(formula, data, family = gaussian(), weights = NULL, na.action = na.pass,
-                           start = NULL, etastart = NULL, mustart = NULL, offset = NULL, maxit = 25, k = 2,
-                           model = TRUE, singularity.method = c("eigen", "Cholesky", "qr"),
-                           intercept = TRUE, x = FALSE, y = TRUE,
-                           tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
-                           tol.values = 1e-7, tol.vectors = 1e-7, ...) {
+fglm <- function(formula, data, family = gaussian(), weights = NULL,
+                 na.action = na.omit, start = NULL, etastart = NULL,
+                 mustart = NULL, offset = NULL, maxit = 25, k = 2, model = TRUE,
+                 singularity.method = c("eigen", "Cholesky", "qr"),
+                 intercept = TRUE, x = FALSE, y = TRUE,
+                 tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
+                 tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   call <- match.call()
   target <- y
   M <- match.call(expand.dots = FALSE)

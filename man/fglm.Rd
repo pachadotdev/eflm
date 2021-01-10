@@ -9,7 +9,7 @@ fglm(
   data,
   family = gaussian(),
   weights = NULL,
-  na.action = na.pass,
+  na.action = na.omit,
   start = NULL,
   etastart = NULL,
   mustart = NULL,

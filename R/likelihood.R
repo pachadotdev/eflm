@@ -12,6 +12,8 @@ ll.fglm <- function(family, aic.model, nvar) {
 }
 
 #' @importFrom stats family
+#' @export
+#' @keywords internal
 logLik.fglm <- function(object, ...) {
   if (!missing(...)) {
     warning("extra arguments discarded")
