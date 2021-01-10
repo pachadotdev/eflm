@@ -36,3 +36,4 @@ Obtains predictions and optionally estimates standard errors of
 those predictions from a fitted generalized linear model object (see the
 function \link{predict.glm}).
 }
+\keyword{internal}

@@ -1,3 +1,4 @@
+#' @importFrom stats drop.scope extractAIC
 #' @export
 #' @keywords internal
 drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",

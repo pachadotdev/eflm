@@ -17,7 +17,9 @@
 #' @param na.action function determining what should be done with missing values
 #' in newdata. The default is to predict NA
 #' @param ... further arguments passed to or from other methods
+#' @importFrom stats family fitted .checkMFClasses
 #' @export
+#' @keywords internal
 predict.fglm <- function(object, newdata = NULL, type = c("link", "response"),
                              na.action = na.pass, ...) {
   type <- match.arg(type)
@@ -40,12 +42,15 @@ predict.fglm <- function(object, newdata = NULL, type = c("link", "response"),
       na.action = na.action
     )
     switch(type, response = {
-      pred <- family(object)$linkinv(pred)
+      pred <- stats::family(object)$linkinv(pred)
     }, link = )
   }
   pred
 }
 
+#' @export
+#' @importFrom stats napredict delete.response
+#' @keywords internal
 predict.flm <- function (object, newdata, na.action = na.pass, ...) {
   tt <- terms(object)
   if (!inherits(object, c("flm","fglm")))

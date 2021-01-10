@@ -18,6 +18,7 @@ fglm(
   k = 2,
   model = TRUE,
   method = c("eigen", "Cholesky", "qr"),
+  intercept = TRUE,
   x = FALSE,
   y = TRUE,
   tol.estimation = 1e-08,
@@ -65,6 +66,8 @@ component of the returned value (Defaults to \code{TRUE})}
 \item{method}{The chosen method to detect for singularity. Defaults to \code{"eigen"} but
 it can also be \code{"Cholesky"} or \code{"qr"}}
 
+\item{intercept}{Logical value to determine whearead to included an intercept in the null model (Defaults to \code{TRUE})}
+
 \item{x}{Logical value indicating whether the model matrix used in the fitting process
 should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})}
 
@@ -73,15 +76,13 @@ should be returned as components of the returned value (Defaults to \code{FALSE}
 
 \item{tol.estimation}{Tolerance to be used for the estimation (Defaults to 1e-8)}
 
-\item{tol.solve}{(Defaults to \code{.Machine$double.eps}, see the function \link{solve()})}
+\item{tol.solve}{(Defaults to \code{.Machine$double.eps}, see the function \link{solve})}
 
-\item{tol.values}{Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control()}),}
+\item{tol.values}{Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control}),}
 
-\item{tol.vectors}{Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control()})}
+\item{tol.vectors}{Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})}
 
 \item{\dots}{Additional optional arguments (See the function \link{glm})}
-
-\item{intercept}{Logical value to determine whearead to included an intercept in the null model (Defaults to \code{TRUE})}
 }
 \description{
 fglm is used to fit generalized linear models, specified by giving a symbolic

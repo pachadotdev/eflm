@@ -11,11 +11,12 @@ ll.fglm <- function(family, aic.model, nvar) {
   )
 }
 
+#' @importFrom stats family
 logLik.fglm <- function(object, ...) {
   if (!missing(...)) {
     warning("extra arguments discarded")
   }
-  fam <- family(object)$family
+  fam <- stats::family(object)$family
   p <- object$rank
   if (fam %in% c("gaussian", "Gamma", "inverse.gaussian")) {
     p <- p + 1

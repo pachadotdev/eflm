@@ -1,11 +1,8 @@
-#' @export
-#' @keywords internal
 family.fglm <- function(object, ...) {
   object$family
 }
 
-#' @export
-#' @keywords internal
+#' @importFrom stats family
 fitted.fglm <- function(object, ...) {
-  return(family(object)$linkinv(object$linear.predictors))
+  return(stats::family(object)$linkinv(object$linear.predictors))
 }

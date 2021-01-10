@@ -34,16 +34,17 @@
 #' @param y Logical value indicating whether the response vector used in the fitting process
 #' should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})
 #' @param tol.estimation Tolerance to be used for the estimation (Defaults to 1e-8)
-#' @param tol.solve (Defaults to \code{.Machine$double.eps}, see the function \link{solve()})
-#' @param tol.values Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control()}),
-#' @param tol.vectors Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control()})
+#' @param tol.solve (Defaults to \code{.Machine$double.eps}, see the function \link{solve})
+#' @param tol.values Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control}),
+#' @param tol.vectors Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})
 #' @param \dots Additional optional arguments (See the function \link{glm})
+#' @importFrom stats gaussian na.pass
 #' @export
 
 fglm <- function(formula, data, family = gaussian(), weights = NULL, na.action = na.pass,
                            start = NULL, etastart = NULL, mustart = NULL, offset = NULL, maxit = 25, k = 2,
                            model = TRUE, method = c("eigen", "Cholesky", "qr"),
-                           x = FALSE, y = TRUE,
+                           intercept = TRUE, x = FALSE, y = TRUE,
                            tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
                            tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   call <- match.call()
@@ -227,16 +228,18 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
   return(rval)
 }
 
-coef.fglm <- function(object, ...) object$coefficients
+coef.fglm <- function(object, ...) { object$coefficients }
 
-vcov.fglm <- function(object, ...) object$dispersion * solve(object$XTX)
+vcov.fglm <- function(object, ...) { object$dispersion * solve(object$XTX) }
 
-deviance.fglm <- function(object, ...) object$deviance
+deviance.fglm <- function(object, ...) { object$deviance }
 
 nobs.fglm <- function(object, use.fallback = FALSE, ...) {
   if (!is.null(w <- object$weights)) sum(w != 0) else object$n
 }
 
+#' @importFrom stats residuals weights is.ts ts start frequency
+#' @importFrom zoo is.zoo zoo index
 estfun.glm <- function(x, ...) {
   xmat <- model.matrix(x)
   xmat <- naresid(x$na.action, xmat)

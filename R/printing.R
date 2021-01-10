@@ -1,3 +1,4 @@
+#' @importFrom stats quantile setNames
 #' @export
 #' @keywords internal
 print.summary.fglm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
@@ -70,6 +71,7 @@ print.summary.fglm <- function(x, digits = max(3, getOption("digits") - 3), ...)
   invisible(x)
 }
 
+#' @importFrom stats coef naprint
 #' @export
 #' @keywords internal
 print.fglm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
@@ -97,6 +99,7 @@ print.fglm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
 }
 
 #' @export
+#' @importFrom stats logLik
 #' @keywords internal
 print.logLik.fglm <- function(x, digits = getOption("digits"), ...) {
   cat("'log Lik.' ", paste(format(logLik(x), digits = digits), collapse = ", "),

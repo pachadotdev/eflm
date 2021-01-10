@@ -1,4 +1,5 @@
 # the same as stats:::safe_pchisq
+#' @importFrom stats pchisq
 safe_pchisq <- function(q, df, ...)
 {
   df[df <= 0] <- NA
@@ -6,6 +7,7 @@ safe_pchisq <- function(q, df, ...)
 }
 
 # the same as stats:::safe_pchisq
+#' @importFrom stats pf
 safe_pf <- function(q, df1, ...)
 {
   df1[df1 <= 0] <- NA

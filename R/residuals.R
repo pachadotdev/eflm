@@ -1,3 +1,4 @@
+#' @importFrom stats naresid predict
 #' @export
 #' @keywords internal
 residuals.fglm <- function (object, type = c("deviance", "pearson", "working",
