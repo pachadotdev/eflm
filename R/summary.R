@@ -13,7 +13,7 @@ summary.fglm <- function(object, ...) {
   z <- object
   var_res <- as.numeric(z$RSS / z$df.residual)
   dispersion <- if (z$family$family %in% c("poisson", "binomial")) 1 else var_res
-  if (z$method == "qr") {
+  if (z$singularity.method == "qr") {
     z$XTX <- z$XTX[z$ok, z$ok]
   }
   inv <- solve(z$XTX, tol = z$tol.solve)

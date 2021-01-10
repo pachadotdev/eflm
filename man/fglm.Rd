@@ -17,7 +17,7 @@ fglm(
   maxit = 25,
   k = 2,
   model = TRUE,
-  method = c("eigen", "Cholesky", "qr"),
+  singularity.method = c("eigen", "Cholesky", "qr"),
   intercept = TRUE,
   x = FALSE,
   y = TRUE,
@@ -63,7 +63,7 @@ is the classical AIC}
 \item{model}{A logical value indicating whether model frame should be included as a
 component of the returned value (Defaults to \code{TRUE})}
 
-\item{method}{The chosen method to detect for singularity. Defaults to \code{"eigen"} but
+\item{singularity.method}{The chosen method to detect for singularity. Defaults to \code{"eigen"} but
 it can also be \code{"Cholesky"} or \code{"qr"}}
 
 \item{intercept}{Logical value to determine whearead to included an intercept in the null model (Defaults to \code{TRUE})}
@@ -82,7 +82,7 @@ should be returned as components of the returned value (Defaults to \code{FALSE}
 
 \item{tol.vectors}{Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})}
 
-\item{\dots}{Additional optional arguments (See the function \link{glm})}
+\item{\dots}{For glm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.}
 }
 \description{
 fglm is used to fit generalized linear models, specified by giving a symbolic

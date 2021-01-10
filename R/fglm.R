@@ -27,7 +27,7 @@
 #' is the classical AIC
 #' @param model A logical value indicating whether model frame should be included as a
 #' component of the returned value (Defaults to \code{TRUE})
-#' @param method The chosen method to detect for singularity. Defaults to \code{"eigen"} but
+#' @param singularity.method The chosen method to detect for singularity. Defaults to \code{"eigen"} but
 #' it can also be \code{"Cholesky"} or \code{"qr"}
 #' @param x Logical value indicating whether the model matrix used in the fitting process
 #' should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})
@@ -37,13 +37,13 @@
 #' @param tol.solve (Defaults to \code{.Machine$double.eps}, see the function \link{solve})
 #' @param tol.values Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control}),
 #' @param tol.vectors Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})
-#' @param \dots Additional optional arguments (See the function \link{glm})
+#' @param \dots For glm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
 #' @importFrom stats gaussian na.pass
 #' @export
 
 fglm <- function(formula, data, family = gaussian(), weights = NULL, na.action = na.pass,
                            start = NULL, etastart = NULL, mustart = NULL, offset = NULL, maxit = 25, k = 2,
-                           model = TRUE, method = c("eigen", "Cholesky", "qr"),
+                           model = TRUE, singularity.method = c("eigen", "Cholesky", "qr"),
                            intercept = TRUE, x = FALSE, y = TRUE,
                            tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
                            tol.values = 1e-7, tol.vectors = 1e-7, ...) {
@@ -60,7 +60,7 @@ fglm <- function(formula, data, family = gaussian(), weights = NULL, na.action =
   X <- model.matrix(tf, M)
   offset <- model.offset(M)
   intercept <- attributes(tf)$intercept
-  method <- match.arg(method)
+  singularity.method <- match.arg(singularity.method)
   rval <- fglm.wfit(
     X = X,
     y = y,
@@ -77,7 +77,7 @@ fglm <- function(formula, data, family = gaussian(), weights = NULL, na.action =
     tol.solve = tol.solve,
     tol.values = tol.values,
     tol.vectors = tol.vectors,
-    method = method
+    singularity.method = singularity.method
   )
   rval$terms <- tf
   rval$call <- call
@@ -103,7 +103,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
                       mustart = NULL, offset = NULL, maxit = 25, k = 2,
                       tol.estimation = 1e-8, tol.values = 1e-7,
                       tol.vectors = 1e-7, tol.solve = .Machine$double.eps,
-                      method = c('eigen','Cholesky','qr'), ...) {
+                      singularity.method = c('eigen','Cholesky','qr'), ...) {
   nobs <- NROW(y)
   nvar <- ncol(X)
   if (missing(y)) stop("Argument y is missing")
@@ -111,7 +111,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
   if (is.null(offset)) offset <- rep.int(0, nobs)
   if (is.null(weights)) weights <- rep(1, nobs)
   col.names <- dimnames(X)[[2]]
-  method <- match.arg(method)
+  singularity.method <- match.arg(singularity.method)
   fam <- family$family
   link <- family$link
   variance <- family$variance
@@ -148,9 +148,9 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     # names(W) <- ynames
     XTX <- cp(X, W)
     XTz <- t(crossprod((W * z), X))
-    if (iter == 1 & method != "qr") {
+    if (iter == 1 & singularity.method != "qr") {
       variable <- colnames(X)
-      ris <- control(XTX, , tol.values, tol.vectors, , method)
+      ris <- control(XTX, , tol.values, tol.vectors, , singularity.method)
       ok <- ris$pivot[1:ris$rank]
       XTX <- ris$XTX
       X <- X[, ok]
@@ -158,7 +158,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
       start <- start[ok]
       beta <- start
     }
-    if (method == "qr") {
+    if (singularity.method == "qr") {
       ris <- .Call(C_Cdqrls, XTX, XTz, tol.values, FALSE)
       start <- if (ris$rank < nvar) {
         ris$coefficients[ris$pivot]
@@ -187,7 +187,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
   RSS <- sum(W * res * res)
   var_res <- RSS / dfr
   dispersion <- if (fam %in% c("poisson", "binomial")) 1 else var_res
-  if (method == "qr") {
+  if (singularity.method == "qr") {
     coefficients <- start
     coefficients[coefficients == 0] <- NA
     ok <- ris$pivot[1:rank]
@@ -212,7 +212,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     "ok" = ok,
     "rank" = rank,
     "RSS" = RSS,
-    "method" = method,
+    "singularity.method" = singularity.method,
     "aic" = aic.model,
     "deviance" = dev,
     "df.null" = nulldf,

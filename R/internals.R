@@ -1,10 +1,10 @@
 control <- function(B, symmetric = TRUE, tol.values = 1e-07, tol.vectors = 1e-07,
-                    out.B = TRUE, method = c("eigen", "Cholesky")) {
-  method <- match.arg(method)
-  if (!(method %in% c("eigen", "Cholesky"))) {
-    stop("method not valid or not implemented")
+                    out.B = TRUE, singularity.method = c("eigen", "Cholesky")) {
+  singularity.method <- match.arg(singularity.method)
+  if (!(singularity.method %in% c("eigen", "Cholesky"))) {
+    stop("singularity.method not valid or not implemented")
   }
-  if (method == "eigen") {
+  if (singularity.method == "eigen") {
     n <- ncol(B)
     sa <- 1:n
     nok <- NULL
@@ -30,7 +30,7 @@ control <- function(B, symmetric = TRUE, tol.values = 1e-07, tol.vectors = 1e-07
       sa
     }
   }
-  if (method == "Cholesky") {
+  if (singularity.method == "Cholesky") {
     A <- chol(B, pivot = TRUE)
     pivot <- attributes(A)$"pivot"
     rank <- attributes(A)$"rank"
