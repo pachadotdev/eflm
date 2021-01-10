@@ -9,6 +9,7 @@ fglm(
   data,
   family = gaussian(),
   weights = NULL,
+  na.action = na.pass,
   start = NULL,
   etastart = NULL,
   mustart = NULL,
@@ -35,6 +36,12 @@ fglm(
 
 \item{weights}{An optional vector of ‘prior weights’ to be used in the fitting process. Should be \code{NULL}
 or a numeric vector (e.g. \code{data$weights}, defaults to \code{NULL})}
+
+\item{na.action}{a function which indicates what should happen when the data
+contain NAs. The default is set by the \code{na.action} setting of options,
+and is \link{na.fail} if that is unset. The ‘factory-fresh’ default is
+\code{na.omit}. Another possible value is NULL, no action. Value
+\code{na.exclude} can be useful.}
 
 \item{start}{Starting values for the parameters in the linear predictor}
 

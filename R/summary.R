@@ -100,7 +100,7 @@ summary.fglm <- function(object, ...) {
   ans <- c(object[keep], list(
     deviance.resid = deviance.resid,
     coefficients = param, dispersion = dispersion,
-    cov.unscaled = inv, cov.scaled = inv * var_res
+    cov.unscaled = inv, cov.scaled = inv * dispersion
   ))
   class(ans) <- "summary.fglm"
   return(ans)

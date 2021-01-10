@@ -489,3 +489,10 @@ test_that("Drop: flgm (quasi) == glm with Rao test", {
   expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
   expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
 })
+
+# Sanity check ----
+
+test_that("Drop: fails without model matrix", {
+  m1 <- fglm(mpg ~ wt + am, data = mtcars, family = gaussian(), model = FALSE)
+  expect_error(drop1(m1))
+})

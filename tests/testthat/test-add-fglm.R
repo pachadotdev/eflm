@@ -489,3 +489,10 @@ test_that("Add: fglm (quasi) == glm with Rao test", {
   expect_equal(add_m1$`scaled Rao sc.`, add_m2$`scaled Rao sc.`)
   expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
 })
+
+# Sanity checks ----
+
+test_that("Add: fglm fails without model matrix", {
+  m1 <- fglm(mpg ~ wt, data = mtcars, family = gaussian(), model = FALSE)
+  expect_error(add1(m1, ~ . + am))
+})

@@ -3,28 +3,28 @@ Updating hermes documentation
 Loading hermes
 Writing NAMESPACE
 Writing NAMESPACE
-── Building ────────────────────────────────────────────────────────────────────────── hermes ──
+── Building ─────────────────────────────────────────────────────────────────────────────────────────────── hermes ──
 Setting env vars:
 ● CFLAGS    : -Wall -pedantic -fdiagnostics-color=always
 ● CXXFLAGS  : -Wall -pedantic -fdiagnostics-color=always
 ● CXX11FLAGS: -Wall -pedantic -fdiagnostics-color=always
-────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ✓  checking for file ‘/home/pacha/github/hermes/DESCRIPTION’ ...
 ─  preparing ‘hermes’:
 ✓  checking DESCRIPTION meta-information ...
 ─  checking for LF line-endings in source and make files and shell scripts
 ─  checking for empty or unneeded directories
 ─  building ‘hermes_0.1.tar.gz’
-   
-── Checking ────────────────────────────────────────────────────────────────────────── hermes ──
+
+── Checking ─────────────────────────────────────────────────────────────────────────────────────────────── hermes ──
 Setting env vars:
 ● _R_CHECK_CRAN_INCOMING_USE_ASPELL_: TRUE
 ● _R_CHECK_CRAN_INCOMING_REMOTE_    : FALSE
 ● _R_CHECK_CRAN_INCOMING_           : FALSE
 ● _R_CHECK_FORCE_SUGGESTS_          : FALSE
 ● NOT_CRAN                          : true
-── R CMD check ─────────────────────────────────────────────────────────────────────────────────
-─  using log directory ‘/tmp/RtmpJtJ20e/hermes.Rcheck’
+── R CMD check ──────────────────────────────────────────────────────────────────────────────────────────────────────
+─  using log directory ‘/tmp/RtmpsrYDiG/hermes.Rcheck’
 ─  using R version 4.0.3 (2020-10-10)
 ─  using platform: x86_64-pc-linux-gnu (64-bit)
 ─  using session charset: UTF-8
@@ -32,9 +32,9 @@ Setting env vars:
 ✓  checking for file ‘hermes/DESCRIPTION’
 ─  this is package ‘hermes’ version ‘0.1’
 ─  package encoding: UTF-8
-✓  checking package namespace information ...
-✓  checking package dependencies (948ms)
-✓  checking if this is a source package ...
+✓  checking package namespace information
+✓  checking package dependencies (895ms)
+✓  checking if this is a source package
 ✓  checking if there is a namespace
 ✓  checking for executable files ...
 ✓  checking for hidden files and directories
@@ -42,7 +42,7 @@ Setting env vars:
 ✓  checking for sufficient/correct file permissions
 ✓  checking whether package ‘hermes’ can be installed (2s)
 ✓  checking installed package size ...
-✓  checking package directory ...
+✓  checking package directory
 ✓  checking for future file timestamps (1.3s)
 ✓  checking DESCRIPTION meta-information ...
 ✓  checking top-level files
@@ -55,7 +55,7 @@ Setting env vars:
 ─  checking whether the package can be loaded with stated dependencies ...Error: package or namespace load failed for ‘hermes’:
     object 'family' not found whilst loading namespace 'hermes'
    Execution halted
-   
+
    It looks like this package (or one of its dependent packages) has an
    unstated dependence on a standard package.  All dependencies must be
    declared in DESCRIPTION.
@@ -68,11 +68,11 @@ W  checking whether the package can be unloaded cleanly ...
 W  checking whether the namespace can be loaded with stated dependencies ...
    Error: object 'family' not found whilst loading namespace 'hermes'
    Execution halted
-   
+
    A namespace must be able to be loaded with just the base namespace
    loaded: otherwise if the namespace gets loaded by a saved object, the
    session will be unable to start.
-   
+
    Probably some imports need to be declared in the NAMESPACE file.
 ✓  checking whether the namespace can be unloaded cleanly ...
 ✓  checking loading without being on the library search path ...
@@ -89,21 +89,21 @@ N  checking dependencies in R code ...
           ns <- loadNamespace(package, lib.loc)
           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
       }, error = function(e) {
-          P <- if (!is.null(cc <- conditionCall(e))) 
+          P <- if (!is.null(cc <- conditionCall(e)))
               paste(" in", deparse(cc)[1L])
           else ""
-          msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+          msg <- gettextf("package or namespace load failed for %s%s:\n %s",
               sQuote(package), P, conditionMessage(e))
-          if (logical.return) 
+          if (logical.return)
               message(paste("Error:", msg), domain = NA)
           else stop(msg, call. = FALSE, domain = NA)
       })
    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
    Execution halted
-✓  checking S3 generic/method consistency (651ms)
+✓  checking S3 generic/method consistency (598ms)
 ✓  checking replacement functions ...
 ✓  checking foreign function calls ...
-N  checking R code for possible problems (2.7s)
+N  checking R code for possible problems (2.6s)
    Error: object 'family' not found whilst loading namespace 'hermes'
    Execution halted
 ✓  checking Rd files ...
@@ -112,36 +112,36 @@ N  checking R code for possible problems (2.7s)
 W  checking Rd cross-references ...
    Missing link or links in documentation object 'fglm.Rd':
      ‘solve()’ ‘control()’
-   
+
    See section 'Cross-references' in the 'Writing R Extensions' manual.
-   
+
 ✓  checking for missing documentation entries ...
-✓  checking for code/documentation mismatches (530ms)
+✓  checking for code/documentation mismatches (526ms)
 W  checking Rd \usage sections ...
    Documented arguments not in \usage in documentation object 'fglm':
      ‘intercept’
-   
+
    Functions with \usage entries need to have the appropriate \alias
    entries, and all their arguments documented.
    The \usage entries must correspond to syntactically valid R code.
    See chapter ‘Writing R documentation files’ in the ‘Writing R
    Extensions’ manual.
-✓  checking Rd contents (685ms)
+✓  checking Rd contents (686ms)
 ✓  checking for unstated dependencies in examples ...
 ─  checking examples ... NONE
 ✓  checking for unstated dependencies in ‘tests’ ...
 ─  checking tests ...
-✓  Running ‘testthat.R’ (3.2s)
-✓  checking for non-standard things in the check directory (3.2s)
+✓  Running ‘testthat.R’ (1.9s)
+✓  checking for non-standard things in the check directory (1.9s)
 ✓  checking for detritus in the temp directory
-   
+
    See
-     ‘/tmp/RtmpJtJ20e/hermes.Rcheck/00check.log’
+     ‘/tmp/RtmpsrYDiG/hermes.Rcheck/00check.log’
    for details.
-   
-   
-── R CMD check results ───────────────────────────────────────────────────────── hermes 0.1 ────
-Duration: 16.9s
+
+
+── R CMD check results ────────────────────────────────────────────────────────────────────────────── hermes 0.1 ────
+Duration: 15.5s
 
 > checking whether the package can be unloaded cleanly ... WARNING
   Error: package or namespace load failed for ‘hermes’:
@@ -151,23 +151,23 @@ Duration: 16.9s
 > checking whether the namespace can be loaded with stated dependencies ... WARNING
   Error: object 'family' not found whilst loading namespace 'hermes'
   Execution halted
-  
+
   A namespace must be able to be loaded with just the base namespace
   loaded: otherwise if the namespace gets loaded by a saved object, the
   session will be unable to start.
-  
+
   Probably some imports need to be declared in the NAMESPACE file.
 
 > checking Rd cross-references ... WARNING
   Missing link or links in documentation object 'fglm.Rd':
     ‘solve()’ ‘control()’
-  
+
   See section 'Cross-references' in the 'Writing R Extensions' manual.
 
 > checking Rd \usage sections ... WARNING
   Documented arguments not in \usage in documentation object 'fglm':
     ‘intercept’
-  
+
   Functions with \usage entries need to have the appropriate \alias
   entries, and all their arguments documented.
   The \usage entries must correspond to syntactically valid R code.
@@ -187,12 +187,12 @@ Duration: 16.9s
          ns <- loadNamespace(package, lib.loc)
          env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
      }, error = function(e) {
-         P <- if (!is.null(cc <- conditionCall(e))) 
+         P <- if (!is.null(cc <- conditionCall(e)))
              paste(" in", deparse(cc)[1L])
          else ""
-         msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+         msg <- gettextf("package or namespace load failed for %s%s:\n %s",
              sQuote(package), P, conditionMessage(e))
-         if (logical.return) 
+         if (logical.return)
              message(paste("Error:", msg), domain = NA)
          else stop(msg, call. = FALSE, domain = NA)
      })

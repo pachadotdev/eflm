@@ -1,0 +1,4 @@
+- Add df vector to summary output
+- Check na.omit
+- cov.unscaled binomial
+- deviance.resid binomial

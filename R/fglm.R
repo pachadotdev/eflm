@@ -10,6 +10,11 @@
 #' @param intercept Logical value to determine whearead to included an intercept in the null model (Defaults to \code{TRUE})
 #' @param weights An optional vector of ‘prior weights’ to be used in the fitting process. Should be \code{NULL}
 #' or a numeric vector (e.g. \code{data$weights}, defaults to \code{NULL})
+#' @param na.action a function which indicates what should happen when the data
+#' contain NAs. The default is set by the \code{na.action} setting of options,
+#' and is \link{na.fail} if that is unset. The ‘factory-fresh’ default is
+#' \code{na.omit}. Another possible value is NULL, no action. Value
+#' \code{na.exclude} can be useful.
 #' @param start Starting values for the parameters in the linear predictor
 #' @param etastart Starting values for the linear predictor
 #' @param mustart Starting values for the vector of means
@@ -35,7 +40,7 @@
 #' @param \dots Additional optional arguments (See the function \link{glm})
 #' @export
 
-fglm <- function(formula, data, family = gaussian(), weights = NULL,
+fglm <- function(formula, data, family = gaussian(), weights = NULL, na.action = na.pass,
                            start = NULL, etastart = NULL, mustart = NULL, offset = NULL, maxit = 25, k = 2,
                            model = TRUE, method = c("eigen", "Cholesky", "qr"),
                            x = FALSE, y = TRUE,
@@ -77,13 +82,14 @@ fglm <- function(formula, data, family = gaussian(), weights = NULL,
   rval$call <- call
   class(rval) <- c("fglm", "flm")
   if (model) rval$model <- M
-  rval$fitted.values <- predict.fglm(rval, newdata = M, type = "response")
-  rval$linear.predictors <- predict.fglm(rval, newdata = M, type = "link")
+  rval$fitted.values <- predict.fglm(rval, newdata = M, type = "response", na.action = na.action)
+  rval$linear.predictors <- predict.fglm(rval, newdata = M, type = "link", na.action = na.action)
   if (x) rval$x <- X
   if (target) {
     rval$y <- y
     names(rval$y) <- names(rval$fitted.values)
   }
+  names(rval$prior.weights) <- names(rval$fitted.values)
 
   if ((rval$iter == maxit) & (!rval$convergence)) {
     warning("Maximum number of iterations reached without convergence")
@@ -211,7 +217,8 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     "df.null" = nulldf,
     "null.deviance" = nulldev,
     "weights" = W,
-    "ngoodobs" = n.ok,
+    "prior.weights" = weights,
+    "n.good.obs" = n.ok,
     "n" = nobs,
     "intercept" = intercept,
     "convergence" = (!(tol > tol.estimation))
