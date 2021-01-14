@@ -21,7 +21,7 @@
 #' @export
 #' @keywords internal
 predict.fglm <- function(object, newdata = NULL, type = c("link", "response"),
-                             na.action = na.pass, ...) {
+                         na.action = na.pass, ...) {
   type <- match.arg(type)
   if (missing(newdata) & is.null(object$linear.predictors)) {
     warning("Fitted values were not returned from the fglm object:
@@ -51,40 +51,52 @@ predict.fglm <- function(object, newdata = NULL, type = c("link", "response"),
 #' @export
 #' @importFrom stats napredict delete.response
 #' @keywords internal
-predict.flm <- function (object, newdata, na.action = na.pass, ...) {
+predict.flm <- function(object, newdata, na.action = na.pass, ...) {
   tt <- terms(object)
-  if (!inherits(object, c("flm","fglm")))
+  if (!inherits(object, c("flm", "fglm"))) {
     warning("calling predict.flm(<fake-flm/fglm-object>) ...")
+  }
   if (missing(newdata) || is.null(newdata)) {
-    if(is.null(object$fitted.values))
+    if (is.null(object$fitted.values)) {
       warning("Fitted values were not returned from the fglm object:
               use the original data by setting argument 'newdata' or refit
               the model by specifying fitted=TRUE.")
+    }
     return(object$fitted.values)
   }
   else {
     Terms <- delete.response(tt)
-    m <- model.frame(Terms, newdata, na.action = na.action)#, xlev = object$xlevels)
-    if (!is.null(cl <- attr(Terms, "dataClasses")))
+    m <- model.frame(Terms, newdata, na.action = na.action) # , xlev = object$xlevels)
+    if (!is.null(cl <- attr(Terms, "dataClasses"))) {
       .checkMFClasses(cl, m)
+    }
     X <- model.matrix(Terms, m, contrasts.arg = object$contrasts)
     offset <- rep(0, nrow(X))
-    if (!is.null(off.num <- attr(tt, "offset")))
-      for (i in off.num) offset <- offset + eval(attr(tt,
-                                                      "variables")[[i + 1]], newdata)
-    if (!is.null(object$call$offset))
+    if (!is.null(off.num <- attr(tt, "offset"))) {
+      for (i in off.num) {
+        offset <- offset + eval(attr(
+          tt,
+          "variables"
+        )[[i + 1]], newdata)
+      }
+    }
+    if (!is.null(object$call$offset)) {
       offset <- offset + eval(object$call$offset, newdata)
+    }
   }
   p <- object$rank
   ord <- colnames(X)
-  if (p < ncol(X) && !(missing(newdata) || is.null(newdata)))
+  if (p < ncol(X) && !(missing(newdata) || is.null(newdata))) {
     warning("Prediction from a rank-deficient fit may be misleading.")
+  }
   beta <- object$coefficients
   beta[is.na(beta)] <- 0
   predictor <- drop(X[, ord, drop = FALSE] %*% beta[ord])
-  if (!is.null(offset))
+  if (!is.null(offset)) {
     predictor <- predictor + offset
-  if (missing(newdata) && !is.null(na.act <- object$na.action))
+  }
+  if (missing(newdata) && !is.null(na.act <- object$na.action)) {
     predictor <- napredict(na.act, predictor)
+  }
   predictor
 }

@@ -1,4 +1,4 @@
 library(testthat)
-library(hermes)
+library(fastlinmods)
 
-test_check("hermes")
+test_check("fastlinmods")

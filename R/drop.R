@@ -1,8 +1,10 @@
 #' @importFrom stats drop.scope extractAIC
 #' @export
 #' @keywords internal
-drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
-  "Chisq", "F"), k = 2, weights = rep(1, object$n), ...) {
+drop1.fglm <- function(object, scope, scale = 0, test = c(
+                         "none", "Rao", "LRT",
+                         "Chisq", "F"
+                       ), k = 2, weights = rep(1, object$n), ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")
   test <- match.arg(test)
   if (test == "Chisq") test <- "LRT"
@@ -45,8 +47,8 @@ drop1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
     ii <- seq_along(asgn)[asgn == ndrop[i]]
     jj <- setdiff(seq(ncol(x)), ii)
     z <- fglm.wfit(y, x[, jj, drop = FALSE],
-                   intercept = T, wt, offset = object$offset,
-                   family = object$family
+      intercept = T, wt, offset = object$offset,
+      family = object$family
     )
     dfs[i] <- z$rank
     dev[i] <- z$deviance

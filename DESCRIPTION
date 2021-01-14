@@ -1,5 +1,5 @@
-Package: hermes
-Title: Efficient Fitting of Generalized Linear Models
+Package: fastlinmods
+Title: Efficient Fitting of Linear Models and Generalized Linear Models
 Version: 0.1
 Authors@R: c( 
         person(given = "Mauricio",
@@ -31,8 +31,8 @@ Description: Efficient Fitting of Generalized Linear Models by using just base
   OpenBLAS, Intel MKL or other optimized BLAS library. This implementation aims 
   at being compatible with broom, sandwich and other packages for summary 
   statistics and clustering by providing S3 methods.
-URL: https://pacha.dev/hermes/
-BugReports: https://github.com/pachamaltese/hermes/issues/
+URL: https://pacha.dev/fastlinmods/
+BugReports: https://github.com/pachamaltese/fastlinmods/issues/
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true

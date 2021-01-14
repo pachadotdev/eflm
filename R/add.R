@@ -1,7 +1,9 @@
 #' @importFrom stats add.scope update.formula terms model.frame model.offset extractAIC
 #' model.matrix model.response formula
-add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
-  "Chisq", "F"), x = NULL, k = 2, weights = rep(1, object$n), ...) {
+add1.fglm <- function(object, scope, scale = 0, test = c(
+                        "none", "Rao", "LRT",
+                        "Chisq", "F"
+                      ), x = NULL, k = 2, weights = rep(1, object$n), ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")
   test <- match.arg(test)
   if (test == "Chisq") test <- "LRT"
@@ -75,7 +77,7 @@ add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT",
   w <- z$weights
   sTerms <- sapply(strsplit(Terms, ":", fixed = TRUE), function(x) {
     paste(sort(x),
-          collapse = ":"
+      collapse = ":"
     )
   })
   for (tt in scope) {

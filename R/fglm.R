@@ -7,7 +7,7 @@
 #' @param formula A formula for the model
 #' @param data A tibble or data.frame
 #' @param family See the function \link{glm}, but here it must be specified with brackets (e.g. \code{quasipoisson()})
-#' @param intercept Logical value to determine whearead to included an intercept in the null model (Defaults to \code{TRUE})
+#' @param intercept Logical value to determine wheareas to included an intercept in the null model (Defaults to \code{TRUE})
 #' @param weights An optional vector of ‘prior weights’ to be used in the fitting process. Should be \code{NULL}
 #' or a numeric vector (e.g. \code{data$weights}, defaults to \code{NULL})
 #' @param na.action a function which indicates what should happen when the data
@@ -40,18 +40,17 @@
 #' @param \dots For glm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
 #' @importFrom stats gaussian na.pass
 #' @export
-
-fglm <- function(formula, data, family = gaussian(), weights = NULL,
+fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights = NULL,
                  na.action = na.omit, start = NULL, etastart = NULL,
                  mustart = NULL, offset = NULL, maxit = 25, k = 2, model = TRUE,
                  singularity.method = c("eigen", "Cholesky", "qr"),
-                 intercept = TRUE, x = FALSE, y = TRUE,
+                 x = FALSE, y = TRUE,
                  tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
                  tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   call <- match.call()
   target <- y
   M <- match.call(expand.dots = FALSE)
-  m <- match(c("formula", "data", "subset"), names(M), 0L)
+  m <- match(c("formula", "data"), names(M), 0L)
   M <- M[c(1L, m)]
   M$drop.unused.levels <- TRUE
   M[[1L]] <- quote(stats::model.frame)
@@ -104,7 +103,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
                       mustart = NULL, offset = NULL, maxit = 25, k = 2,
                       tol.estimation = 1e-8, tol.values = 1e-7,
                       tol.vectors = 1e-7, tol.solve = .Machine$double.eps,
-                      singularity.method = c('eigen','Cholesky','qr'), ...) {
+                      singularity.method = c("eigen", "Cholesky", "qr"), ...) {
   nobs <- NROW(y)
   nvar <- ncol(X)
   if (missing(y)) stop("Argument y is missing")
@@ -229,11 +228,17 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
   return(rval)
 }
 
-coef.fglm <- function(object, ...) { object$coefficients }
+coef.fglm <- function(object, ...) {
+  object$coefficients
+}
 
-vcov.fglm <- function(object, ...) { object$dispersion * solve(object$XTX) }
+vcov.fglm <- function(object, ...) {
+  object$dispersion * solve(object$XTX)
+}
 
-deviance.fglm <- function(object, ...) { object$deviance }
+deviance.fglm <- function(object, ...) {
+  object$deviance
+}
 
 nobs.fglm <- function(object, use.fallback = FALSE, ...) {
   if (!is.null(w <- object$weights)) sum(w != 0) else object$n
@@ -241,18 +246,21 @@ nobs.fglm <- function(object, use.fallback = FALSE, ...) {
 
 #' @importFrom stats residuals weights is.ts ts start frequency
 #' @importFrom zoo is.zoo zoo index
-estfun.glm <- function(x, ...) {
+estfun.fglm <- function(x, ...) {
   xmat <- model.matrix(x)
   xmat <- naresid(x$na.action, xmat)
-  if(any(alias <- is.na(coef(x)))) xmat <- xmat[, !alias, drop = FALSE]
+  if (any(alias <- is.na(coef(x)))) xmat <- xmat[, !alias, drop = FALSE]
   wres <- as.vector(residuals(x, "working")) * weights(x, "working")
-  dispersion <- if(substr(x$family$family, 1, 17) %in% c("poisson", "binomial", "Negative Binomial")) 1
-  else sum(wres^2, na.rm = TRUE)/sum(weights(x, "working"), na.rm = TRUE)
+  dispersion <- if (substr(x$family$family, 1, 17) %in% c("poisson", "binomial", "Negative Binomial")) {
+    1
+  } else {
+    sum(wres^2, na.rm = TRUE) / sum(weights(x, "working"), na.rm = TRUE)
+  }
   rval <- wres * xmat / dispersion
   attr(rval, "assign") <- NULL
   attr(rval, "contrasts") <- NULL
   res <- residuals(x, type = "pearson")
-  if(is.ts(res)) rval <- ts(rval, start = start(res), frequency = frequency(res))
-  if(is.zoo(res)) rval <- zoo(rval, index(res), attr(res, "frequency"))
+  if (is.ts(res)) rval <- ts(rval, start = start(res), frequency = frequency(res))
+  if (is.zoo(res)) rval <- zoo(rval, index(res), attr(res, "frequency"))
   return(rval)
 }
