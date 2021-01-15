@@ -3,7 +3,7 @@
 
 library(dplyr)
 library(testthat)
-library(hermes)
+library(boostedglm)
 library(yotover)
 library(microbenchmark)
 
@@ -79,7 +79,7 @@ m2 <- fglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
                 family = quasipoisson(link = "log"),
                 data = ch1_application1_2,
                 y = FALSE,
-                model = FALSE
+                model = TRUE
 )
 
 expect_equal(m1$coefficients, m2$coefficients)
