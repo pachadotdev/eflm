@@ -82,6 +82,11 @@ m2 <- fglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
                 model = TRUE
 )
 
+m3 <- fixest::feglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
+               family = quasipoisson(link = "log"),
+               data = ch1_application1_2
+)
+
 expect_equal(m1$coefficients, m2$coefficients)
 expect_equal(m1$residuals, m2$residuals)
 expect_equal(m1$fitted.values, m2$fitted.values)
