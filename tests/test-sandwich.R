@@ -1,0 +1,1 @@
+requireNamespace("sandwich", quietly = TRUE)

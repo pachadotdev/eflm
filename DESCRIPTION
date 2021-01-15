@@ -41,10 +41,10 @@ RoxygenNote: 7.1.1
 Imports:
     stats,
     zoo,
-    methods
+    methods,
+    sandwich
 Suggests:
     testthat,
-    covr,
-    sandwich
+    covr
 Depends: 
     R (>= 3.5)
