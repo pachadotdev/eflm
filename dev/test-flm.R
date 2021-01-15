@@ -1,9 +1,11 @@
 fit_fglm <- fglm(mpg ~ wt, mtcars)
+fit_glm <- glm(mpg ~ wt, data = mtcars)
+
 fit_flm <- flm(mpg ~ wt, mtcars)
-fit_flm_2 <- lm(mpg ~ wt, mtcars)
+fit_lm <- lm(mpg ~ wt, mtcars)
 
-fit_flm
-fit_flm_2
+x <- summary(fit_flm)
+y <- summary(fit_lm)
 
-summary(fit_flm)
-summary(fit_flm_2)
+names(fit_glm)
+names(fit_fglm)

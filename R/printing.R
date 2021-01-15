@@ -89,24 +89,26 @@ print.summary.flm <- function(x, digits = max(3, getOption("digits") - 3), ...) 
   } else {
     round(x$coefficients$coef, digits = 6)
   }
-  x$coefficients$se <- if (any(na.omit(x$coefficients$se) < 0.0001)) {
-    format(x$coefficients$se, scientific = TRUE, digits = 4)
+  x$coefficients$`Std. Error` <- if (any(na.omit(x$coefficients$`Std. Error`) < 0.0001)) {
+    format(x$coefficients$`Std. Error`, scientific = TRUE, digits = 4)
   } else {
-    round(x$coefficients$se, digits = 6)
+    round(x$coefficients$`Std. Error`, digits = 6)
   }
-  x$coefficients$t <- round(x$coefficients$t, digits = 4)
-  x$coefficients$p.value <- if (any(na.omit(x$coefficients$p.value) < 0.0001)) {
-    format(x$coefficients$p.value,
+  x$coefficients$`t value` <- round(x$coefficients$`t value`, digits = 4)
+  x$coefficients$`Pr(>|t|)` <- if (any(na.omit(x$coefficients$`Pr(>|t|)`) < 0.0001)) {
+    format(x$coefficients$`Pr(>|t|)`,
       scientific = TRUE,
       digits = 3
     )
   } else {
-    round(x$coefficients$p.value,
+    round(x$coefficients$`Pr(>|t|)`,
       digits = 6
     )
   }
-  colnames(x$coefficients) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
-  s <- sum(Vectorize(is.na(x$coefficients$coef)))
+
+  s <- sum(Vectorize(is.na(x$coefficients$`Estimate`)))
+  # colnames(x$coefficients) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
+
   if (!is.null(x$call)) {
     cat("\nCall:\n")
     cat(deparse(x$call))
@@ -167,9 +169,9 @@ print.summary.flm <- function(x, digits = max(3, getOption("digits") - 3), ...) 
     cat("Residual standard error: ", round(sqrt(x$var.res), 3), " on ", x$rdf,
       " degrees of freedom\n",
       "Multiple R-squared: ", format(x$r.squared, digits = 4),
-      ", Adjusted R-squared: ", format(x$adj.r.squared, digits = 4), ";\n",
+      ",\tAdjusted R-squared: ", format(x$adj.r.squared, digits = 4), "\n",
       "F-statistic: ", format(x$fstatistic[1], digits = 4), " on ", x$fstatistic[2],
-      " and ", x$fstatistic[3], " DF, p-value: ", format(x$f.pvalue, digits = 4),
+      " and ", x$fstatistic[3], " DF,\tp-value: ", format(x$f.pvalue, digits = 4),
       ".\n",
       sep = ""
     )
@@ -179,8 +181,8 @@ print.summary.flm <- function(x, digits = max(3, getOption("digits") - 3), ...) 
       sep = ""
     )
   }
-  if (s == 1) cat("One coefficient not defined because of singularities. \n")
-  if (s > 1) cat(s, " coefficients not defined because of singularities. \n")
+  if (s == 1) cat("One coefficient not defined because of singularities.\n")
+  if (s > 1) cat(s, " coefficients not defined because of singularities.\n")
   invisible(x)
 }
 

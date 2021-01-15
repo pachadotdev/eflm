@@ -13,7 +13,8 @@ flm(
   offset = NULL,
   model = TRUE,
   method = c("eigen", "Cholesky", "qr"),
-  y = FALSE,
+  x = FALSE,
+  y = TRUE,
   fitted = FALSE,
   tol.solve = .Machine$double.eps,
   tol.values = 1e-07,
@@ -45,6 +46,9 @@ or as well, and if more than one is specified their sum is used. See \code{stats
 \item{model}{A logical value indicating whether model frame should be included as a
 component of the returned value (Defaults to \code{TRUE})}
 
+\item{x}{Logical value indicating whether the model matrix used in the fitting process
+should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})}
+
 \item{y}{Logical value indicating whether the response vector used in the fitting process
 should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})}
 
@@ -69,9 +73,6 @@ is the classical AIC}
 
 \item{singularity.method}{The chosen method to detect for singularity. Defaults to \code{"eigen"} but
 it can also be \code{"Cholesky"} or \code{"qr"}}
-
-\item{x}{Logical value indicating whether the model matrix used in the fitting process
-should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})}
 }
 \description{
 flm is used to fit linear models.

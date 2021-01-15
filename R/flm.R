@@ -39,7 +39,7 @@
 flm <- function(formula, data, intercept = TRUE, weights = NULL,
                 na.action = na.omit, offset = NULL,
                 model = TRUE, method = c("eigen", "Cholesky", "qr"),
-                y = FALSE, fitted = FALSE,
+                x = FALSE, y = TRUE, fitted = FALSE,
                 tol.solve = .Machine$double.eps,
                 tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   target <- y
@@ -78,6 +78,7 @@ flm <- function(formula, data, intercept = TRUE, weights = NULL,
     }
   }
   if (model) rval$model <- M
+  if (x) rval$x <- X
   if (target) rval$y <- y
   class(rval) <- "flm"
   rval$fitted.values <- predict.flm(rval, M)
@@ -156,12 +157,25 @@ flm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
   dfr <- nrow(X) - ris$rank - zero.w
   rval <- list(
     coefficients = coefficients,
-    coef = coef, weights = w,
-    df.residual = dfr, XTX = as(ris$XTX, "matrix"), Xy = Xy,
-    nobs = nrow(X), nvar = nvar, ok = ok, A = as(A, "matrix"),
-    RSS = as.numeric(RSS), rank = ris$rank, pivot = ris$pivot,
-    yy = yy, X1X = X1X, SW = SW, XW1 = XW1,
-    zero.w = zero.w, pw = pw, intercept = intercept, singularity.method = singularity.method
+    weights = w,
+    df.residual = dfr,
+    XTX = as(ris$XTX, "matrix"),
+    Xy = Xy,
+    nobs = nrow(X),
+    nvar = nvar,
+    ok = ok,
+    A = as(A, "matrix"),
+    RSS = as.numeric(RSS),
+    rank = ris$rank,
+    pivot = ris$pivot,
+    yy = yy,
+    X1X = X1X,
+    SW = SW,
+    XW1 = XW1,
+    zero.w = zero.w,
+    pw = pw,
+    intercept = intercept,
+    singularity.method = singularity.method
   )
   class(rval) <- "flm"
   rval
@@ -316,7 +330,7 @@ updateWithMoreData <- function(object, data, weights = NULL, offset = NULL,
   names(coefficients) <- colnames(X)
   rval <- list(
     coefficients = coefficients,
-    coef = coef, df.residual = dfr,
+    df.residual = dfr,
     X1X = X1X, Xy = Xy, XW1 = XW1, SW = SW, yy = yy,
     A = as(A, "matrix"), nobs = object$nobs + nrow(X), RSS = as.numeric(RSS),
     rank = rank, ok = ok, nvar = nvar, weights = weights,

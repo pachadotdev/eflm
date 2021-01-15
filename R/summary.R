@@ -129,6 +129,7 @@ summary.flm <- function(object, ...) {
   var_res <- as.numeric(z$RSS) / rdf
   se_coef <- rep(NA, z$nvar)
   inv <- solve.qr(qr(z$XTX, LAPACK = T))
+  colnames(inv) <- rownames(inv)
   se_coef[z$ok] <- sqrt(var_res * diag(inv))
   t1 <- z$coefficients / se_coef
   p <- 2 * pt(abs(t1), df = z$df.residual, lower.tail = FALSE)
@@ -168,10 +169,10 @@ summary.flm <- function(object, ...) {
     coef = z$coefficients, se = se_coef,
     t = t1, `p-value` = p
   )
-  # dimnames(param) <- list(
-  #   names(z$coefficients),
-  #   c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
-  # )
+  dimnames(param) <- list(
+    names(z$coefficients),
+    c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
+  )
   keep <- match(
     c("call", "terms", "frame", "ok", "RSS", "rank"),
     names(object), 0
@@ -187,7 +188,7 @@ summary.flm <- function(object, ...) {
     fstatistic = fstatistic,
     f.pvalue = f.pvalue,
     rdf = rdf,
-    cov.scaled = inv,
+    cov.unscaled = inv,
     intercept = (nvar != (z$intercept))
   ))
 
