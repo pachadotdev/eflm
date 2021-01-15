@@ -1,4 +1,4 @@
 library(testthat)
-library(fastlinmods)
+library(boostedglm)
 
-test_check("fastlinmods")
+test_check("boostedglm")
