@@ -1,4 +1,4 @@
-test_that("functions in R/integration-sandwich return the same as glm", {
+test_that("functions in R/integration-sandwich.R return the same as glm", {
   m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
   m2 <- fglm(mpg ~ wt, family = gaussian(), data = mtcars)
 

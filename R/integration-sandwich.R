@@ -1,4 +1,5 @@
 # Dynamically exported, see zzz.R
+
 #' @importFrom stats residuals weights is.ts ts start frequency
 #' @importFrom zoo is.zoo zoo index
 estfun.fglm <- function(x, ...) {
@@ -37,7 +38,7 @@ bread.fglm <- function (x, ...) {
 meat.fglm <- function (x, adjust = FALSE, ...) {
   if (is.list(x) && !is.null(x$na.action))
     class(x$na.action) <- "omit"
-  psi <- estfun(x)
+  psi <- sandwich::estfun(x)
   k <- NCOL(psi)
   n <- NROW(psi)
   rval <- crossprod(as.matrix(psi))/n
@@ -47,14 +48,13 @@ meat.fglm <- function (x, adjust = FALSE, ...) {
   return(rval)
 }
 
-#' @importFrom sandwich estfun
 #' @importFrom stats expand.model.frame hatvalues
 #' @importFrom utils combn
 meatCL.fglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 = FALSE,
                          ...) {
   if (is.list(x) && !is.null(x$na.action))
     class(x$na.action) <- "omit"
-  ef <- estfun(x, ...)
+  ef <- sandwich::estfun(x, ...)
   k <- NCOL(ef)
   n <- NROW(ef)
   rval <- matrix(0, nrow = k, ncol = k, dimnames = list(colnames(ef),

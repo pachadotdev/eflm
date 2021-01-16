@@ -29,8 +29,6 @@ deviance.fglm <- function(object, ...) {
   object$deviance
 }
 
-#' @export
-#' @keywords internal
 nobs.fglm <- function(object, use.fallback = FALSE, ...) {
   if (!is.null(w <- object$weights)) sum(w != 0) else object$n
 }

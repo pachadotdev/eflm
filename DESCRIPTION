@@ -43,10 +43,14 @@ Imports:
     zoo,
     methods,
     utils,
-    vctrs,
-    sandwich
+    vctrs
 Suggests:
     testthat,
-    covr
+    covr,
+    sandwich,
+    dplyr,
+    ellipsis,
+    MASS,
+    broom
 Depends: 
     R (>= 3.5)
