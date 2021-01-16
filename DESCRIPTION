@@ -48,9 +48,8 @@ Suggests:
     testthat,
     covr,
     sandwich,
-    dplyr,
-    ellipsis,
     MASS,
+    tibble,
     broom
 Depends: 
     R (>= 3.5)

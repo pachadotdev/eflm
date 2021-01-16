@@ -2,12 +2,12 @@
     "sortOrder": [
         {
             "columnIndex": 4,
-            "ascending": true
+            "ascending": false
         },
         {
             "columnIndex": 2,
             "ascending": false
         }
     ],
-    "path": "~/github/boostedglm/tests/testthat"
+    "path": "~/github/boostedglm"
 }
