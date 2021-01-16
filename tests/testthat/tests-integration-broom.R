@@ -27,3 +27,11 @@ test_that("functions in R/integration-broom.R return the same as glm", {
   expect_equal(round(bm1$statistic, 4), round(bm2$statistic, 4))
   expect_equal(bm1$p.value, bm2$p.value)
 })
+
+test_that("broom outputs not explicitly defined are the same as glm", {
+  m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
+  m2 <- fglm(mpg ~ wt, family = gaussian(), data = mtcars)
+
+  broom:::augment.glm()
+  expect_equal(broom::augment(m1), broom::augment(m2))
+})
