@@ -1,1 +1,0 @@
-requireNamespace("sandwich", quietly = TRUE)

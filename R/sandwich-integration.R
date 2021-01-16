@@ -1,3 +1,4 @@
+# Dynamically exported, see zzz.R
 #' @importFrom stats residuals weights is.ts ts start frequency
 #' @importFrom zoo is.zoo zoo index
 estfun.fglm <- function(x, ...) {
@@ -179,17 +180,3 @@ meatCL.fglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 
     rval <- (n - 1L)/(n - k) * rval
   return(rval)
 }
-
-#' Functions exported from \pkg{sandwich} to implement \pkg{fixest} methods
-#' @name sandwich_reexported
-#' @keywords internal
-NULL
-
-#' @rdname sandwich_reexported
-#' @name estfun
-NULL
-
-#' @rdname sandwich_reexported
-#' @name bread
-NULL
-

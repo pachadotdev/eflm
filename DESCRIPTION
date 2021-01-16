@@ -42,9 +42,10 @@ Imports:
     stats,
     zoo,
     methods,
-    sandwich
+    vctrs
 Suggests:
     testthat,
-    covr
+    covr,
+    sandwich
 Depends: 
     R (>= 3.5)
