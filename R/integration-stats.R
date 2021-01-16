@@ -1,9 +1,71 @@
-#' Summarizing Generalized Linear Model Fits
-#'
-#' This function is a method for class fglm objects.
-#'
-#' @param object an object of class "fglm", usually, a result of a call to fglm
-#' @param \dots further arguments passed to or from other methods
+#' @export
+#' @keywords internal
+family.fglm <- function(object, ...) {
+  object$family
+}
+
+#' @importFrom stats family
+#' @export
+#' @keywords internal
+fitted.fglm <- function(object, ...) {
+  return(family(object)$linkinv(object$linear.predictors))
+}
+
+#' @export
+#' @keywords internal
+coef.fglm <- function(object, ...) {
+  object$coefficients
+}
+
+#' @export
+#' @keywords internal
+vcov.fglm <- function(object, ...) {
+  object$dispersion * solve(object$XTX)
+}
+
+#' @export
+#' @keywords internal
+deviance.fglm <- function(object, ...) {
+  object$deviance
+}
+
+#' @export
+#' @keywords internal
+nobs.fglm <- function(object, use.fallback = FALSE, ...) {
+  if (!is.null(w <- object$weights)) sum(w != 0) else object$n
+}
+
+#' @export
+#' @keywords internal
+model.matrix.fglm <- function (object, ...) {
+  y <- if (is.null(object$x)) {
+    obtain_model_matrix <- function(model, data) {
+      call <- match.call()
+      M <- match.call(expand.dots = FALSE)
+      m <- match(c("formula", "data"), names(M), 0L)
+      M <- M[c(1L, m)]
+      M$drop.unused.levels <- TRUE
+      M[[1L]] <- quote(stats::model.frame)
+      M <- eval(M, parent.frame())
+      tf <- attr(M, "terms")
+      X <- model.matrix(tf, M)
+      X <- X[, colnames(X) %in% names(coef(object))]
+      attr(X, "assign") <- seq_along(colnames(X)) - 1
+      X
+    }
+
+    obtain_model_matrix(model = object$call$formula,
+                        data = eval(object$call$data))
+  } else {
+    object$x
+  }
+
+  if (is.null(y)) {
+    warning("The output is NULL because the model was specified with model=FALSE or the model component was removed from the regression object")
+  }
+  return(y)
+}
+
 #' @importFrom stats pnorm pt na.omit
 #' @export
 summary.fglm <- function(object, ...) {
@@ -47,7 +109,7 @@ summary.fglm <- function(object, ...) {
       round(p, digits = 4)
     }
     param <- data.frame(format.coef, format.se, round(z1,
-      digits = 4
+                                                      digits = 4
     ), format.pv)
     dimnames(param) <- list(names(z$coefficients), c(
       dn,
@@ -55,7 +117,7 @@ summary.fglm <- function(object, ...) {
     ))
   } else {
     format.coef <- if (any(abs(na.omit(z$coefficients)) <
-      1e-04)) {
+                           1e-04)) {
       format(z$coefficients, scientific = TRUE, digits = 4)
     } else {
       round(z$coefficients, digits = 7)
@@ -71,7 +133,7 @@ summary.fglm <- function(object, ...) {
       round(p, digits = 4)
     }
     param <- data.frame(format.coef, format.se, round(t1,
-      digits = 4
+                                                      digits = 4
     ), format.pv)
     dimnames(param) <- list(names(z$coefficients), c(
       dn,
@@ -107,3 +169,4 @@ summary.fglm <- function(object, ...) {
   class(ans) <- "summary.fglm"
   return(ans)
 }
+
