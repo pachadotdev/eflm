@@ -84,16 +84,15 @@ augment.fglm <- function (x, data = NULL, newdata = NULL,
   df <- if (is.null(newdata)) data else newdata
   df <- as_augment_tibble(df)
   if (se_fit) {
-    pred_obj <- predict(x, newdata, type = type.predict,
-                        se.fit = TRUE)
-    df$.fitted <- pred_obj$fit %>% unname()
-    df$.se.fit <- pred_obj$se.fit %>% unname()
+    pred_obj <- predict(x, newdata, type = type.predict, se.fit = TRUE)
+    df$.fitted <- unname(pred_obj$fit)
+    df$.se.fit <- unname(pred_obj$se.fit)
   } else {
     df$.fitted <- unname(predict(x, newdata, type = type.predict))
   }
   if (is.null(newdata)) {
     tryCatch({
-      infl <- influence(x, do.coef = FALSE)
+      infl <- stats::influence(x, do.coef = FALSE)
       df$.resid <- unname(residuals(x, type = type.residuals))
       df$.std.resid <- unname(rstandard(x, infl = infl, type = type.residuals))
       df <- add_hat_sigma_cols(df, x, infl)

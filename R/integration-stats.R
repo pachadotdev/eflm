@@ -177,5 +177,3 @@ influence.fglm <- function (model, do.coef = TRUE, ...) {
   names(res)[names(res) == "wt.res"] <- "dev.res"
   c(res, list(pear.res = pRes))
 }
-
-

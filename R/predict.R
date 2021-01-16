@@ -63,8 +63,7 @@ predict.flm <- function(object, newdata, na.action = na.pass, ...) {
               the model by specifying fitted=TRUE.")
     }
     return(object$fitted.values)
-  }
-  else {
+  } else {
     Terms <- delete.response(tt)
     m <- model.frame(Terms, newdata, na.action = na.action) # , xlev = object$xlevels)
     if (!is.null(cl <- attr(Terms, "dataClasses"))) {
@@ -97,6 +96,32 @@ predict.flm <- function(object, newdata, na.action = na.pass, ...) {
   }
   if (missing(newdata) && !is.null(na.act <- object$na.action)) {
     predictor <- napredict(na.act, predictor)
+  }
+  if (se.fit || interval != "none") {
+    w <- object$weights
+    res.var <- if (is.null(scale)) {
+      r <- object$residuals
+      rss <- sum(if (is.null(w)) r^2 else r^2 * w)
+      df <- object$df.residual
+      rss/df
+    } else {
+      scale^2
+    }
+    if (type != "terms") {
+      p <- object$rank
+      p1 <- seq_len(p)
+      piv <- if (p) qr.lm(object)$pivot[p1]
+      X <- model.matrix(object)
+      if (p > 0) {
+        XRinv <- if (missing(newdata) && is.null(w))
+          qr.Q(qr.lm(object))[, p1, drop = FALSE]
+        else X[, piv] %*% qr.solve(qr.R(qr.lm(object))[p1,
+                                                       p1])
+        ip <- drop(XRinv^2 %*% rep(res.var, p))
+      } else {
+        ip <- rep(0, n)
+      }
+    }
   }
   predictor
 }
