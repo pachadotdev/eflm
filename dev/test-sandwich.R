@@ -1,17 +1,32 @@
 library(sandwich)
 
-x = fglm(mpg ~ wt + cyl, mtcars)
-y = glm(mpg ~ wt + cyl, mtcars)
+x = fglm(
+  trade ~ log_dist + cntg + lang + clny + log_y + log_e,
+  data = filter(ch1_application1_2, trade > 0),
+  family = quasipoisson(),
+  x = FALSE
+)
 
-estfun(x)
-estfun(y)
+y = glm(
+  trade ~ log_dist + cntg + lang + clny + log_y + log_e,
+  data = filter(ch1_application1_2, trade > 0),
+  family = quasipoisson()
+)
+
+colnames(model.matrix(x))
+colnames(model.matrix(y))
+all.equal(model.matrix(x), model.matrix(y))
+
+all.equal(estfun(x), estfun(y))
 
 vcov_x <- sandwich::vcovCL(
   x,
-  cluster = mtcars$cyl
+  cluster = eval(x$call$data)[,"pair_id"]
 )
 
 vcov_y <- sandwich::vcovCL(
   y,
-  cluster = mtcars$cyl
+  cluster = y$data[,"pair_id"]
 )
+
+all.equal(vcov_x, vcov_y)

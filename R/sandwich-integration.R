@@ -21,19 +21,35 @@ estfun.fglm <- function(x, ...) {
 }
 
 bread.fglm <- function (x, ...) {
-  if (!is.null(x$na.action))
-    class(x$na.action) <- "omit"
+  if (!is.null(x$na.action)) class(x$na.action) <- "omit"
   sx <- summary(x)
-  wres <- as.vector(residuals(x, "working")) * weights(x,
-                                                       "working")
+  wres <- as.vector(residuals(x, "working")) * weights(x, "working")
   dispersion <- if (substr(x$family$family, 1L, 17L) %in%
-                    c("poisson", "binomial", "Negative Binomial"))
+                    c("poisson", "binomial", "Negative Binomial")) {
     1
-  else sum(wres^2)/sum(weights(x, "working"))
+  } else {
+    sum(wres^2)/sum(weights(x, "working"))
+  }
   return(sx$cov.unscaled * as.vector(sum(sx$df[1L:2L])) *
            dispersion)
 }
 
+meat.fglm <- function (x, adjust = FALSE, ...) {
+  if (is.list(x) && !is.null(x$na.action))
+    class(x$na.action) <- "omit"
+  psi <- estfun(x)
+  k <- NCOL(psi)
+  n <- NROW(psi)
+  rval <- crossprod(as.matrix(psi))/n
+  if (adjust)
+    rval <- n/(n - k) * rval
+  rownames(rval) <- colnames(rval) <- colnames(psi)
+  return(rval)
+}
+
+#' @importFrom sandwich estfun
+#' @importFrom stats expand.model.frame hatvalues
+#' @importFrom utils combn
 meatCL.fglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 = FALSE,
                          ...) {
   if (is.list(x) && !is.null(x$na.action))
