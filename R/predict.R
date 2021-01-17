@@ -14,14 +14,17 @@
 #' the predicted probabilities. The "terms" option returns a matrix giving the
 #' fitted values of each term in the model formula on the linear predictor
 #' scale
+#' @param se.fit A switch indicating if standard errors are required.
 #' @param na.action function determining what should be done with missing values
 #' in newdata. The default is to predict NA
 #' @param ... further arguments passed to or from other methods
 #' @importFrom stats family fitted .checkMFClasses
 #' @export
 #' @keywords internal
-predict.fglm <- function(object, newdata = NULL, type = c("link", "response"),
-                         na.action = na.pass, ...) {
+predict.fglm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
+                         interval = c("none", "confidence", "prediction"), level = 0.95,
+                         type = c("link", "response", "terms"), terms = NULL, na.action = na.pass,
+                         pred.var = res.var/weights, weights = 1, ...) {
   type <- match.arg(type)
   if (missing(newdata) & is.null(object$linear.predictors)) {
     warning("Fitted values were not returned from the fglm object:
@@ -51,7 +54,10 @@ predict.fglm <- function(object, newdata = NULL, type = c("link", "response"),
 #' @export
 #' @importFrom stats napredict delete.response
 #' @keywords internal
-predict.flm <- function(object, newdata, na.action = na.pass, ...) {
+predict.flm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
+                        interval = c("none", "confidence", "prediction"), level = 0.95,
+                        type = c("response", "terms"), terms = NULL, na.action = na.pass,
+                        pred.var = res.var/weights, weights = 1, ...) {
   tt <- terms(object)
   if (!inherits(object, c("flm", "fglm"))) {
     warning("calling predict.flm(<fake-flm/fglm-object>) ...")
@@ -110,18 +116,29 @@ predict.flm <- function(object, newdata, na.action = na.pass, ...) {
     if (type != "terms") {
       p <- object$rank
       p1 <- seq_len(p)
-      piv <- if (p) qr.lm(object)$pivot[p1]
+      piv <- if (p) object$qr$pivot[p1]
       X <- model.matrix(object)
       if (p > 0) {
-        XRinv <- if (missing(newdata) && is.null(w))
-          qr.Q(qr.lm(object))[, p1, drop = FALSE]
-        else X[, piv] %*% qr.solve(qr.R(qr.lm(object))[p1,
-                                                       p1])
+        XRinv <- if (missing(newdata) && is.null(w)) {
+          qr.Q(object$qr)[, p1, drop = FALSE]
+        } else {
+          X[, piv] %*% qr.solve(qr.R(object$qr)[p1,p1])
+        }
         ip <- drop(XRinv^2 %*% rep(res.var, p))
       } else {
         ip <- rep(0, n)
       }
     }
+  }
+  if (se.fit || interval != "none") {
+    se <- sqrt(ip)
+    if (type == "terms" && !is.null(terms) && !se.fit)
+      se <- se[, terms, drop = FALSE]
+  }
+  if (missing(newdata) && !is.null(na.act <- object$na.action)) {
+    predictor <- napredict(na.act, predictor)
+    if (se.fit)
+      se <- napredict(na.act, se)
   }
   predictor
 }

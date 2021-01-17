@@ -79,10 +79,11 @@ augment.fglm <- function (x, data = NULL, newdata = NULL,
                           se_fit = FALSE, ...) {
   type.predict <- match.arg(type.predict)
   type.residuals <- match.arg(type.residuals)
-  if (is.null(data)) data <- try(eval(x$call$data))
+  if (is.null(newdata)) data <- try(eval(x$call$data))
   if (any(class(data) %in% "try-error")) data <- NULL
   df <- if (is.null(newdata)) data else newdata
   df <- as_augment_tibble(df)
+  # df <- df[, colnames(df) %in% colnames(x$model)]
   if (se_fit) {
     pred_obj <- predict(x, newdata, type = type.predict, se.fit = TRUE)
     df$.fitted <- unname(pred_obj$fit)

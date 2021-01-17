@@ -91,6 +91,11 @@ fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
     names(rval$y) <- names(rval$fitted.values)
   }
   names(rval$prior.weights) <- names(rval$fitted.values)
+  qr_tol <- 1e-11
+  rval$qr <- qr(model.matrix(rval), tol = qr_tol)
+  attr(rval$qr$qr, "assign") <- NULL
+  rval$qr$tol <- qr_tol
+  attr(rval$qr, "qr") <- "qr"
 
   if ((rval$iter == maxit) & (!rval$convergence)) {
     warning("Maximum number of iterations reached without convergence")

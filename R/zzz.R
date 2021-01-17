@@ -4,5 +4,7 @@
   vctrs::s3_register("sandwich::meatCL", "fglm")
 
   vctrs::s3_register("broom::tidy", "fglm")
+  vctrs::s3_register("broom::augment", "fglm")
+
   invisible()
 }

@@ -1,4 +1,2 @@
-- Add df vector to summary output
-- Check na.omit
-- cov.unscaled binomial
-- deviance.resid binomial
+- broom::predict with se.fit = T
+- complete broom and sandwich integration

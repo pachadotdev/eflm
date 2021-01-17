@@ -6,9 +6,17 @@
 \usage{
 \method{predict}{fglm}(
   object,
-  newdata = NULL,
-  type = c("link", "response"),
+  newdata,
+  se.fit = FALSE,
+  scale = NULL,
+  df = Inf,
+  interval = c("none", "confidence", "prediction"),
+  level = 0.95,
+  type = c("link", "response", "terms"),
+  terms = NULL,
   na.action = na.pass,
+  pred.var = res.var/weights,
+  weights = 1,
   ...
 )
 }
@@ -17,6 +25,8 @@
 
 \item{newdata}{optionally, a data frame in which to look for variables with
 which to predict. If omitted, the fitted linear predictors are used}
+
+\item{se.fit}{A switch indicating if standard errors are required.}
 
 \item{type}{the type of prediction required. The default is on the scale of
 the linear predictors; the alternative "response" is on the scale of the
