@@ -19,6 +19,11 @@ test_that("fglm (gaussian) == glm", {
   expect_equal(m1$call$formula, m2$call$formula)
   expect_equal(m1$call$family, m2$call$family)
   expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m1$qr$qr, m2$qr$qr)
+  expect_equal(m1$qr$rank, m2$qr$rank)
+  expect_equal(m1$qr$qraux, m2$qr$qraux)
+  expect_equal(m1$qr$pivot, m2$qr$pivot)
+  expect_equal(m1$qr$tol, m2$qr$tol)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),

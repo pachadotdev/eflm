@@ -1,2 +1,3 @@
 - broom::predict with se.fit = T
 - complete broom and sandwich integration
+- fix (now broken) tests/test-add.R

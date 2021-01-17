@@ -11,6 +11,8 @@ AIC.fglm <- function(object, ...) {
   }
 }
 
+#' @export
+#' @keywords internal
 extractAIC.fglm <- function(fit, scale = 0, k = 2, ...) {
   n <- fit$n
   edf <- n - fit$df.null
