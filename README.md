@@ -1,7 +1,7 @@
-
 # boostedglm
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/pachamaltese/yotover-testing/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/yotover-testing/actions)
 <!-- badges: end -->
 
 The goal of boostedglm is to provide functions for efficient fitting of generalized linear models. Unlike other similar packages, `boostedglm` uses base R only and aims at being aligned with glm's output and to be integrated with sandwich, stargazer and other useful packages for regression.
