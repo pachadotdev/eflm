@@ -4,10 +4,10 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
                       tol.estimation = 1e-8, tol.values = 1e-7,
                       tol.vectors = 1e-7, tol.solve = .Machine$double.eps,
                       singularity.method = c("eigen", "Cholesky", "qr"), ...) {
-  nobs <- NROW(y)
-  nvar <- ncol(X)
   if (missing(y)) stop("Argument y is missing")
   if (missing(X)) stop("Argument X is missing")
+  nobs <- NROW(y)
+  nvar <- ncol(X)
   if (is.null(offset)) offset <- rep.int(0, nobs)
   if (is.null(weights)) weights <- rep(1, nobs)
   col.names <- dimnames(X)[[2]]
