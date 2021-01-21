@@ -1,5 +1,5 @@
+# Dynamically exported, see zzz.R
 #' @importFrom stats family
-#' @export
 logLik.fglm <- function(object, ...) {
   if (!missing(...)) {
     warning("extra arguments discarded")

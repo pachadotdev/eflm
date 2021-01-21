@@ -1,4 +1,4 @@
-#' @export
+# Dynamically exported, see zzz.R
 AIC.fglm <- function(object, ...) {
   if (!(length(list(...)))) {
     object$aic

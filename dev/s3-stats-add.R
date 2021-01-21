@@ -1,4 +1,5 @@
-#' @importFrom stats add.scope update.formula terms model.frame model.offset extractAIC model.matrix model.response formula
+#' @importFrom stats add.scope update.formula terms model.frame model.offset
+#' extractAIC model.matrix model.response formula
 #' @export
 add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT","Chisq", "F"),
                       x = NULL, k = 2, weights = NULL, ...) {

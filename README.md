@@ -36,3 +36,20 @@ fglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,      family = 
 2. Integration with sandwich
 3. Integration with broom
 4. Aim at making fglm() a drop-in replacement for glm()
+
+CURRENT ERROR
+
+```
+devtools::check()
+
+ ----------- END OF FAILURE REPORT -------------- 
+══ Failed tests ════════════════════════════════════════════════════════════════
+── Error (test-fglm.R:5:3): fglm (gaussian) == glm ─────────────────────────────
+Error: 'length(x) = 3 > 1' in coercion to 'logical(1)'
+Backtrace:
+    █
+ 1. └─boostedglm::fglm(mpg ~ wt + am, family = gaussian(), data = mtcars) test-fglm.R:5:2
+ 2.   ├─stats::predict(rval, newdata = M, type = "response", na.action = na.action)
+ 3.   └─boostedglm:::predict.fglm(...)
+ 4.     └─boostedglm:::predict.flm(...)
+```

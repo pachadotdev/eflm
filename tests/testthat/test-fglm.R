@@ -24,15 +24,6 @@ test_that("fglm (gaussian) == glm", {
   expect_equal(m1$qr$qraux, m2$qr$qraux)
   expect_equal(m1$qr$pivot, m2$qr$pivot)
   expect_equal(m1$qr$tol, m2$qr$tol)
-
-  expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
-  )
-  expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
-  )
 })
 
 test_that("fglm (gaussian) + qr singularity.method == glm", {

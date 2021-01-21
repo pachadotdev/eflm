@@ -1,12 +1,12 @@
-#' @importFrom stats napredict delete.response
+#' @importFrom stats napredict delete.response model.frame predict
 #' @export
 predict.flm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
                         interval = c("none", "confidence", "prediction"), level = 0.95,
                         type = c("response", "terms"), terms = NULL, na.action = na.pass,
                         pred.var = res.var/weights, weights = 1, ...) {
   tt <- terms(object)
-  if (!inherits(object, c("flm", "fglm"))) {
-    warning("calling predict.flm(<fake-flm/fglm-object>) ...")
+  if (!inherits(object, c("fglm", "glm"))) {
+    warning("calling predict.flm(<fake-fglm-object>) ...")
   }
   if (missing(newdata) || is.null(newdata)) {
     if (is.null(object$fitted.values)) {
@@ -60,9 +60,10 @@ predict.flm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
       scale^2
     }
     if (type != "terms") {
+      n <- length(object$residuals)
       p <- object$rank
       p1 <- seq_len(p)
-      piv <- if (p) object$qr$pivot[p1]
+      piv <- if (p > 0) object$qr$pivot[p1]
       X <- model.matrix(object)
       if (p > 0) {
         XRinv <- if (missing(newdata) && is.null(w)) {
@@ -83,8 +84,7 @@ predict.flm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
   }
   if (missing(newdata) && !is.null(na.act <- object$na.action)) {
     predictor <- napredict(na.act, predictor)
-    if (se.fit)
-      se <- napredict(na.act, se)
+    if (se.fit) se <- napredict(na.act, se)
   }
   predictor
 }
