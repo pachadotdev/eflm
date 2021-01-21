@@ -1,6 +1,6 @@
 Package: boostedglm
 Title: Efficient Fitting of Generalized Linear Models
-Version: 0.1
+Version: 0.0.0.9000
 Authors@R: c( 
         person(given = "Mauricio",
                family = "Vargas",
@@ -31,25 +31,24 @@ Description: Efficient Fitting of Generalized Linear Models by using just base
   OpenBLAS, Intel MKL or other optimized BLAS library. This implementation aims 
   at being compatible with broom, sandwich and other packages for summary 
   statistics and clustering by providing S3 methods.
-URL: https://pacha.dev/pachamaltese/boostedglm/
+URL: https://github.com/pachamaltese/boostedglm/
 BugReports: https://github.com/pachamaltese/boostedglm/issues/
 License: GPL (>= 3)
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
 Imports:
     stats,
     zoo,
     methods,
     utils,
     vctrs
-Suggests:
-    testthat,
+Suggests: 
+    testthat (>= 3.0.0),
     covr,
     sandwich,
     MASS,
     tibble,
     broom
-Depends: 
-    R (>= 3.5)
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

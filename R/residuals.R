@@ -1,10 +1,9 @@
 #' @importFrom stats naresid predict
 #' @export
-#' @keywords internal
 residuals.fglm <- function(object, type = c(
-                             "deviance", "pearson", "working",
-                             "response", "partial"
-                           ), ...) {
+  "deviance", "pearson", "working",
+  "response", "partial"
+), ...) {
   type <- match.arg(type)
   y <- object$y
   r <- object$residuals
@@ -16,9 +15,9 @@ residuals.fglm <- function(object, type = c(
     y <- mu + r * mu.eta(eta)
   })
   res <- switch(type, deviance = if (object$df.residual >
-    0) {
+                                     0) {
     d.res <- sqrt(pmax((object$family$dev.resids)(y, mu,
-      wts), 0))
+                                                  wts), 0))
     ifelse(y > mu, d.res, -d.res)
   } else {
     rep.int(0, length(mu))

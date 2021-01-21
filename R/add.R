@@ -1,6 +1,5 @@
 #' @importFrom stats add.scope update.formula terms model.frame model.offset extractAIC model.matrix model.response formula
 #' @export
-#' @keywords internal
 add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT","Chisq", "F"),
                       x = NULL, k = 2, weights = NULL, ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")

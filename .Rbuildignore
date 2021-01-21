@@ -1,7 +1,8 @@
-^.*\.Rproj$
+^boostedglm\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-dev
-CHECKS
-TODOS
+^README\.Rmd$
+^README\.md$
+^cran-comments\.md$
 ^\.github$
+dev

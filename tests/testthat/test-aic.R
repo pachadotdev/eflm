@@ -4,7 +4,7 @@ test_that("Same AIC for glm and fglm with gaussian link", {
   expect_equal(AIC(m1), AIC(m2))
 
   aic_m1_m2 <- AIC(m1, m2)
-  expect_is(aic_m1_m2, 'data.frame')
+  expect_s3_class(aic_m1_m2, 'data.frame')
   expect_equal(aic_m1_m2$df[1], aic_m1_m2$df[2])
   expect_equal(aic_m1_m2$AIC[1], aic_m1_m2$AIC[2])
 })

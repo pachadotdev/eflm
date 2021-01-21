@@ -38,7 +38,7 @@
 #' @param tol.values Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control}),
 #' @param tol.vectors Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})
 #' @param \dots For glm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
-#' @importFrom stats gaussian na.pass
+#' @importFrom stats gaussian na.pass na.omit
 #' @export
 fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights = NULL,
                  na.action = na.omit, start = NULL, etastart = NULL,
@@ -81,7 +81,7 @@ fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
   )
   rval$terms <- tf
   rval$call <- call
-  class(rval) <- "fglm"
+  class(rval) <- c("fglm")
   if (model) rval$model <- M
   rval$fitted.values <- predict.fglm(rval, newdata = M, type = "response", na.action = na.action)
   rval$linear.predictors <- predict.fglm(rval, newdata = M, type = "link", na.action = na.action)
