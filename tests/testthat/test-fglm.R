@@ -45,15 +45,6 @@ test_that("fglm (gaussian) + qr singularity.method == glm", {
   expect_equal(m1$call$formula, m2$call$formula)
   expect_equal(m1$call$family, m2$call$family)
   expect_equal(m1$call$data, m2$call$data)
-
-  expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
-  )
-  expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
-  )
 })
 
 test_that("fglm (gaussian) + cholesky singularity.method == glm", {
