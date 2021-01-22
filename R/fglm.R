@@ -83,8 +83,8 @@ fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
   rval$call <- call
   class(rval) <- "fglm"
   if (model) rval$model <- M
-  rval$fitted.values <- predict.fglm(rval, newdata = M, type = "response", na.action = na.action)
-  rval$linear.predictors <- predict.fglm(rval, newdata = M, type = "link", na.action = na.action)
+  rval$fitted.values <- predict(rval, newdata = M, type = "response", na.action = na.action)
+  rval$linear.predictors <- predict(rval, newdata = M, type = "link", na.action = na.action)
   if (x) rval$x <- X
   if (target) {
     rval$y <- y
