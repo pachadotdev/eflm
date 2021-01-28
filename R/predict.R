@@ -1,10 +1,10 @@
-#' Predict Method for FGLM Fits
+#' Predict Method for bglm Fits
 #'
 #' Obtains predictions and optionally estimates standard errors of
 #' those predictions from a fitted generalized linear model object (see the
 #' function \link{predict.glm}).
 #'
-#' @param object a fitted object of class inheriting from "fglm"
+#' @param object a fitted object of class inheriting from "bglm"
 #' @param newdata optionally, a data frame in which to look for variables with
 #' which to predict. If omitted, the fitted linear predictors are used
 #' @param type the type of prediction required. The default is on the scale of
@@ -21,13 +21,13 @@
 #' @importFrom stats family fitted .checkMFClasses
 #' @export
 #' @keywords internal
-predict.fglm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
+predict.bglm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
                          interval = c("none", "confidence", "prediction"), level = 0.95,
                          type = c("link", "response", "terms"), terms = NULL, na.action = na.pass,
                          pred.var = res.var/weights, weights = 1, ...) {
   type <- match.arg(type)
   if (missing(newdata) & is.null(object$linear.predictors)) {
-    warning("Fitted values were not returned from the fglm object:
+    warning("Fitted values were not returned from the bglm object:
             use the original data by setting argument 'newdata' or refit
             the model by specifying fitted=TRUE.")
   }
@@ -40,7 +40,7 @@ predict.fglm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf
     )
     if (!is.null(na.act)) pred <- napredict(na.act, pred)
   } else {
-    pred <- predict.flm(object, newdata,
+    pred <- predict.blm(object, newdata,
       type = "response",
       na.action = na.action
     )
@@ -54,17 +54,17 @@ predict.fglm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf
 #' @export
 #' @importFrom stats napredict delete.response
 #' @keywords internal
-predict.flm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
+predict.blm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
                         interval = c("none", "confidence", "prediction"), level = 0.95,
                         type = c("response", "terms"), terms = NULL, na.action = na.pass,
                         pred.var = res.var/weights, weights = 1, ...) {
   tt <- terms(object)
-  if (!inherits(object, c("flm", "fglm"))) {
-    warning("calling predict.flm(<fake-flm/fglm-object>) ...")
+  if (!inherits(object, c("blm", "bglm"))) {
+    warning("calling predict.blm(<fake-blm/bglm-object>) ...")
   }
   if (missing(newdata) || is.null(newdata)) {
     if (is.null(object$fitted.values)) {
-      warning("Fitted values were not returned from the fglm object:
+      warning("Fitted values were not returned from the bglm object:
               use the original data by setting argument 'newdata' or refit
               the model by specifying fitted=TRUE.")
     }
@@ -103,7 +103,7 @@ predict.flm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
   if (missing(newdata) && !is.null(na.act <- object$na.action)) {
     predictor <- napredict(na.act, predictor)
   }
-  if (se.fit || interval != "none") {
+  if (se.fit || all(!interval %in% "none")) {
     w <- object$weights
     res.var <- if (is.null(scale)) {
       r <- object$residuals
@@ -130,7 +130,7 @@ predict.flm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
       }
     }
   }
-  if (se.fit || interval != "none") {
+  if (se.fit || all(!interval %in% "none")) {
     se <- sqrt(ip)
     if (type == "terms" && !is.null(terms) && !se.fit)
       se <- se[, terms, drop = FALSE]

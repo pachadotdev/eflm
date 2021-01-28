@@ -1,6 +1,6 @@
 # Dynamically exported, see zzz.R
 
-# taken from broom::: (makes tidy.fglm work)
+# taken from broom::: (makes tidy.bglm work)
 #' @importFrom stats confint
 confint_terms <- function (x, ...) {
   ci <- suppressMessages(confint(x, ...))
@@ -13,7 +13,7 @@ confint_terms <- function (x, ...) {
   ci
 }
 
-# taken from broom::: but adapted to use base (makes tidy.fglm work)
+# taken from broom::: but adapted to use base (makes tidy.bglm work)
 exponentiate <- function (data) {
   data[, "estimate"] <- exp(data[, "estimate"])
   if ("conf.low" %in% colnames(data)) {
@@ -24,7 +24,7 @@ exponentiate <- function (data) {
 }
 
 # taken from broom::: but adapted to use (mostly) base
-tidy.fglm <- function (x, conf.int = FALSE, conf.level = 0.95, exponentiate = FALSE, ...) {
+tidy.bglm <- function (x, conf.int = FALSE, conf.level = 0.95, exponentiate = FALSE, ...) {
   ret <- tibble::as_tibble(summary(x)$coefficients, rownames = "term")
   colnames(ret) <- c("term", "estimate", "std.error", "statistic", "p.value")
   if (is.character(ret$p.value)) ret$p.value <- as.numeric(ret$p.value)
@@ -38,7 +38,7 @@ tidy.fglm <- function (x, conf.int = FALSE, conf.level = 0.95, exponentiate = FA
   ret
 }
 
-# taken from broom::: to make augment.fglm work
+# taken from broom::: to make augment.bglm work
 as_augment_tibble <- function (data)
 {
   if (inherits(data, "matrix") & is.null(colnames(data))) {
@@ -57,7 +57,7 @@ as_augment_tibble <- function (data)
   df
 }
 
-# taken from broom::: to make augment.fglm work
+# taken from broom::: to make augment.bglm work
 has_rownames <- function (df) {
   if (tibble::is_tibble(df)) {
     return(FALSE)
@@ -65,7 +65,7 @@ has_rownames <- function (df) {
   any(rownames(df) != as.character(1:nrow(df)))
 }
 
-# taken from brooom::: to make augment.fglm work
+# taken from brooom::: to make augment.bglm work
 data_error <- function (cnd) {
   stop("Must specify either `data` or `newdata` argument.",
        call. = FALSE)
@@ -73,7 +73,7 @@ data_error <- function (cnd) {
 
 # taken from broom::: but using base when possible
 #' @importFrom stats rstandard
-augment.fglm <- function (x, data = NULL, newdata = NULL,
+augment.bglm <- function (x, data = NULL, newdata = NULL,
                           type.predict = c("link","response", "terms"),
                           type.residuals = c("deviance", "pearson"),
                           se_fit = FALSE, ...) {

@@ -1,7 +1,7 @@
 #' @importFrom stats drop.scope extractAIC
 #' @export
 #' @keywords internal
-drop1.fglm <- function(object, scope, scale = 0, test = c(
+drop1.bglm <- function(object, scope, scale = 0, test = c(
                          "none", "Rao", "LRT",
                          "Chisq", "F"
                        ), k = 2, weights = rep(1, object$n), ...) {
@@ -46,7 +46,7 @@ drop1.fglm <- function(object, scope, scale = 0, test = c(
   for (i in seq_len(ns)) {
     ii <- seq_along(asgn)[asgn == ndrop[i]]
     jj <- setdiff(seq(ncol(x)), ii)
-    z <- fglm.wfit(y, x[, jj, drop = FALSE],
+    z <- bglm.wfit(y, x[, jj, drop = FALSE],
       intercept = T, wt, offset = object$offset,
       family = object$family
     )
@@ -55,7 +55,7 @@ drop1.fglm <- function(object, scope, scale = 0, test = c(
     if (test == "Rao") {
       r <- z$residuals
       w <- z$weights
-      zz <- fglm.wfit(r, x, intercept = TRUE, weights = w, offset = object$offset)
+      zz <- bglm.wfit(r, x, intercept = TRUE, weights = w, offset = object$offset)
       score[i] <- zz$null.deviance - zz$deviance
     }
   }

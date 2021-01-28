@@ -1,4 +1,4 @@
-fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
+bglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
                       family = gaussian(), start = NULL, etastart = NULL,
                       mustart = NULL, offset = NULL, maxit = 25, k = 2,
                       tol.estimation = 1e-8, tol.values = 1e-7,
@@ -81,7 +81,7 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
   rank <- ris$rank
   dfr <- nobs - rank - sum(weights == 0)
   aic.model <- aic(y, nobs, mu, weights, dev) + k * rank
-  ll.new <- ll.fglm(fam, aic.model, rank)
+  ll.new <- ll.bglm(fam, aic.model, rank)
   res <- (y - mu) / mu.eta(eta)
   resdf <- n.ok - rank
   RSS <- sum(W * res * res)
@@ -124,6 +124,6 @@ fglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     "intercept" = intercept,
     "convergence" = (!(tol > tol.estimation))
   )
-  class(rval) <- "fglm"
+  class(rval) <- "bglm"
   return(rval)
 }

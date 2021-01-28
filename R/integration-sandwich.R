@@ -2,7 +2,7 @@
 
 #' @importFrom stats residuals weights is.ts ts start frequency
 #' @importFrom zoo is.zoo zoo index
-estfun.fglm <- function(x, ...) {
+estfun.bglm <- function(x, ...) {
   xmat <- model.matrix(x)
   xmat <- naresid(x$na.action, xmat)
   if (any(alias <- is.na(coef(x)))) xmat <- xmat[, !alias, drop = FALSE]
@@ -21,7 +21,7 @@ estfun.fglm <- function(x, ...) {
   return(rval)
 }
 
-bread.fglm <- function (x, ...) {
+bread.bglm <- function (x, ...) {
   if (!is.null(x$na.action)) class(x$na.action) <- "omit"
   sx <- summary(x)
   wres <- as.vector(residuals(x, "working")) * weights(x, "working")
@@ -35,7 +35,7 @@ bread.fglm <- function (x, ...) {
            dispersion)
 }
 
-meat.fglm <- function (x, adjust = FALSE, ...) {
+meat.bglm <- function (x, adjust = FALSE, ...) {
   if (is.list(x) && !is.null(x$na.action))
     class(x$na.action) <- "omit"
   psi <- sandwich::estfun(x)
@@ -50,7 +50,7 @@ meat.fglm <- function (x, adjust = FALSE, ...) {
 
 #' @importFrom stats expand.model.frame hatvalues
 #' @importFrom utils combn
-meatCL.fglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 = FALSE,
+meatCL.bglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 = FALSE,
                          ...) {
   if (is.list(x) && !is.null(x$na.action))
     class(x$na.action) <- "omit"
@@ -119,7 +119,7 @@ meatCL.fglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 
     if (any(g == n))
       h <- hatvalues(x)
     if (!all(g == n)) {
-      if (!(class(x)[1L] %in% "fglm"))
+      if (!(class(x)[1L] %in% "bglm"))
         warning("clustered HC2/HC3 are only applicable to (fast generalized) linear regression models")
       X <- model.matrix(x)
       if (any(alias <- is.na(coef(x))))

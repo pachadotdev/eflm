@@ -1,6 +1,6 @@
 #' @export
 #' @keywords internal
-AIC.fglm <- function(object, ...) {
+AIC.bglm <- function(object, ...) {
   if (!(length(list(...)))) {
     object$aic
   } else {
@@ -9,13 +9,4 @@ AIC.fglm <- function(object, ...) {
     val <- sapply(object, aic)
     val
   }
-}
-
-#' @export
-#' @keywords internal
-extractAIC.fglm <- function(fit, scale = 0, k = 2, ...) {
-  n <- fit$n
-  edf <- n - fit$df.null
-  aic <- fit$aic
-  c(edf, aic + (k - 2) * edf)
 }

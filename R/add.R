@@ -1,14 +1,16 @@
 #' @importFrom stats add.scope update.formula terms model.frame model.offset extractAIC
 #' model.matrix model.response formula
-add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT","Chisq", "F"),
-                      x = NULL, k = 2, weights = rep(1, object$n), ...) {
+#' @export
+#' @keywords internal
+add1.bglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT","Chisq", "F"),
+                      x = NULL, k = 2, weights = NULL, ...) {
   if (is.null(object$model)) stop("object must be fitted with options model=TRUE, y=TRUE and fitted=TRUE")
   test <- match.arg(test)
   if (test == "Chisq") test <- "LRT"
   if (!is.character(scope)) {
     scope <- add.scope(object, update.formula(object, scope))
   }
-  if (!length(scope)) {
+  if (!length(scope) > 0) {
     stop("no terms in scope for adding to object")
   }
   oTerms <- attr(object$terms, "term.labels")
@@ -68,7 +70,7 @@ add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT","C
     ousex[1L] <- TRUE
   }
   X <- x[, ousex, drop = FALSE]
-  z <- fglm.wfit(y, X, , wt, offset = offset, family = object$family)
+  z <- bglm.wfit(y, X, , wt, offset = offset, family = object$family)
   dfs[1L] <- z$rank
   dev[1L] <- z$deviance
   r <- z$residuals
@@ -82,11 +84,11 @@ add1.fglm <- function(object, scope, scale = 0, test = c("none", "Rao", "LRT","C
     stt <- paste(sort(strsplit(tt, ":")[[1L]]), collapse = ":")
     usex <- match(asgn, match(stt, sTerms), 0L) > 0L
     X <- x[, usex | ousex, drop = FALSE]
-    z <- fglm.wfit(y, X, , wt, offset = offset, family = object$family)
+    z <- bglm.wfit(y, X, , wt, offset = offset, family = object$family)
     dfs[tt] <- z$rank
     dev[tt] <- z$deviance
     if (test == "Rao") {
-      zz <- fglm.wfit(r, X, , w, offset = offset)
+      zz <- bglm.wfit(r, X, , w, offset = offset)
       score[tt] <- zz$null.deviance - zz$deviance
     }
   }

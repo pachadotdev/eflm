@@ -1,6 +1,6 @@
 #' Fitting Generalized Linear Models
 #'
-#' fglm is used to fit generalized linear models, specified by giving a symbolic
+#' bglm is used to fit generalized linear models, specified by giving a symbolic
 #' description of the linear predictor and a description of the error
 #' distribution.
 #'
@@ -40,7 +40,7 @@
 #' @param \dots For glm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
 #' @importFrom stats gaussian na.pass
 #' @export
-fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights = NULL,
+bglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights = NULL,
                  na.action = na.omit, start = NULL, etastart = NULL,
                  mustart = NULL, offset = NULL, maxit = 25, k = 2, model = TRUE,
                  singularity.method = c("eigen", "Cholesky", "qr"),
@@ -61,7 +61,7 @@ fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
   offset <- model.offset(M)
   intercept <- attributes(tf)$intercept
   singularity.method <- match.arg(singularity.method)
-  rval <- fglm.wfit(
+  rval <- bglm.wfit(
     X = X,
     y = y,
     family = family,
@@ -81,7 +81,7 @@ fglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
   )
   rval$terms <- tf
   rval$call <- call
-  class(rval) <- "fglm"
+  class(rval) <- "bglm"
   if (model) rval$model <- M
   rval$fitted.values <- predict(rval, newdata = M, type = "response", na.action = na.action)
   rval$linear.predictors <- predict(rval, newdata = M, type = "link", na.action = na.action)

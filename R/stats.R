@@ -1,43 +1,43 @@
 #' @export
 #' @keywords internal
-family.fglm <- function(object, ...) {
+family.bglm <- function(object, ...) {
   object$family
 }
 
 #' @importFrom stats family
 #' @export
 #' @keywords internal
-fitted.fglm <- function(object, ...) {
+fitted.bglm <- function(object, ...) {
   return(family(object)$linkinv(object$linear.predictors))
 }
 
 #' @export
 #' @keywords internal
-coef.fglm <- function(object, ...) {
+coef.bglm <- function(object, ...) {
   object$coefficients
 }
 
 #' @export
 #' @keywords internal
-vcov.fglm <- function(object, ...) {
+vcov.bglm <- function(object, ...) {
   object$dispersion * solve(object$XTX)
 }
 
 #' @export
 #' @keywords internal
-deviance.fglm <- function(object, ...) {
+deviance.bglm <- function(object, ...) {
   object$deviance
 }
 
 #' @export
 #' @keywords internal
-nobs.fglm <- function(object, use.fallback = FALSE, ...) {
+nobs.bglm <- function(object, use.fallback = FALSE, ...) {
   if (!is.null(w <- object$weights)) sum(w != 0) else object$n
 }
 
 #' @export
 #' @keywords internal
-model.matrix.fglm <- function (object, ...) {
+model.matrix.bglm <- function (object, ...) {
   y <- if (is.null(object$x)) {
     obtain_model_matrix <- function(model, data) {
       call <- match.call()
@@ -68,9 +68,9 @@ model.matrix.fglm <- function (object, ...) {
 
 #' @importFrom stats pnorm pt na.omit
 #' @export
-summary.fglm <- function(object, ...) {
-  if (!inherits(object, "fglm")) {
-    stop("object is not of class fglm")
+summary.bglm <- function(object, ...) {
+  if (!inherits(object, "bglm")) {
+    stop("object is not of class bglm")
   }
   z <- object
   var_res <- as.numeric(z$RSS / z$df.residual)
@@ -166,12 +166,12 @@ summary.fglm <- function(object, ...) {
     cov.unscaled = inv, cov.scaled = inv * dispersion,
     df = c(object$rank, object$df.residual, ncol(z$XTX))
   ))
-  class(ans) <- "summary.fglm"
+  class(ans) <- "summary.bglm"
   return(ans)
 }
 
 # defined to use broom::augment
-influence.fglm <- function (model, do.coef = TRUE, ...) {
+influence.bglm <- function (model, do.coef = TRUE, ...) {
   res <- lm.influence(model, do.coef = do.coef, ...)
   pRes <- na.omit(residuals(model, type = "pearson"))[model$prior.weights !=
                                                         0]

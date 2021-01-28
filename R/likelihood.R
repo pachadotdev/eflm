@@ -1,4 +1,4 @@
-ll.fglm <- function(family, aic.model, nvar) {
+ll.bglm <- function(family, aic.model, nvar) {
   switch(family,
     binomial = -(aic.model - 2 * nvar) / 2,
     Gamma = -((aic.model - 2 * nvar) - 2) / 2,
@@ -14,7 +14,7 @@ ll.fglm <- function(family, aic.model, nvar) {
 #' @importFrom stats family
 #' @export
 #' @keywords internal
-logLik.fglm <- function(object, ...) {
+logLik.bglm <- function(object, ...) {
   if (!missing(...)) {
     warning("extra arguments discarded")
   }

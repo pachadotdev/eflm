@@ -46,13 +46,3 @@ control <- function(B, symmetric = TRUE, tol.values = 1e-07, tol.vectors = 1e-07
 
   rval
 }
-
-#' @importFrom methods as
-cp <- function(X, w = NULL) {
-  new.B <- if (is.null(w)) {
-    crossprod(X)
-  } else {
-    crossprod(sqrt(w) * X)
-  }
-  as(new.B, "matrix")
-}

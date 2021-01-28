@@ -1,6 +1,6 @@
 test_that("gaussian summary is equivalent to glm", {
   m1 <- summary(glm(mpg ~ wt, family = gaussian(), data = mtcars))
-  m2 <- summary(fglm(mpg ~ wt, family = gaussian(), data = mtcars))
+  m2 <- summary(bglm(mpg ~ wt, family = gaussian(), data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- as.data.frame(m2$coefficients)
   em2$`Pr(>|t|)` <- as.numeric(em2$`Pr(>|t|)`)
@@ -27,7 +27,7 @@ test_that("gaussian summary is equivalent to glm", {
 
 test_that("inverse.gaussian summary is equivalent to glm", {
   m1 <- summary(glm(mpg ~ wt, family = inverse.gaussian(), data = mtcars))
-  m2 <- summary(fglm(mpg ~ wt, family = inverse.gaussian(), data = mtcars))
+  m2 <- summary(bglm(mpg ~ wt, family = inverse.gaussian(), data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- as.data.frame(m2$coefficients)
   em2$`Pr(>|t|)` <- as.numeric(em2$`Pr(>|t|)`)
@@ -54,7 +54,7 @@ test_that("inverse.gaussian summary is equivalent to glm", {
 
 test_that("binomial summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = binomial(), data = mtcars))
-  m2 <- summary(fglm(am ~ mpg, family = binomial(), data = mtcars))
+  m2 <- summary(bglm(am ~ mpg, family = binomial(), data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- round(as.data.frame(m2$coefficients), 4)
   expect_equal(m1$call$formula, m2$call$formula)
@@ -79,7 +79,7 @@ test_that("binomial summary is equivalent to glm", {
 
 test_that("quasi-binomial summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = quasibinomial(), data = mtcars))
-  m2 <- summary(fglm(am ~ mpg, family = quasibinomial(), data = mtcars))
+  m2 <- summary(bglm(am ~ mpg, family = quasibinomial(), data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- round(as.data.frame(m2$coefficients), 4)
   expect_equal(m1$call$formula, m2$call$formula)
@@ -104,7 +104,7 @@ test_that("quasi-binomial summary is equivalent to glm", {
 
 test_that("poisson summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = poisson(), data = mtcars))
-  m2 <- summary(fglm(am ~ mpg, family = poisson(), data = mtcars))
+  m2 <- summary(bglm(am ~ mpg, family = poisson(), data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- round(as.data.frame(m2$coefficients), 4)
   expect_equal(m1$call$formula, m2$call$formula)
@@ -129,7 +129,7 @@ test_that("poisson summary is equivalent to glm", {
 
 test_that("quasi-poisson summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = quasipoisson(), data = mtcars))
-  m2 <- summary(fglm(am ~ mpg, family = quasipoisson(), data = mtcars))
+  m2 <- summary(bglm(am ~ mpg, family = quasipoisson(), data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- round(as.data.frame(m2$coefficients), 4)
   expect_equal(m1$call$formula, m2$call$formula)
@@ -154,7 +154,7 @@ test_that("quasi-poisson summary is equivalent to glm", {
 
 test_that("quasi summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = quasi(), data = mtcars))
-  m2 <- summary(fglm(am ~ mpg, family = quasi(), data = mtcars))
+  m2 <- summary(bglm(am ~ mpg, family = quasi(), data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- round(as.data.frame(m2$coefficients), 4)
   expect_equal(m1$call$formula, m2$call$formula)
