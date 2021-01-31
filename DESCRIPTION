@@ -1,5 +1,5 @@
 Package: boostedglm
-Title: Efficient Fitting of Generalized Linear Models
+Title: Efficient Fitting of Linear and Generalized Linear Models
 Version: 0.1
 Authors@R: c( 
         person(given = "Mauricio",
@@ -23,14 +23,15 @@ Authors@R: c(
                role = c("dtc", "cph", "fnd")
         )
     )
-Description: Efficient Fitting of Generalized Linear Models by using just base 
-  R. As an alternative to "glm", this package provides "fglm" (fast glm), with a 
-  significant speedup when the number of observations is larger than the number 
-  of parameters to estimate, as it reduces the NxP model matrix to a PxP matrix. 
-  The best computational performance is obtained when R is linked against 
-  OpenBLAS, Intel MKL or other optimized BLAS library. This implementation aims 
-  at being compatible with broom, sandwich and other packages for summary 
-  statistics and clustering by providing S3 methods.
+Description: Efficient Fitting of Linear and Generalized Linear Models by using
+  just base R. As an alternative to "glm", this package provides "blm" (boosted
+  lm) and "bglm" (boosted glm), with a significant speedup when the number of 
+  observations is larger than the number of parameters to estimate, as it 
+  reduces the NxP model matrix to a PxP matrix. The best computational 
+  performance is obtained when R is linked against OpenBLAS, Intel MKL or other
+  optimized BLAS library. This implementation aims at being compatible with 
+  broom and sandwich packages for summary statistics and clustering by providing
+  S3 methods.
 URL: https://github.com/pachamaltese/boostedglm/
 BugReports: https://github.com/pachamaltese/boostedglm/issues/
 License: GPL (>= 3)
