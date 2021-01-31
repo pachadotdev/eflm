@@ -1,4 +1,5 @@
 # defined to use broom::augment
+#' @importFrom stats lm.influence
 influence.bglm <- function (model, do.coef = TRUE, ...) {
   res <- lm.influence(model, do.coef = do.coef, ...)
   pRes <- na.omit(residuals(model, type = "pearson"))[model$prior.weights !=

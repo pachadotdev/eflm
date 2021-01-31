@@ -72,7 +72,20 @@ data_error <- function (cnd) {
 }
 
 # taken from broom::: but using base when possible
-#' @importFrom stats rstandard
+add_hat_sigma_cols <- function (df, x, infl)
+{
+  df$.hat <- 0
+  df$.sigma <- 0
+  w <- x$weights
+  nonzero_idx <- if (is.null(w))
+    seq_along(df$.hat)
+  else which(w != 0)
+  df$.hat[nonzero_idx] <- unname(infl$hat)
+  df$.sigma[nonzero_idx] <- unname(infl$sigma)
+  df
+}
+
+#' @importFrom stats rstandard cooks.distance
 augment.bglm <- function (x, data = NULL, newdata = NULL,
                           type.predict = c("link","response", "terms"),
                           type.residuals = c("deviance", "pearson"),

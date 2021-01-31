@@ -12,16 +12,10 @@
 #' and is \link{na.fail} if that is unset. The ‘factory-fresh’ default is
 #' \code{na.omit}. Another possible value is NULL, no action. Value
 #' \code{na.exclude} can be useful.
-#' @param start Starting values for the parameters in the linear predictor
-#' @param etastart Starting values for the linear predictor
-#' @param mustart Starting values for the vector of means
 #' @param offset This can be used to specify an a priori known component to be included in the
 #' linear predictor during fitting. This should be \code{NULL} or a numeric vector of length
 #' equal to the number of cases. One or more offset terms can be included in the formula instead
 #' or as well, and if more than one is specified their sum is used. See \code{stats::model.offset()}
-#' @param maxit See the function \link{glm}
-#' @param k The penalty per parameter to be used, the default \code{k = 2}
-#' is the classical AIC
 #' @param model A logical value indicating whether model frame should be included as a
 #' component of the returned value (Defaults to \code{TRUE})
 #' @param singularity.method The chosen method to detect for singularity. Defaults to \code{"eigen"} but
@@ -38,8 +32,8 @@
 #' @export
 blm <- function(formula, data, intercept = TRUE, weights = NULL,
                 na.action = na.omit, offset = NULL,
-                model = TRUE, method = c("eigen", "Cholesky", "qr"),
-                x = FALSE, y = TRUE, fitted = FALSE,
+                model = TRUE, singularity.method = c("eigen", "Cholesky", "qr"),
+                x = FALSE, y = TRUE,
                 tol.solve = .Machine$double.eps,
                 tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   target <- y
@@ -58,11 +52,16 @@ blm <- function(formula, data, intercept = TRUE, weights = NULL,
     offset <- rep(0, length(y))
   }
   if (is.null(weights)) weights <- rep(1, length(y))
-  rval <- blm.wfit(y, X,
-    offset = offset, w = weights,
+  rval <- blm.wfit(
+    y,
+    X,
+    offset = offset,
+    w = weights,
     tol.solve = tol.solve,
-    tol.values = tol.values, tol.vectors = tol.vectors,
-    method = method, intercept = attr(tf, "intercept")
+    tol.values = tol.values,
+    tol.vectors = tol.vectors,
+    singularity.method = singularity.method,
+    intercept = attr(tf, "intercept")
   )
 
   rval$terms <- tf

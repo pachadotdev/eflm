@@ -15,8 +15,7 @@
   type = c("link", "response", "terms"),
   terms = NULL,
   na.action = na.pass,
-  pred.var = res.var/weights,
-  weights = 1,
+  weights = NULL,
   ...
 )
 }

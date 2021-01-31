@@ -1,3 +1,4 @@
+#' @importFrom stats update.default
 #' @export
 #' @keywords internal
 update.blm <- function(object, formula, data, add = TRUE, evaluate = TRUE, ...) {

@@ -12,10 +12,9 @@ blm(
   na.action = na.omit,
   offset = NULL,
   model = TRUE,
-  method = c("eigen", "Cholesky", "qr"),
+  singularity.method = c("eigen", "Cholesky", "qr"),
   x = FALSE,
   y = TRUE,
-  fitted = FALSE,
   tol.solve = .Machine$double.eps,
   tol.values = 1e-07,
   tol.vectors = 1e-07,
@@ -46,6 +45,9 @@ or as well, and if more than one is specified their sum is used. See \code{stats
 \item{model}{A logical value indicating whether model frame should be included as a
 component of the returned value (Defaults to \code{TRUE})}
 
+\item{singularity.method}{The chosen method to detect for singularity. Defaults to \code{"eigen"} but
+it can also be \code{"Cholesky"} or \code{"qr"}}
+
 \item{x}{Logical value indicating whether the model matrix used in the fitting process
 should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})}
 
@@ -59,20 +61,6 @@ should be returned as components of the returned value (Defaults to \code{FALSE}
 \item{tol.vectors}{Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})}
 
 \item{\dots}{For blm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.}
-
-\item{start}{Starting values for the parameters in the linear predictor}
-
-\item{etastart}{Starting values for the linear predictor}
-
-\item{mustart}{Starting values for the vector of means}
-
-\item{maxit}{See the function \link{glm}}
-
-\item{k}{The penalty per parameter to be used, the default \code{k = 2}
-is the classical AIC}
-
-\item{singularity.method}{The chosen method to detect for singularity. Defaults to \code{"eigen"} but
-it can also be \code{"Cholesky"} or \code{"qr"}}
 }
 \description{
 blm is used to fit linear models.

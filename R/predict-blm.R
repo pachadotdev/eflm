@@ -4,7 +4,7 @@
 predict.blm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
                         interval = c("none", "confidence", "prediction"), level = 0.95,
                         type = c("response", "terms"), terms = NULL, na.action = na.pass,
-                        pred.var = res.var/weights, weights = 1, ...) {
+                        pred.var = res.var/weights, weights = NULL, ...) {
   tt <- terms(object)
   if (!inherits(object, c("blm", "bglm"))) {
     warning("calling predict.blm(<fake-blm/bglm-object>) ...")
@@ -18,7 +18,7 @@ predict.blm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
     return(object$fitted.values)
   } else {
     Terms <- delete.response(tt)
-    m <- model.frame(Terms, newdata, na.action = na.action) # , xlev = object$xlevels)
+    m <- model.frame(Terms, newdata, na.action = na.action)
     if (!is.null(cl <- attr(Terms, "dataClasses"))) {
       .checkMFClasses(cl, m)
     }
@@ -61,6 +61,7 @@ predict.blm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
       scale^2
     }
     if (type != "terms") {
+      n <- length(object$residuals)
       p <- object$rank
       p1 <- seq_len(p)
       piv <- if (p > 0) object$qr$pivot[p1]

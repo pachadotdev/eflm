@@ -1,5 +1,9 @@
+#' @importFrom stats getCall
 updateWithMoreData <- function(object, data, weights = NULL, offset = NULL,
-                               all.levels = FALSE, ...) {
+                               all.levels = FALSE,
+                               singularity.method = c("eigen", "Cholesky", "qr"),
+                               tol.solve = .Machine$double.eps,
+                               tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   if (!inherits(object, "blm")) {
     stop("object must be of class blm")
   }

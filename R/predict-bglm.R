@@ -24,7 +24,7 @@
 predict.bglm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
                          interval = c("none", "confidence", "prediction"), level = 0.95,
                          type = c("link", "response", "terms"), terms = NULL, na.action = na.pass,
-                         pred.var = res.var/weights, weights = 1, ...) {
+                         weights = NULL, ...) {
   type <- match.arg(type)
   if (missing(newdata) & is.null(object$linear.predictors)) {
     warning("Fitted values were not returned from the bglm object:

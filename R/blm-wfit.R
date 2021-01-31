@@ -44,10 +44,6 @@ blm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
       RSS <- yy - 2 * crossprod(coef, Xy[ok]) + t(coef) %*% ris$XTX %*% coef
     } else
       if (singularity.method == "qr") {
-        if (class(A) == "dsCMatrix") {
-          A <- as(A, "matrix")
-          Xy <- as(Xy, "matrix")
-        }
         C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
         ris <- c(list(XTX = A), .Call(C_Cdqrls, A, Xy, tol.values, FALSE))
         coefficients <- ris$coefficients
