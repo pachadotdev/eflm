@@ -1,53 +1,5 @@
 # Dynamically exported, see zzz.R
 
-#' @importFrom stats residuals weights is.ts ts start frequency
-#' @importFrom zoo is.zoo zoo index
-estfun.bglm <- function(x, ...) {
-  xmat <- model.matrix(x)
-  xmat <- naresid(x$na.action, xmat)
-  if (any(alias <- is.na(coef(x)))) xmat <- xmat[, !alias, drop = FALSE]
-  wres <- as.vector(residuals(x, "working")) * weights(x, "working")
-  dispersion <- if (substr(x$family$family, 1, 17) %in% c("poisson", "binomial", "Negative Binomial")) {
-    1
-  } else {
-    sum(wres^2, na.rm = TRUE) / sum(weights(x, "working"), na.rm = TRUE)
-  }
-  rval <- wres * xmat / dispersion
-  attr(rval, "assign") <- NULL
-  attr(rval, "contrasts") <- NULL
-  res <- residuals(x, type = "pearson")
-  if (is.ts(res)) rval <- ts(rval, start = start(res), frequency = frequency(res))
-  if (is.zoo(res)) rval <- zoo(rval, index(res), attr(res, "frequency"))
-  return(rval)
-}
-
-bread.bglm <- function (x, ...) {
-  if (!is.null(x$na.action)) class(x$na.action) <- "omit"
-  sx <- summary(x)
-  wres <- as.vector(residuals(x, "working")) * weights(x, "working")
-  dispersion <- if (substr(x$family$family, 1L, 17L) %in%
-                    c("poisson", "binomial", "Negative Binomial")) {
-    1
-  } else {
-    sum(wres^2)/sum(weights(x, "working"))
-  }
-  return(sx$cov.unscaled * as.vector(sum(sx$df[1L:2L])) *
-           dispersion)
-}
-
-meat.bglm <- function (x, adjust = FALSE, ...) {
-  if (is.list(x) && !is.null(x$na.action))
-    class(x$na.action) <- "omit"
-  psi <- sandwich::estfun(x)
-  k <- NCOL(psi)
-  n <- NROW(psi)
-  rval <- crossprod(as.matrix(psi))/n
-  if (adjust)
-    rval <- n/(n - k) * rval
-  rownames(rval) <- colnames(rval) <- colnames(psi)
-  return(rval)
-}
-
 #' @importFrom stats expand.model.frame hatvalues
 #' @importFrom utils combn
 meatCL.bglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 = FALSE,
@@ -131,15 +83,6 @@ meatCL.bglm <- function (x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 
       else chol2inv(qr.R(qr(X * sqrt(w))))
       res <- rowMeans(ef/X, na.rm = TRUE)
       res[apply(abs(ef) < .Machine$double.eps, 1L, all)] <- 0
-      matpower <- function(X, p) {
-        if ((ncol(X) == 1L) && (nrow(X) == 1L))
-          return(X^p)
-        Xeig <- eigen(X, symmetric = TRUE)
-        if (any(Xeig$values < 0))
-          stop("matrix is not positive semidefinite")
-        sqomega <- diag(Xeig$values^p)
-        return(Xeig$vectors %*% sqomega %*% t(Xeig$vectors))
-      }
     }
   }
   for (i in 1L:length(cl)) {

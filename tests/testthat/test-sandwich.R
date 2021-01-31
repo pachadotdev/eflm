@@ -1,4 +1,4 @@
-test_that("functions in R/integration-sandwich.R return the same as glm", {
+test_that("bglm and vcovCL return the same as glm and vcovCL", {
   m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
   m2 <- bglm(mpg ~ wt, family = gaussian(), data = mtcars)
 

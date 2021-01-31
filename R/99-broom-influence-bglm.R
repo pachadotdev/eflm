@@ -1,4 +1,6 @@
-# defined to use broom::augment
+# Dynamically exported, see zzz.R
+
+# taken from stats::, defined to use broom::augment
 #' @importFrom stats lm.influence
 influence.bglm <- function (model, do.coef = TRUE, ...) {
   res <- lm.influence(model, do.coef = do.coef, ...)

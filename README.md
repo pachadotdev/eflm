@@ -4,9 +4,9 @@
 [![R-CMD-check](https://github.com/pachamaltese/yotover-testing/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/yotover-testing/actions)
 <!-- badges: end -->
 
-**Summary** This fits glm models 15 times faster than glm() and uses ideas from speedglm, fastglm, any other similar packages, but using just base R and aiming at being compatible with sandwich and other packages.
-
-The goal of boostedglm is to provide functions for efficient fitting of generalized linear models. Unlike other similar packages, `boostedglm` uses base R only and aims at being aligned with glm's output and to be integrated with sandwich, stargazer and other useful packages for regression.
+**Boostedglm** might fit *Generalized Linear Models* models up to 20 times faster than `glm()`. This packages uses just
+base R and dynamic exports to make the `blm()` and `bglm()` outputs work with **broom** and **sandwich**. This takes
+ideas from speedglm and fastglm.
 
 ## Installation
 
@@ -30,26 +30,25 @@ bglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,      family = 
  5.842121  5.967758  6.125419  6.039139   6.1037   6.857986    10
 ```
 
-## Work in progress
+## Progress list
 
-1. Fixing all of `devtools::check()` errors/warnings (e.g. fix `nobs()` error)
-2. Integration with sandwich
-3. Integration with broom
-4. Aim at making bglm() a drop-in replacement for glm()
+### Sandwich
 
-CURRENT ERROR
+- [x] estfun
+- [x] bread
+- [x] vcovCL
+- [x] meatCL
+- [x] vcovCL
+- [ ] vcovBS
+- [ ] meatBS
+- [ ] vcovHC
+- [ ] meatHC
+- [ ] vcovPC
+- [ ] meatPC
+- [ ] vcovPL
+- [ ] meatPL
 
-```
-devtools::check()
+### Broom
 
- ----------- END OF FAILURE REPORT -------------- 
-══ Failed tests ════════════════════════════════════════════════════════════════
-── Error (test-bglm.R:5:3): bglm (gaussian) == glm ─────────────────────────────
-Error: 'length(x) = 3 > 1' in coercion to 'logical(1)'
-Backtrace:
-    █
- 1. └─boostedglm::bglm(mpg ~ wt + am, family = gaussian(), data = mtcars) test-bglm.R:5:2
- 2.   ├─stats::predict(rval, newdata = M, type = "response", na.action = na.action)
- 3.   └─boostedglm:::predict.bglm(...)
- 4.     └─boostedglm:::predict.flm(...)
-```
+- [x] augment
+- [x] tidy
