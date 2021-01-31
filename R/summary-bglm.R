@@ -1,71 +1,3 @@
-#' @export
-#' @keywords internal
-family.bglm <- function(object, ...) {
-  object$family
-}
-
-#' @importFrom stats family
-#' @export
-#' @keywords internal
-fitted.bglm <- function(object, ...) {
-  return(family(object)$linkinv(object$linear.predictors))
-}
-
-#' @export
-#' @keywords internal
-coef.bglm <- function(object, ...) {
-  object$coefficients
-}
-
-#' @export
-#' @keywords internal
-vcov.bglm <- function(object, ...) {
-  object$dispersion * solve(object$XTX)
-}
-
-#' @export
-#' @keywords internal
-deviance.bglm <- function(object, ...) {
-  object$deviance
-}
-
-#' @export
-#' @keywords internal
-nobs.bglm <- function(object, use.fallback = FALSE, ...) {
-  if (!is.null(w <- object$weights)) sum(w != 0) else object$n
-}
-
-#' @export
-#' @keywords internal
-model.matrix.bglm <- function (object, ...) {
-  y <- if (is.null(object$x)) {
-    obtain_model_matrix <- function(model, data) {
-      call <- match.call()
-      M <- match.call(expand.dots = FALSE)
-      m <- match(c("formula", "data"), names(M), 0L)
-      M <- M[c(1L, m)]
-      M$drop.unused.levels <- TRUE
-      M[[1L]] <- quote(stats::model.frame)
-      M <- eval(M, parent.frame())
-      tf <- attr(M, "terms")
-      X <- model.matrix(tf, M)
-      X <- X[, colnames(X) %in% names(coef(object))]
-      attr(X, "assign") <- seq_along(colnames(X)) - 1
-      X
-    }
-
-    obtain_model_matrix(model = object$call$formula,
-                        data = eval(object$call$data))
-  } else {
-    object$x
-  }
-
-  if (is.null(y)) {
-    warning("The output is NULL because the model was specified with model=FALSE or the model component was removed from the regression object")
-  }
-  return(y)
-}
-
 #' @importFrom stats pnorm pt na.omit
 #' @export
 summary.bglm <- function(object, ...) {
@@ -168,14 +100,4 @@ summary.bglm <- function(object, ...) {
   ))
   class(ans) <- "summary.bglm"
   return(ans)
-}
-
-# defined to use broom::augment
-influence.bglm <- function (model, do.coef = TRUE, ...) {
-  res <- lm.influence(model, do.coef = do.coef, ...)
-  pRes <- na.omit(residuals(model, type = "pearson"))[model$prior.weights !=
-                                                        0]
-  pRes <- naresid(model$na.action, pRes)
-  names(res)[names(res) == "wt.res"] <- "dev.res"
-  c(res, list(pear.res = pRes))
 }

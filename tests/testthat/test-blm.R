@@ -1,8 +1,8 @@
 # Regression ----
 
-test_that("flm == lm", {
+test_that("blm returns the same regression output as lm", {
   m1 <- lm(mpg ~ wt + am, data = mtcars)
-  m2 <- flm(mpg ~ wt + am, data = mtcars)
+  m2 <- blm(mpg ~ wt + am, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -20,9 +20,9 @@ test_that("flm == lm", {
   )
 })
 
-test_that("flm + qr singularity.method == lm", {
+test_that("blm with qr singularity method returns the same regression output as lm", {
   m1 <- lm(mpg ~ wt + am, data = mtcars)
-  m2 <- flm(mpg ~ wt + am, data = mtcars, singularity.method = "qr")
+  m2 <- blm(mpg ~ wt + am, data = mtcars, singularity.method = "qr")
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -40,9 +40,9 @@ test_that("flm + qr singularity.method == lm", {
   )
 })
 
-test_that("flm + cholesky singularity.method == lm", {
+test_that("blm with cholesky singularity method returns the same regression output as lm", {
   m1 <- lm(mpg ~ wt + am, data = mtcars)
-  m2 <- flm(mpg ~ wt + am, data = mtcars, singularity.method = "Cholesky")
+  m2 <- blm(mpg ~ wt + am, data = mtcars, singularity.method = "Cholesky")
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -62,8 +62,8 @@ test_that("flm + cholesky singularity.method == lm", {
 
 # Design matrix ----
 
-test_that("flm returns the design matrix the same as lm", {
-  m1 <- flm(mpg ~ wt, data = mtcars, x = TRUE)
+test_that("blm returns the same design matrix as lm", {
+  m1 <- blm(mpg ~ wt, data = mtcars, x = TRUE)
   m2 <- lm(mpg ~ wt, data = mtcars, x = TRUE)
   expect_equal(m1$x, m2$x)
 })

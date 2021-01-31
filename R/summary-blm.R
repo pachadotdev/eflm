@@ -1,14 +1,14 @@
 #' Summarizing Linear Model Fits
 #'
-#' This function is a method for class flm objects.
+#' This function is a method for class blm objects.
 #'
-#' @param object an object of class "flm", usually, a result of a call to flm
+#' @param object an object of class "blm", usually, a result of a call to blm
 #' @param \dots further arguments passed to or from other methods
 #' @importFrom stats pt
 #' @export
-summary.flm <- function(object, ...) {
-  if (!inherits(object, "flm")) {
-    stop("object must be an object of class flm")
+summary.blm <- function(object, ...) {
+  if (!inherits(object, "blm")) {
+    stop("object must be an object of class blm")
   }
   z <- object
   n <- if (is.null(z$weights)) z$nobs else z$nobs - z$zero.w
@@ -83,6 +83,6 @@ summary.flm <- function(object, ...) {
     intercept = (nvar != (z$intercept))
   ))
 
-  class(ans) <- "summary.flm"
+  class(ans) <- "summary.blm"
   return(ans)
 }

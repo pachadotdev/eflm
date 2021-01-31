@@ -1,6 +1,6 @@
-test_that("gaussian summary is equivalent to lm", {
+test_that("blm summary is equivalent to lm summary", {
   m1 <- summary(lm(mpg ~ wt, data = mtcars))
-  m2 <- summary(flm(mpg ~ wt, data = mtcars))
+  m2 <- summary(blm(mpg ~ wt, data = mtcars))
   em1 <- round(as.data.frame(m1$coefficients), 4)
   em2 <- as.data.frame(m2$coefficients)
   em2$`Pr(>|t|)` <- as.numeric(em2$`Pr(>|t|)`)

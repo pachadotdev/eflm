@@ -1,12 +1,9 @@
-#' Fitting Generalized Linear Models
+#' Fitting Linear Models
 #'
-#' bglm is used to fit generalized linear models, specified by giving a symbolic
-#' description of the linear predictor and a description of the error
-#' distribution.
+#' blm is used to fit linear models.
 #'
 #' @param formula A formula for the model
 #' @param data A tibble or data.frame
-#' @param family See the function \link{glm}, but here it must be specified with brackets (e.g. \code{quasipoisson()})
 #' @param intercept Logical value to determine wheareas to included an intercept in the null model (Defaults to \code{TRUE})
 #' @param weights An optional vector of ‘prior weights’ to be used in the fitting process. Should be \code{NULL}
 #' or a numeric vector (e.g. \code{data$weights}, defaults to \code{NULL})
@@ -33,22 +30,20 @@
 #' should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})
 #' @param y Logical value indicating whether the response vector used in the fitting process
 #' should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})
-#' @param tol.estimation Tolerance to be used for the estimation (Defaults to 1e-8)
 #' @param tol.solve (Defaults to \code{.Machine$double.eps}, see the function \link{solve})
 #' @param tol.values Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control}),
 #' @param tol.vectors Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})
-#' @param \dots For bglm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
+#' @param \dots For blm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
 #' @importFrom stats gaussian na.pass
 #' @export
-bglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights = NULL,
-                 na.action = na.omit, start = NULL, etastart = NULL,
-                 mustart = NULL, offset = NULL, maxit = 25, k = 2, model = TRUE,
-                 singularity.method = c("eigen", "Cholesky", "qr"),
-                 x = FALSE, y = TRUE,
-                 tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
-                 tol.values = 1e-7, tol.vectors = 1e-7, ...) {
-  call <- match.call()
+blm <- function(formula, data, intercept = TRUE, weights = NULL,
+                na.action = na.omit, offset = NULL,
+                model = TRUE, method = c("eigen", "Cholesky", "qr"),
+                x = FALSE, y = TRUE, fitted = FALSE,
+                tol.solve = .Machine$double.eps,
+                tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   target <- y
+  call <- match.call()
   M <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data"), names(M), 0L)
   M <- M[c(1L, m)]
@@ -59,46 +54,35 @@ bglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
   tf <- attr(M, "terms")
   X <- model.matrix(tf, M)
   offset <- model.offset(M)
-  intercept <- attributes(tf)$intercept
-  singularity.method <- match.arg(singularity.method)
-  rval <- bglm.wfit(
-    X = X,
-    y = y,
-    family = family,
-    weights = weights,
-    start = start,
-    etastart = etastart,
-    mustart = mustart,
-    offset = offset,
-    intercept = intercept,
-    maxit = maxit,
-    k = k,
-    tol.estimation = tol.estimation,
+  if (is.null(offset)) {
+    offset <- rep(0, length(y))
+  }
+  if (is.null(weights)) weights <- rep(1, length(y))
+  rval <- blm.wfit(y, X,
+    offset = offset, w = weights,
     tol.solve = tol.solve,
-    tol.values = tol.values,
-    tol.vectors = tol.vectors,
-    singularity.method = singularity.method
+    tol.values = tol.values, tol.vectors = tol.vectors,
+    method = method, intercept = attr(tf, "intercept")
   )
+
   rval$terms <- tf
   rval$call <- call
-  class(rval) <- "bglm"
+  if (ncol(M) > 1) {
+    for (i in 2:ncol(M)) {
+      if (is.factor(M[, i])) {
+        eval(parse(text = paste("rval$levels$'", names(M)[i],
+          "'", "<-levels(M[,i])",
+          sep = ""
+        )))
+      }
+    }
+  }
   if (model) rval$model <- M
-  rval$fitted.values <- predict(rval, newdata = M, type = "response", na.action = na.action)
-  rval$linear.predictors <- predict(rval, newdata = M, type = "link", na.action = na.action)
   if (x) rval$x <- X
-  if (target) {
-    rval$y <- y
-    names(rval$y) <- names(rval$fitted.values)
-  }
-  names(rval$prior.weights) <- names(rval$fitted.values)
-  qr_tol <- 1e-11
-  rval$qr <- qr(model.matrix(rval), tol = qr_tol)
-  attr(rval$qr$qr, "assign") <- NULL
-  rval$qr$tol <- qr_tol
-  attr(rval$qr, "qr") <- "qr"
-
-  if ((rval$iter == maxit) & (!rval$convergence)) {
-    warning("Maximum number of iterations reached without convergence")
-  }
+  if (target) rval$y <- y
+  class(rval) <- "blm"
+  rval$fitted.values <- predict.blm(rval, M)
+  rval$residuals <- y - rval$fitted.values
+  rval$formula <- eval(call[[2]])
   rval
 }

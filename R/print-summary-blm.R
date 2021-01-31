@@ -1,7 +1,7 @@
 #' @importFrom stats quantile setNames
 #' @export
 #' @keywords internal
-print.summary.flm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
+print.summary.blm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
   x$coefficients$coef <- if (any(abs(na.omit(x$coefficients$coef)) < 0.0001)) {
     format(x$coefficients$coef,
            scientific = TRUE,
@@ -106,37 +106,3 @@ print.summary.flm <- function(x, digits = max(3, getOption("digits") - 3), ...) 
   if (s > 1) cat(s, " coefficients not defined because of singularities.\n")
   invisible(x)
 }
-
-#' @importFrom stats coef naprint
-#' @export
-#' @keywords internal
-print.flm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
-  if (!is.null(x$call)) {
-    cat("\nCall:\n")
-    cat(deparse(x$call))
-    cat("\n\n")
-  }
-  if (length(x$coef)) {
-    cat("Coefficients:\n")
-    print.default(format(x$coefficients, digits = digits),
-                  print.gap = 2,
-                  quote = FALSE
-    )
-  } else {
-    cat("No coefficients\n")
-  }
-  cat("\n")
-  invisible(x)
-}
-
-#' @export
-#' @importFrom stats logLik
-#' @keywords internal
-print.logLik.flm <- function(x, digits = getOption("digits"), ...) {
-  cat("'log Lik.' ", paste(format(logLik(x), digits = digits), collapse = ", "),
-      " (df=", format(attr(x, "df")), ")\n",
-      sep = ""
-  )
-  invisible(x)
-}
-
