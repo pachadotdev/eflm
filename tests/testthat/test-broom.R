@@ -1,6 +1,6 @@
 test_that("functions in R/integration-broom.R return the same as glm", {
   m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
-  m2 <- bglm(mpg ~ wt, family = gaussian(), data = mtcars)
+  m2 <- eglm(mpg ~ wt, family = gaussian(), data = mtcars)
 
   bm1 <- broom::tidy(m1)
   bm2 <- broom::tidy(m2)
@@ -30,7 +30,7 @@ test_that("functions in R/integration-broom.R return the same as glm", {
 
 test_that("broom outputs not explicitly defined are the same as glm", {
   m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
-  m2 <- bglm(mpg ~ wt, family = gaussian(), data = mtcars)
+  m2 <- eglm(mpg ~ wt, family = gaussian(), data = mtcars)
 
   # THIS IS WHAT WORKS FOR NOW
   expect_equal(broom::augment(m1, newdata = mtcars), broom::augment(m2, newdata = mtcars))

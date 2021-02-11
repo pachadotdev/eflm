@@ -1,4 +1,4 @@
-ll.bglm <- function(family, aic.model, nvar) {
+ll.eglm <- function(family, aic.model, nvar) {
   switch(family,
     binomial = -(aic.model - 2 * nvar) / 2,
     Gamma = -((aic.model - 2 * nvar) - 2) / 2,

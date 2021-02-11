@@ -1,3 +1,3 @@
-nobs.bglm <- function(object, use.fallback = FALSE, ...) {
+nobs.eglm <- function(object, use.fallback = FALSE, ...) {
   if (!is.null(w <- object$weights)) sum(w != 0) else object$n
 }

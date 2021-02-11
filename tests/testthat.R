@@ -1,4 +1,4 @@
 library(testthat)
-library(boostedglm)
+library(eflm)
 
-test_check("boostedglm")
+test_check("eflm")

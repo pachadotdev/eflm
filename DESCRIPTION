@@ -1,4 +1,4 @@
-Package: boostedglm
+Package: eflm
 Title: Efficient Fitting of Linear and Generalized Linear Models
 Version: 0.1
 Authors@R: c( 
@@ -24,16 +24,16 @@ Authors@R: c(
         )
     )
 Description: Efficient Fitting of Linear and Generalized Linear Models by using
-  just base R. As an alternative to "glm", this package provides "blm" (boosted
-  lm) and "bglm" (boosted glm), with a significant speedup when the number of 
+  just base R. As an alternative to lm() and glm(), this package provides blm()
+  and bglm(), with a significant speedup when the number of 
   observations is larger than the number of parameters to estimate, as it 
   reduces the NxP model matrix to a PxP matrix. The best computational 
   performance is obtained when R is linked against OpenBLAS, Intel MKL or other
   optimized BLAS library. This implementation aims at being compatible with 
-  broom and sandwich packages for summary statistics and clustering by providing
-  S3 methods.
-URL: https://github.com/pachamaltese/boostedglm/
-BugReports: https://github.com/pachamaltese/boostedglm/issues/
+  'broom' and 'sandwich' packages for summary statistics and clustering by 
+  providing S3 methods.
+URL: https://github.com/pachamaltese/eflm/
+BugReports: https://github.com/pachamaltese/eflm/issues/
 License: GPL (>= 3)
 Imports:
     stats,

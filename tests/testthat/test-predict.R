@@ -1,8 +1,8 @@
 # Gaussian ----
 
-test_that("bglm (gaussian) + cholesky singularity.method == glm", {
+test_that("eglm (gaussian) + cholesky singularity.method == glm", {
   m1 <- glm(mpg ~ wt + am, family = gaussian(), data = mtcars)
-  m2 <- bglm(mpg ~ wt + am, family = gaussian(), data = mtcars, singularity.method = "Cholesky")
+  m2 <- eglm(mpg ~ wt + am, family = gaussian(), data = mtcars, singularity.method = "Cholesky")
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -16,9 +16,9 @@ test_that("bglm (gaussian) + cholesky singularity.method == glm", {
 
 # Inverse-Gaussian ----
 
-test_that("bglm (inverse.gaussian) == glm", {
+test_that("eglm (inverse.gaussian) == glm", {
   m1 <- glm(mpg ~ wt + am, family = inverse.gaussian(), data = mtcars)
-  m2 <- bglm(mpg ~ wt + am, family = inverse.gaussian(), data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = inverse.gaussian(), data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -32,9 +32,9 @@ test_that("bglm (inverse.gaussian) == glm", {
 
 # Gamma ----
 
-test_that("bglm (gaussian) == glm", {
+test_that("eglm (gaussian) == glm", {
   m1 <- glm(mpg ~ wt + am, family = Gamma(), data = mtcars)
-  m2 <- bglm(mpg ~ wt + am, family = Gamma(), data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = Gamma(), data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -48,9 +48,9 @@ test_that("bglm (gaussian) == glm", {
 
 # Binomial ----
 
-test_that("bglm (binomial) == glm", {
+test_that("eglm (binomial) == glm", {
   m1 <- glm(am ~ wt + mpg, family = binomial(), data = mtcars)
-  m2 <- bglm(am ~ wt + mpg, family = binomial(), data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = binomial(), data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -64,9 +64,9 @@ test_that("bglm (binomial) == glm", {
 
 # Quasi-Binomial ----
 
-test_that("bglm (quasibinomial) == glm", {
+test_that("eglm (quasibinomial) == glm", {
   m1 <- glm(am ~ wt + mpg, family = quasibinomial(), data = mtcars)
-  m2 <- bglm(am ~ wt + mpg, family = quasibinomial(), data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = quasibinomial(), data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -80,9 +80,9 @@ test_that("bglm (quasibinomial) == glm", {
 
 # Poisson ----
 
-test_that("bglm (poisson) == glm", {
+test_that("eglm (poisson) == glm", {
   m1 <- glm(am ~ wt + mpg, family = poisson(), data = mtcars)
-  m2 <- bglm(am ~ wt + mpg, family = poisson(), data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = poisson(), data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -96,9 +96,9 @@ test_that("bglm (poisson) == glm", {
 
 # Quasi-Poisson ----
 
-test_that("bglm (quasipoisson) == glm", {
+test_that("eglm (quasipoisson) == glm", {
   m1 <- glm(mpg ~ wt + am, family = quasipoisson(), data = mtcars)
-  m2 <- bglm(mpg ~ wt + am, family = quasipoisson(), data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = quasipoisson(), data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -112,9 +112,9 @@ test_that("bglm (quasipoisson) == glm", {
 
 # Quasi ----
 
-test_that("bglm (quasi) == glm", {
+test_that("eglm (quasi) == glm", {
   m1 <- glm(mpg ~ wt + am, family = quasi(), data = mtcars)
-  m2 <- bglm(mpg ~ wt + am, family = quasi(), data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = quasi(), data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -128,9 +128,9 @@ test_that("bglm (quasi) == glm", {
 
 # NULL warnings ----
 
-test_that("predict.bglm fails with NULL fitted values + newdata", {
-  m1 <- bglm(mpg ~ wt + am, family = gaussian(), data = mtcars)
-  m2 <- bglm(mpg ~ wt + am, family = gaussian(), data = mtcars)
+test_that("predict.eglm fails with NULL fitted values + newdata", {
+  m1 <- eglm(mpg ~ wt + am, family = gaussian(), data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = gaussian(), data = mtcars)
 
   expect_equal(predict(m1), predict(m2))
   m1$fitted.values <- NULL

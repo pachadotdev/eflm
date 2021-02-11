@@ -1,6 +1,6 @@
 #' @export
 #' @keywords internal
-model.matrix.bglm <- function (object, ...) {
+model.matrix.eglm <- function (object, ...) {
   y <- if (is.null(object$x)) {
     obtain_model_matrix <- function(model, data) {
       call <- match.call()

@@ -1,6 +1,6 @@
 # Dynamically exported, see zzz.R
 
-# taken from broom::: to make augment.bglm work
+# taken from broom::: to make augment.eglm work
 as_augment_tibble <- function (data) {
   if (inherits(data, "matrix") & is.null(colnames(data))) {
     stop("The supplied `data`/`newdata` argument was an unnamed matrix. ",

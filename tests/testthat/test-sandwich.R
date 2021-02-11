@@ -1,6 +1,6 @@
-test_that("bglm and vcovCL return the same as glm and vcovCL", {
+test_that("eglm and vcovCL return the same as glm and vcovCL", {
   m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
-  m2 <- bglm(mpg ~ wt, family = gaussian(), data = mtcars)
+  m2 <- eglm(mpg ~ wt, family = gaussian(), data = mtcars)
 
   vcov_m1 <- sandwich::vcovCL(m1, cluster = NULL)
   vcov_m2 <- sandwich::vcovCL(m2, cluster = NULL)

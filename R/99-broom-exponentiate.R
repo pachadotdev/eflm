@@ -1,6 +1,6 @@
 # Dynamically exported, see zzz.R
 
-# taken from broom::: but adapted to use base (makes tidy.bglm work)
+# taken from broom::: but adapted to use base (makes tidy.eglm work)
 exponentiate <- function (data) {
   data[, "estimate"] <- exp(data[, "estimate"])
   if ("conf.low" %in% colnames(data)) {

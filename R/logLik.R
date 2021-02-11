@@ -1,7 +1,7 @@
 #' @importFrom stats family
 #' @export
 #' @keywords internal
-logLik.bglm <- function(object, ...) {
+logLik.eglm <- function(object, ...) {
   if (!missing(...)) {
     warning("extra arguments discarded")
   }

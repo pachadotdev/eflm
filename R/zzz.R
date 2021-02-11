@@ -1,10 +1,10 @@
 .onLoad <- function(...) {
-  vctrs::s3_register("sandwich::estfun", "bglm")
-  vctrs::s3_register("sandwich::bread", "bglm")
-  vctrs::s3_register("sandwich::meatCL", "bglm")
+  vctrs::s3_register("sandwich::estfun", "eglm")
+  vctrs::s3_register("sandwich::bread", "eglm")
+  vctrs::s3_register("sandwich::meatCL", "eglm")
 
-  vctrs::s3_register("broom::tidy", "bglm")
-  vctrs::s3_register("broom::augment", "bglm")
+  vctrs::s3_register("broom::tidy", "eglm")
+  vctrs::s3_register("broom::augment", "eglm")
 
   invisible()
 }
