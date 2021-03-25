@@ -82,7 +82,7 @@ if (!file.exists(fout)) {
 
   saveRDS(ch1_application1_2, fout, compress = "xz")
 } else {
-  ch1_application1_2 <- readRDS("ch1_application1_2.rds")
+  ch1_application1_2 <- readRDS(fout)
 }
 
 # m1 <- glm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
