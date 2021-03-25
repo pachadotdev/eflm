@@ -1,138 +1,145 @@
 # NEVER PUT THIS ON TESTS/ FOLDER
 # THE DATA IS TOO LARGE AND TAKES +5 MINUTES TO FIT THE MODEL
 
+droplet <- "c2-2vcpu-4gb"
+
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(eflm)) install.packages("eflm")
+if (!require(microbenchmark)) install.packages("microbenchmark")
+if (!require(readr)) install.packages("readr")
+
 library(dplyr)
-library(testthat)
-library(boostedglm)
-library(yotover)
+library(eflm)
 library(microbenchmark)
+library(readr)
 
-ch1_application1_2 <-  yotov_data("ch1_application1") %>%
-  filter(year %in% seq(1986, 2006, 4))
+fout <- "dev/ch1_application1_2.rds"
 
-ch1_application1_2 <- ch1_application1_2 %>%
-  mutate(
-    log_trade = log(trade),
-    log_dist = log(dist)
-  )
+if (!file.exists(fout)) {
+  if (!require(yotover)) install.packages("yotover")
+  library(yotover)
 
-ch1_application1_2 <- ch1_application1_2 %>%
-  # Create Yit
-  group_by(exporter, year) %>%
-  mutate(
-    y = sum(trade),
-    log_y = log(y)
-  ) %>%
+  ch1_application1_2 <-  yotov_data("ch1_application1") %>%
+    filter(year %in% seq(1986, 2006, 4))
 
-  # Create Eit
-  group_by(importer, year) %>%
-  mutate(
-    e = sum(trade),
-    log_e = log(e)
-  )
+  ch1_application1_2 <- ch1_application1_2 %>%
+    mutate(
+      log_trade = log(trade),
+      log_dist = log(dist)
+    )
 
-ch1_application1_2 <- ch1_application1_2 %>%
-  # Replicate total_e
-  group_by(exporter, year) %>%
-  mutate(total_e = sum(e)) %>%
-  group_by(year) %>%
-  mutate(total_e = max(total_e)) %>%
+  ch1_application1_2 <- ch1_application1_2 %>%
+    # Create Yit
+    group_by(exporter, year) %>%
+    mutate(
+      y = sum(trade),
+      log_y = log(y)
+    ) %>%
 
-  # Replicate rem_exp
-  group_by(exporter, year) %>%
-  mutate(
-    remoteness_exp = sum(dist *  total_e / e),
-    log_remoteness_exp = log(remoteness_exp)
-  ) %>%
+    # Create Eit
+    group_by(importer, year) %>%
+    mutate(
+      e = sum(trade),
+      log_e = log(e)
+    )
 
-  # Replicate total_y
-  group_by(importer, year) %>%
-  mutate(total_y = sum(y)) %>%
-  group_by(year) %>%
-  mutate(total_y = max(total_y)) %>%
+  ch1_application1_2 <- ch1_application1_2 %>%
+    # Replicate total_e
+    group_by(exporter, year) %>%
+    mutate(total_e = sum(e)) %>%
+    group_by(year) %>%
+    mutate(total_e = max(total_e)) %>%
 
-  # Replicate rem_imp
-  group_by(importer, year) %>%
-  mutate(
-    remoteness_imp = sum(dist / (y / total_y)),
-    log_remoteness_imp = log(remoteness_imp)
-  )
+    # Replicate rem_exp
+    group_by(exporter, year) %>%
+    mutate(
+      remoteness_exp = sum(dist *  total_e / e),
+      log_remoteness_exp = log(remoteness_exp)
+    ) %>%
 
-ch1_application1_2 <- ch1_application1_2 %>%
-  # This merges the columns exporter/importer with year
-  mutate(
-    exp_year = paste0(exporter, year),
-    imp_year = paste0(importer, year)
-  )
+    # Replicate total_y
+    group_by(importer, year) %>%
+    mutate(total_y = sum(y)) %>%
+    group_by(year) %>%
+    mutate(total_y = max(total_y)) %>%
 
-ch1_application1_2 <- ch1_application1_2 %>%
-  filter(exporter != importer)
+    # Replicate rem_imp
+    group_by(importer, year) %>%
+    mutate(
+      remoteness_imp = sum(dist / (y / total_y)),
+      log_remoteness_imp = log(remoteness_imp)
+    )
 
-m1 <- glm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
-                family = quasipoisson(link = "log"),
-                data = ch1_application1_2,
-                y = FALSE,
-                model = FALSE
-)
+  ch1_application1_2 <- ch1_application1_2 %>%
+    # This merges the columns exporter/importer with year
+    mutate(
+      exp_year = paste0(exporter, year),
+      imp_year = paste0(importer, year)
+    )
 
-m2 <- fglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
-                family = quasipoisson(link = "log"),
-                data = ch1_application1_2,
-                y = FALSE,
-                model = TRUE
-)
+  ch1_application1_2 <- ch1_application1_2 %>%
+    filter(exporter != importer)
 
-m3 <- fixest::feglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
-               family = quasipoisson(link = "log"),
-               data = ch1_application1_2
-)
+  saveRDS(ch1_application1_2, fout, compress = "xz")
+} else {
+  ch1_application1_2 <- readRDS("ch1_application1_2.rds")
+}
 
-expect_equal(m1$coefficients, m2$coefficients)
-expect_equal(m1$residuals, m2$residuals)
-expect_equal(m1$fitted.values, m2$fitted.values)
-expect_equal(m1$family$family, m2$family$family)
-expect_equal(m1$family$link, m2$family$link)
-expect_equal(m1$linear.predictors, m2$linear.predictors)
-expect_equal(m1$deviance, m2$deviance)
-expect_equal(m1$aic, m2$aic)
-expect_equal(m1$null.deviance, m2$null.deviance)
-expect_equal(m1$df.residual, m2$df.residual)
-expect_equal(m1$df.null, m2$df.null)
-expect_equal(m1$y, m2$y)
-expect_equal(m1$call$formula, m2$call$formula)
-expect_equal(m1$call$family, m2$call$family)
-expect_equal(m1$call$data, m2$call$data)
+# m1 <- glm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
+#                 family = quasipoisson(link = "log"),
+#                 data = ch1_application1_2,
+#                 y = FALSE,
+#                 model = FALSE
+# )
+#
+# m2 <- eglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
+#                 family = quasipoisson(link = "log"),
+#                 data = ch1_application1_2,
+#                 y = FALSE,
+#                 model = TRUE
+# )
 
-expect_warning(expect_equal(
-  predict(m1, newdata = ch1_application1_2, type = "link"),
-  predict(m2, newdata = ch1_application1_2, type = "link")
-))
+# expect_equal(m1$coefficients, m2$coefficients)
+# expect_equal(m1$residuals, m2$residuals)
+# expect_equal(m1$fitted.values, m2$fitted.values)
+# expect_equal(m1$family$family, m2$family$family)
+# expect_equal(m1$family$link, m2$family$link)
+# expect_equal(m1$linear.predictors, m2$linear.predictors)
+# expect_equal(m1$deviance, m2$deviance)
+# expect_equal(m1$aic, m2$aic)
+# expect_equal(m1$null.deviance, m2$null.deviance)
+# expect_equal(m1$df.residual, m2$df.residual)
+# expect_equal(m1$df.null, m2$df.null)
+# expect_equal(m1$y, m2$y)
+# expect_equal(m1$call$formula, m2$call$formula)
+# expect_equal(m1$call$family, m2$call$family)
+# expect_equal(m1$call$data, m2$call$data)
 
-expect_warning(expect_equal(
-  predict(m1, newdata = ch1_application1_2, type = "response"),
-  predict(m2, newdata = ch1_application1_2, type = "response")
-))
+# expect_warning(expect_equal(
+#   predict(m1, newdata = ch1_application1_2, type = "link"),
+#   predict(m2, newdata = ch1_application1_2, type = "link")
+# ))
+# expect_warning(expect_equal(
+#   predict(m1, newdata = ch1_application1_2, type = "response"),
+#   predict(m2, newdata = ch1_application1_2, type = "response")
+# ))
 
-microbenchmark(
+benchmark_times <- microbenchmark(
   glm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
       family = quasipoisson(link = "log"),
       data = ch1_application1_2,
       y = FALSE,
       model = FALSE
   ),
-  fglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
+  eglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
        family = quasipoisson(link = "log"),
        data = ch1_application1_2,
        y = FALSE,
        model = FALSE
   ),
-  times = 10L
+  times = 500L
 )
 
-# Unit: seconds
-# expr
-# glm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,      family = quasipoisson(link = "log"), data = ch1_application1_2,      y = FALSE, model = FALSE)
-# fglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,      family = quasipoisson(link = "log"), data = ch1_application1_2,      y = FALSE, model = FALSE)
-# min        lq      mean    median       uq        max neval
-# 78.143386 82.797031 96.416335 85.072021 102.4835 147.671117    10
-# 5.842121  5.967758  6.125419  6.039139   6.1037   6.857986    10
+benchmark_times_df <- microbenchmark:::print.microbenchmark(benchmark_times)
+
+write_csv(benchmark_times_df, sprintf("dev/benchmarktimes_%s.csv", droplet))
