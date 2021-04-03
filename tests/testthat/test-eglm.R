@@ -19,11 +19,12 @@ test_that("eglm (gaussian) == glm", {
   expect_equal(m1$call$formula, m2$call$formula)
   expect_equal(m1$call$family, m2$call$family)
   expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m1$qr$tol, m2$qr$tol)
+
   expect_equal(m1$qr$qr, m2$qr$qr)
   expect_equal(m1$qr$rank, m2$qr$rank)
   expect_equal(m1$qr$qraux, m2$qr$qraux)
   expect_equal(m1$qr$pivot, m2$qr$pivot)
-  expect_equal(m1$qr$tol, m2$qr$tol)
 })
 
 test_that("eglm (gaussian) + qr singularity.method == glm", {
@@ -111,7 +112,7 @@ test_that("eglm (inverse.gaussian) == glm", {
 
 # Gamma ----
 
-test_that("eglm (gaussian) == glm", {
+test_that("eglm (gamma) == glm", {
   m1 <- glm(mpg ~ wt + am, family = Gamma(), data = mtcars)
   m2 <- eglm(mpg ~ wt + am, family = Gamma(), data = mtcars)
 

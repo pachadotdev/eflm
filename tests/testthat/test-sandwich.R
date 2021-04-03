@@ -1,4 +1,4 @@
-test_that("eglm and vcovCL return the same as glm and vcovCL", {
+test_that("eglm + vcovCL return the same as glm + vcovCL", {
   m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
   m2 <- eglm(mpg ~ wt, family = gaussian(), data = mtcars)
 

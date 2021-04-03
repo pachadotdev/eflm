@@ -86,7 +86,6 @@ eglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
   )
   rval$terms <- tf
   rval$call <- call
-  rval$xlevels <- .getXlevels(tf, M)
   class(rval) <- c("eglm", "elm")
   if (model) rval$model <- M
   rval$fitted.values <- predict(rval, newdata = data, type = "response", na.action = na.action)
