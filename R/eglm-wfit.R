@@ -97,7 +97,7 @@ eglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     start <- as(start, "numeric")
     coefficients[ok] <- start
   }
-  names(coefficients) <- coefficient_names(col.names, coefficients)
+  names(coefficients) <- coefficient_names(col.names, coefficients, intercept)
   rval <- list(
     "coefficients" = coefficients,
     "residuals" = res,

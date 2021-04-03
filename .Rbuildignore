@@ -7,3 +7,4 @@
 ^\.github$
 dev
 ^\.httr-oauth$
+docs

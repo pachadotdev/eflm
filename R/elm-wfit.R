@@ -59,7 +59,7 @@ elm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
         stop("elm.fit: Unknown singularity.method value")
       }
 
-  names(coefficients) <- coefficient_names(col.names, coefficients)
+  names(coefficients) <- coefficient_names(col.names, coefficients, intercept)
   zero.w <- sum(w == 0)
   dfr <- nrow(X) - ris$rank - zero.w
   rval <- list(

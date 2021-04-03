@@ -1,4 +1,4 @@
-coefficient_names <- function(col.names, coefficients) {
+coefficient_names <- function(col.names, coefficients, intercept) {
   cn <- if (is.null(col.names) & (!is.null(coefficients))) {
     if (intercept) {
       if (length(coefficients) > 1) {
