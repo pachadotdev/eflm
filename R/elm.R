@@ -85,7 +85,7 @@ elm <- function(formula, data, intercept = TRUE, weights = NULL,
   if (x) rval$x <- X
   if (target) rval$y <- y
   class(rval) <- "elm"
-  rval$fitted.values <- predict.elm(rval, M)
+  rval$fitted.values <- predict.elm(rval, newdata = data)
   rval$residuals <- y - rval$fitted.values
   rval$formula <- eval(call[[2]])
   rval
