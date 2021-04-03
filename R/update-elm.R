@@ -1,7 +1,8 @@
 #' @importFrom stats update.default
 #' @export
 #' @keywords internal
-update.elm <- function(object, formula, data, add = TRUE, evaluate = TRUE, ...) {
+update.elm <- function(object, formula, data, add = TRUE, evaluate = TRUE,
+                       offset = NULL, weights = NULL, ...) {
   if (!inherits(object, "elm")) {
     stop("object must be of class elm")
   }
@@ -9,13 +10,16 @@ update.elm <- function(object, formula, data, add = TRUE, evaluate = TRUE, ...) 
     stop("cannot specify a formula while adding new data")
   }
   if ((!missing(data)) & (add)) {
-    mod <- update_with_more_data(object, data, formula = formula.elm(object), ...)
+    mod <- update_with_more_data(object, data, formula = formula.elm(object),
+                                 offset = NULL, weights = NULL, ...)
   }
   else {
     mod <- if (missing(data)) {
-      update.default(object, formula, evaluate = evaluate, ...)
+      update.default(object, formula, evaluate = evaluate,
+                     offset = NULL, weights = NULL, ...)
     } else {
-      update.default(object, formula, data = data, evaluate = evaluate, ...)
+      update.default(object, formula, data = data, evaluate = evaluate,
+                     offset = NULL, weights = NULL, ...)
     }
   }
   mod

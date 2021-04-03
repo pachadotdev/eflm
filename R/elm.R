@@ -44,7 +44,7 @@ elm <- function(formula, data, intercept = TRUE, weights = NULL,
   target <- y
   call <- match.call()
   M <- match.call(expand.dots = FALSE)
-  m <- match(c("formula", "data"), names(M), 0L)
+  m <- match(c("formula", "data", "weights", "na.action", "offset"), names(M), 0L)
   M <- M[c(1L, m)]
   M$drop.unused.levels <- TRUE
   M[[1L]] <- quote(stats::model.frame)

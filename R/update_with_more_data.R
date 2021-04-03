@@ -13,7 +13,7 @@ update_with_more_data <- function(object, data, weights = NULL, offset = NULL,
   M <- match.call(expand.dots = F)
   formula <- eval(object$call[[2]])
   M$formula <- formula
-  m <- match(c("formula", "data"), names(M), 0L)
+  m <- match(c("formula", "data", "weights", "na.action", "offset"), names(M), 0L)
   M <- M[c(1L, m)]
   M$drop.unused.levels <- TRUE
   M[[1L]] <- quote(stats::model.frame)
@@ -32,8 +32,9 @@ update_with_more_data <- function(object, data, weights = NULL, offset = NULL,
       a <- c(object$levels[[j]][!(object$levels[[j]] %in% flevels[[j]])], flevels[[j]])
       flevels[[j]] <- a
     }
-    M <- model.frame(formula, data, xlev = flevels)
-    X <- model.matrix(formula, M, xlev = flevels)
+    M <- model.frame(formula, data, drop.unused.levels = TRUE,
+                     xlev = flevels, offset = offset)
+    X <- model.matrix(formula, M, xlev = flevels, offset = offset)
     object$levels <- flevels
   } else {
     X <- model.matrix(object$terms, M)
@@ -47,6 +48,7 @@ update_with_more_data <- function(object, data, weights = NULL, offset = NULL,
   w <- weights
   zero.w <- sum(w == 0)
   offset <- model.offset(M)
+  if (is.null(offset)) offset <- rep(0, length(y))
   colnam <- colnames(X)
   if (!is.null(w)) {
     if (object$rank == ncol(X)) {
@@ -130,7 +132,8 @@ update_with_more_data <- function(object, data, weights = NULL, offset = NULL,
     A = as(A, "matrix"), nobs = object$nobs + nrow(X), RSS = as.numeric(RSS),
     rank = rank, ok = ok, nvar = nvar, weights = weights,
     zero.w = zero.w + object$zero.w, pw = pw, XTX = as(XTX, "matrix"),
-    "intercept" = object$intercept, singularity.method = singularity.method
+    "intercept" = object$intercept, singularity.method = singularity.method,
+    offset = offset
   )
   rval$terms <- object$terms
   rval$call <- call

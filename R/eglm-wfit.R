@@ -84,7 +84,7 @@ eglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
   ll.new <- ll.eglm(fam, aic.model, rank)
   res <- (y - mu) / mu.eta(eta)
   resdf <- n.ok - rank
-  RSS <- sum(W * res * res)
+  RSS <- sum(W * (res^2))
   var_res <- RSS / dfr
   dispersion <- if (fam %in% c("poisson", "binomial")) 1 else var_res
   if (singularity.method == "qr") {
@@ -97,7 +97,7 @@ eglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     start <- as(start, "numeric")
     coefficients[ok] <- start
   }
-  names(coefficients) <- col.names
+  names(coefficients) <- coefficient_names(col.names, coefficients)
   rval <- list(
     "coefficients" = coefficients,
     "residuals" = res,

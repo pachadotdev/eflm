@@ -12,14 +12,14 @@ elm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
   if (any(w < 0)) {
     stop("weights must not be negative")
   }
-  colnam <- colnames(X)
+  col.names <- colnames(X)
   pw <- sum(log(w[w != 0]))
   sqw <- sqrt(w)
   sqwX <- sqw * X
   SW <- sum(w)
   yy <- crossprod(sqw * y)
   X1X <- colSums(sqwX)
-  names(X1X) <- colnam
+  names(X1X) <- col.names
   XW1 <- crossprod(w, X)
   A <- cp(sqwX)
   y <- y - offset
@@ -59,7 +59,7 @@ elm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
         stop("elm.fit: Unknown singularity.method value")
       }
 
-  names(coefficients) <- colnames(X)
+  names(coefficients) <- coefficient_names(col.names, coefficients)
   zero.w <- sum(w == 0)
   dfr <- nrow(X) - ris$rank - zero.w
   rval <- list(

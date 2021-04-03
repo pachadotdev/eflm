@@ -1,6 +1,6 @@
 Package: eflm
 Title: Efficient Fitting of Linear and Generalized Linear Models
-Version: 0.1
+Version: 0.2
 Authors@R: c( 
         person(given = "Mauricio",
                family = "Vargas",
@@ -24,8 +24,8 @@ Authors@R: c(
         )
     )
 Description: Efficient Fitting of Linear and Generalized Linear Models by using
-  just base R. As an alternative to lm() and glm(), this package provides blm()
-  and bglm(), with a significant speedup when the number of 
+  just base R. As an alternative to lm() and glm(), this package provides elm()
+  and eglm(), with a significant speedup when the number of 
   observations is larger than the number of parameters to estimate, as it 
   reduces the NxP model matrix to a PxP matrix. The best computational 
   performance is obtained when R is linked against OpenBLAS, Intel MKL or other
@@ -34,7 +34,7 @@ Description: Efficient Fitting of Linear and Generalized Linear Models by using
   providing S3 methods.
 URL: https://github.com/pachamaltese/eflm/
 BugReports: https://github.com/pachamaltese/eflm/issues/
-License: GPL (>= 3)
+License: Apache License (>= 2)
 Imports:
     stats,
     zoo,

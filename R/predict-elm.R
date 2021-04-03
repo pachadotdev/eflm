@@ -18,7 +18,7 @@ predict.elm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
     return(object$fitted.values)
   } else {
     Terms <- delete.response(tt)
-    m <- model.frame(Terms, newdata, na.action = na.action)
+    m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$xlevels)
     if (!is.null(cl <- attr(Terms, "dataClasses"))) {
       .checkMFClasses(cl, m)
     }

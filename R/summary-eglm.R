@@ -21,52 +21,15 @@ summary.eglm <- function(object, ...) {
     t1 <- z$coefficients / se_coef
     p <- 2 * pt(abs(t1), df = z$df.residual, lower.tail = FALSE)
   }
-  ip <- !is.na(p)
-  p[ip] <- as.numeric(format(p[ip], digits = 3))
   dn <- c("Estimate", "Std. Error")
   if (z$family$family %in% c("binomial", "poisson")) {
-    format.coef <- if (any(na.omit(abs(z$coef)) < 1e-04)) {
-      format(z$coefficients, scientific = TRUE, digits = 4)
-    } else {
-      round(z$coefficients, digits = 7)
-    }
-    format.se <- if (any(na.omit(se_coef) < 1e-04)) {
-      format(se_coef, scientific = TRUE, digits = 4)
-    } else {
-      round(se_coef, digits = 7)
-    }
-    format.pv <- if (any(na.omit(p) < 1e-04)) {
-      format(p, scientific = TRUE, digits = 4)
-    } else {
-      round(p, digits = 4)
-    }
-    param <- data.frame(format.coef, format.se, round(z1,
-                                                      digits = 4
-    ), format.pv)
+    param <- data.frame(z$coefficients, se_coef, z1, p)
     dimnames(param) <- list(names(z$coefficients), c(
       dn,
       "z value", "Pr(>|z|)"
     ))
   } else {
-    format.coef <- if (any(abs(na.omit(z$coefficients)) <
-                           1e-04)) {
-      format(z$coefficients, scientific = TRUE, digits = 4)
-    } else {
-      round(z$coefficients, digits = 7)
-    }
-    format.se <- if (any(na.omit(se_coef) < 1e-04)) {
-      format(se_coef, scientific = TRUE, digits = 4)
-    } else {
-      round(se_coef, digits = 7)
-    }
-    format.pv <- if (any(na.omit(p) < 1e-04)) {
-      format(p, scientific = TRUE, digits = 4)
-    } else {
-      round(p, digits = 4)
-    }
-    param <- data.frame(format.coef, format.se, round(t1,
-                                                      digits = 4
-    ), format.pv)
+    param <- data.frame(z$coefficients, se_coef, t1, p)
     dimnames(param) <- list(names(z$coefficients), c(
       dn,
       "t value", "Pr(>|t|)"
