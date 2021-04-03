@@ -124,6 +124,6 @@ eglm.wfit <- function(y, X, intercept = TRUE, weights = NULL,
     "intercept" = intercept,
     "convergence" = (!(tol > tol.estimation))
   )
-  class(rval) <- "eglm"
+  class(rval) <- c("eglm", "elm")
   return(rval)
 }

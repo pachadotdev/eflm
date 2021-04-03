@@ -29,7 +29,7 @@
 #' @param tol.values Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control}),
 #' @param tol.vectors Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})
 #' @param \dots For elm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
-#' @return An object of class "eglm" that behaves the same way as the "glm" class, see the function \link{glm}.
+#' @return An object of class "elm" that behaves the same way as the "lm" class, see the function \link{glm}.
 #' @examples
 #' # Linear model
 #' elm(mpg ~ wt, family = gaussian(), data = mtcars)
@@ -84,7 +84,6 @@ elm <- function(formula, data, intercept = TRUE, weights = NULL,
   if (model) rval$model <- M
   if (x) rval$x <- X
   if (target) rval$y <- y
-  class(rval) <- "elm"
   rval$fitted.values <- predict.elm(rval, newdata = data)
   rval$residuals <- y - rval$fitted.values
   rval$formula <- eval(call[[2]])

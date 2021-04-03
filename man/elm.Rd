@@ -63,7 +63,7 @@ should be returned as components of the returned value (Defaults to \code{FALSE}
 \item{\dots}{For elm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.}
 }
 \value{
-An object of class "eglm" that behaves the same way as the "glm" class, see the function \link{glm}.
+An object of class "elm" that behaves the same way as the "lm" class, see the function \link{glm}.
 }
 \description{
 elm is used to fit linear models in an equivalent way to \code{lm} but in
