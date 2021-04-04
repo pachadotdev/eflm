@@ -1,7 +1,8 @@
-#' Fitting Linear Models
+#' Effiicient Fitting of Linear Models
 #'
-#' elm is used to fit linear models in an equivalent way to \code{"\link{lm}"}
-#' but in a reduced time depending on the design matrix (see the DESCRIPTION).
+#' Efficient linear model (\code{"elm"}) is used to fit linear models in an
+#' equivalent way to \code{"\link{lm}"} but in a reduced time depending on the
+#' design matrix (see the DESCRIPTION).
 #'
 #' @param formula an object of class \code{"\link{formula}"} (or one that can be
 #' coerced to that class): a symbolic description of the model to be fitted.
@@ -51,11 +52,12 @@
 #' argument if it is not supplied directly. For weights: further arguments
 #' passed to or from other methods.
 #' @return an object of class "elm" that behaves the same way as the "lm" class,
-#' see the function \link{glm}.
+#' see the function \link{lm}.
 #' @examples
 #' # Linear model
 #' elm(mpg ~ wt, family = gaussian(), data = mtcars)
 #' @importFrom stats gaussian na.pass
+#' @name elm
 #' @export
 elm <- function(formula, data, subset = NULL, intercept = TRUE, weights = NULL,
                 na.action = na.omit, offset = NULL,

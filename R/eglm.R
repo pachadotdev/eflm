@@ -1,50 +1,20 @@
-#' Fitting Generalized Linear Models
+#' Effiicient Fitting of Generalized Linear Models
 #'
-#' eglm is used to fit generalized linear models in an equivalent way to
-#' \code{glm} but in a reduced time depending on the design matrix (see the
-#' DESCRIPTION).
+#' Efficient generalized linear model (\code{"eglm"}) is used to fit generalized
+#' linear models in an equivalent way to \code{"\link{glm}"} but in a reduced
+#' time depending on the design matrix (see the DESCRIPTION).
 #'
-#' @param formula A formula for the model
-#' @param data A tibble or data.frame
-#' @param family See the function \link{glm}, but here it must be specified with brackets (e.g. \code{quasipoisson()})
-#' @param intercept Logical value to determine wheareas to included an intercept in the null model (Defaults to \code{TRUE})
-#' @param weights An optional vector of ‘prior weights’ to be used in the fitting process. Should be \code{NULL}
-#' or a numeric vector (e.g. \code{data$weights}, defaults to \code{NULL})
-#' @param na.action a function which indicates what should happen when the data
-#' contain NAs. The default is set by the \code{na.action} setting of options,
-#' and is \link{na.fail} if that is unset. The ‘factory-fresh’ default is
-#' \code{na.omit}. Another possible value is NULL, no action. Value
-#' \code{na.exclude} can be useful.
-#' @param start Starting values for the parameters in the linear predictor
-#' @param etastart Starting values for the linear predictor
-#' @param mustart Starting values for the vector of means
-#' @param offset This can be used to specify an a priori known component to be included in the
-#' linear predictor during fitting. This should be \code{NULL} or a numeric vector of length
-#' equal to the number of cases. One or more offset terms can be included in the formula instead
-#' or as well, and if more than one is specified their sum is used. See \code{stats::model.offset()}
-#' @param maxit See the function \link{glm}
-#' @param k The penalty per parameter to be used, the default \code{k = 2}
-#' is the classical AIC
-#' @param model A logical value indicating whether model frame should be included as a
-#' component of the returned value (Defaults to \code{TRUE})
-#' @param singularity.method The chosen method to detect for singularity. Defaults to \code{"eigen"} but
-#' it can also be \code{"Cholesky"} or \code{"qr"}
-#' @param x Logical value indicating whether the model matrix used in the fitting process
-#' should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})
-#' @param y Logical value indicating whether the response vector used in the fitting process
-#' should be returned as components of the returned value (Defaults to \code{FALSE}, see the function \link{glm.fit})
-#' @param tol.estimation Tolerance to be used for the estimation (Defaults to 1e-8)
-#' @param tol.solve (Defaults to \code{.Machine$double.eps}, see the function \link{solve})
-#' @param tol.values Tolerance to consider eigenvalues equal to zero (Defaults to 1e-7, see the function \link{control}),
-#' @param tol.vectors Tolerance to consider eigenvectors equal to zero (Defaults to 1e-7, see the function \link{control})
-#' @param \dots For eglm: arguments to be used to form the default control argument if it is not supplied directly. For weights: further arguments passed to or from other methods.
-#' @return An object of class "eglm" that behaves the same way as the "glm" class, see the function \link{glm}.
+#' @rdname eflm
+#' @return an object of class "elm" that behaves the same way as the "lm" class,
+#' see the function \link{glm}.
 #' @examples
 #' # Generalized linear model with Gaussian link
 #' eglm(mpg ~ wt, family = gaussian(), data = mtcars)
 #' @importFrom stats gaussian na.pass
 #' @export
-eglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights = NULL,
+eglm <- function(formula, data, family = gaussian(), weights = NULL,
+                 subset = NULL,
+                 intercept = TRUE,
                  na.action = na.omit, start = NULL, etastart = NULL,
                  mustart = NULL, offset = NULL, maxit = 25, k = 2, model = TRUE,
                  singularity.method = c("eigen", "Cholesky", "qr"),
@@ -54,7 +24,7 @@ eglm <- function(formula, data, family = gaussian(), intercept = TRUE, weights =
   call <- match.call()
   target <- y
   M <- match.call(expand.dots = FALSE)
-  m <- match(c("formula", "data", "weights", "na.action", "etastart",
+  m <- match(c("formula", "data", "weights", "subset", "na.action", "etastart",
                "mustart", "offset"), names(M), 0L)
   M <- M[c(1L, m)]
   M$drop.unused.levels <- TRUE
