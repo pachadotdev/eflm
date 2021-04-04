@@ -48,7 +48,9 @@
 #'  included in the \emph{null} model. Defaults to \code{TRUE}.
 #' @param singularity.method the chosen method to detect for singularity.
 #'  Defaults to \code{"eigen"} but it can also be \code{"Cholesky"} or
-#'  \code{"qr"}.
+#'  \code{"qr"}. The spectral decomposition (eigenvectors decomposition) method
+#'  is slower than Cholesky, but the former accepts tolerance arguments and
+#'  tends to be more stable for opportune tolerance values.
 #' @param tol.solve defaults to \code{.Machine$double.eps}, see the function
 #'  \link{solve}.
 #' @param tol.values tolerance to consider \emph{eigenvalues} equal to zero.
@@ -57,12 +59,16 @@
 #'  Defaults to 1e-7.
 #' @param tol.estimation Tolerance to be used for the estimation.
 #'  Defaults to 1e-8.
-#' @param \dots for elm: arguments to be used to form the default control
-#'  argument if it is not supplied directly. For weights: further arguments
-#'  passed to or from other methods.
-#' @param maxit See the function \link{glm}
-#' @param k The penalty per parameter to be used, the default \code{k = 2}
-#'  is the classical AIC
+#' @param maxit integer giving the maximal number of IWLS iterations.
+#' @param k the penalty per parameter to be used, the default \code{k = 2}
+#'  is the classical AIC.
+#' @param \dots for \emph{elm} or \emph{eglm}: additional arguments to be used
+#'  to form the default control. On the one hand, use \code{symmetric = F}
+#'  instead of the default \code{TRUE} to indicate that the XTX matrix passed
+#'  internally for least squares estimation is not symmetric. On the other, use
+#'  \code{out.B = FALSE} not to return internal control's matrix output.
+#'  argument if it is not supplied directly. For \emph{weights}: further
+#'  arguments passed to or from other methods.
 #' @details Models for \code{lm} are specified symbolically. A typical model
 #'  has the form \code{response ~ terms} where \code{response} is the (numeric)
 #'  response vector and \code{terms} is a series of terms which specifies a
