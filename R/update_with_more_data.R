@@ -1,9 +1,9 @@
 #' @importFrom stats getCall
-update_with_more_data <- function(object, data, weights = NULL, offset = NULL,
-                               all.levels = FALSE,
-                               singularity.method = c("eigen", "Cholesky", "qr"),
-                               tol.solve = .Machine$double.eps,
-                               tol.values = 1e-7, tol.vectors = 1e-7, ...) {
+update_with_more_data <- function(object, data, subset = NULL, weights = NULL,
+                                  offset = NULL, all.levels = FALSE,
+                                  singularity.method = c("eigen", "Cholesky", "qr"),
+                                  tol.solve = .Machine$double.eps,
+                                  tol.values = 1e-7, tol.vectors = 1e-7, ...) {
   if (!inherits(object, "elm")) {
     stop("object must be of class elm")
   }
@@ -13,7 +13,8 @@ update_with_more_data <- function(object, data, weights = NULL, offset = NULL,
   M <- match.call(expand.dots = F)
   formula <- eval(object$call[[2]])
   M$formula <- formula
-  m <- match(c("formula", "data", "weights", "na.action", "offset"), names(M), 0L)
+  m <- match(c("formula", "data", "subset", "weights", "na.action", "offset"),
+             names(M), 0L)
   M <- M[c(1L, m)]
   M$drop.unused.levels <- TRUE
   M[[1L]] <- quote(stats::model.frame)
@@ -32,7 +33,7 @@ update_with_more_data <- function(object, data, weights = NULL, offset = NULL,
       a <- c(object$levels[[j]][!(object$levels[[j]] %in% flevels[[j]])], flevels[[j]])
       flevels[[j]] <- a
     }
-    M <- model.frame(formula, data, drop.unused.levels = TRUE,
+    M <- model.frame(formula, data, subset = subset, drop.unused.levels = TRUE,
                      xlev = flevels, offset = offset)
     X <- model.matrix(formula, M, xlev = flevels, offset = offset)
     object$levels <- flevels
