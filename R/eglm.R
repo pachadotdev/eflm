@@ -1,15 +1,4 @@
-#' Effiicient Fitting of Generalized Linear Models
-#'
-#' Efficient generalized linear model (\code{"eglm"}) is used to fit generalized
-#' linear models in an equivalent way to \code{"\link{glm}"} but in a reduced
-#' time depending on the design matrix (see the DESCRIPTION).
-#'
-#' @rdname eflm
-#' @return an object of class "elm" that behaves the same way as the "lm" class,
-#' see the function \link{glm}.
-#' @examples
-#' # Generalized linear model with Gaussian link
-#' eglm(mpg ~ wt, family = gaussian(), data = mtcars)
+#' @rdname model_fitting
 #' @importFrom stats gaussian na.pass
 #' @export
 eglm <- function(formula, data, family = gaussian(), weights = NULL,
