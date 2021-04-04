@@ -1,12 +1,21 @@
 #' @rdname model_fitting
 #' @importFrom stats gaussian na.pass
 #' @export
-elm <- function(formula, data, subset = NULL, intercept = TRUE, weights = NULL,
-                na.action = na.omit, offset = NULL,
-                model = TRUE, singularity.method = c("eigen", "Cholesky", "qr"),
-                x = FALSE, y = TRUE,
+elm <- function(formula,
+                data,
+                subset = NULL,
+                weights = NULL,
+                na.action = na.omit,
+                model = TRUE,
+                x = FALSE,
+                y = TRUE,
+                offset = NULL,
+                intercept = TRUE,
+                singularity.method = c("eigen", "Cholesky"),
                 tol.solve = .Machine$double.eps,
-                tol.values = 1e-7, tol.vectors = 1e-7, ...) {
+                tol.values = 1e-7,
+                tol.vectors = 1e-7,
+                ...) {
   target <- y
   call <- match.call()
   M <- match.call(expand.dots = FALSE)

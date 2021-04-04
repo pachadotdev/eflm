@@ -1,15 +1,28 @@
 #' @rdname model_fitting
 #' @importFrom stats gaussian na.pass
 #' @export
-eglm <- function(formula, data, family = gaussian(), weights = NULL,
+eglm <- function(formula,
+                 family = gaussian(),
+                 data,
+                 weights = NULL,
                  subset = NULL,
+                 na.action = na.omit,
+                 start = NULL,
+                 etastart = NULL,
+                 mustart = NULL,
+                 offset = NULL,
+                 model = TRUE,
+                 x = FALSE,
+                 y = TRUE,
                  intercept = TRUE,
-                 na.action = na.omit, start = NULL, etastart = NULL,
-                 mustart = NULL, offset = NULL, maxit = 25, k = 2, model = TRUE,
-                 singularity.method = c("eigen", "Cholesky", "qr"),
-                 x = FALSE, y = TRUE,
-                 tol.estimation = 1e-8, tol.solve = .Machine$double.eps,
-                 tol.values = 1e-7, tol.vectors = 1e-7, ...) {
+                 singularity.method = c("eigen", "Cholesky"),
+                 tol.solve = .Machine$double.eps,
+                 tol.values = 1e-7,
+                 tol.vectors = 1e-7,
+                 tol.estimation = 1e-8,
+                 maxit = 25,
+                 k = 2,
+                 ...) {
   call <- match.call()
   target <- y
   M <- match.call(expand.dots = FALSE)
