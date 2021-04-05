@@ -1,0 +1,3 @@
+expr,min,lq,mean,median,uq,max,neval
+"glm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,      family = quasipoisson(link = ""log""), data = ch1_application1_2,      y = FALSE, model = FALSE)",41.91354925,44.056836933499994,45.206191795778,45.003094739,46.18591839050001,51.931140307,500
+"eglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,      family = quasipoisson(link = ""log""), data = ch1_application1_2,      y = FALSE, model = FALSE)",9.837417657,10.858350489,11.200515735306,11.1645997675,11.462437533500001,13.716551641,500

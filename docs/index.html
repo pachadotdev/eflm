@@ -13,14 +13,14 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Efficient Fitting of Linear and Generalized Linear Models">
 <meta property="og:description" content="Efficient Fitting of Linear and Generalized Linear Models by using
-  just base R. As an alternative to lm() and glm(), this package provides blm()
-  and bglm(), with a significant speedup when the number of 
-  observations is larger than the number of parameters to estimate, as it 
-  reduces the NxP model matrix to a PxP matrix. The best computational 
-  performance is obtained when R is linked against OpenBLAS, Intel MKL or other
-  optimized BLAS library. This implementation aims at being compatible with 
-  broom and sandwich packages for summary statistics and clustering by 
-  providing S3 methods.">
+  just base R. As an alternative to lm() and glm(), this package provides elm()
+  and eglm(), with a significant speedup when the number of 
+  observations is larger than the number of parameters to estimate. The speed
+ gains are obtained by reducing the NxP model matrix to a PxP matrix, and the 
+ best computational performance is obtained when R is linked against OpenBLAS,
+ Intel MKL or other optimized BLAS library. This implementation aims at being
+ compatible with broom and sandwich packages for summary statistics and
+ clustering by providing S3 methods.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">eflm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -53,6 +53,9 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -74,38 +77,164 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="boostedglm" class="section level1">
+<div id="efficient-fitting-of-linear-and-generalized-linear-models-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#boostedglm" class="anchor"></a>boostedglm</h1></div>
+<a href="#efficient-fitting-of-linear-and-generalized-linear-models-" class="anchor"></a>Efficient Fitting of Linear and Generalized Linear Models <img src="https://pacha.dev/eflm/hexicon.svg" width="150" align="right" alt="sticker">
+</h1></div>
 <!-- badges: start -->
 
-<p><strong>Boostedglm</strong> might fit <em>Generalized Linear Models</em> models up to 20 times faster than <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>. This packages uses just base R and dynamic exports to make the <code>blm()</code> and <code>bglm()</code> outputs work with <strong>broom</strong> and <strong>sandwich</strong>. This takes ideas from speedglm and fastglm.</p>
+<div id="description" class="section level2">
+<h2 class="hasAnchor">
+<a href="#description" class="anchor"></a>Description</h2>
+<p>Efficient Fitting of Linear and Generalized Linear Models by using just base R. As an alternative to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, this package provides <code><a href="reference/model_fitting.html">elm()</a></code> and <code><a href="reference/model_fitting.html">eglm()</a></code>, with a significant speedup when the number of observations is larger than the number of parameters to estimate. The speed gains are obtained by reducing the NxP model matrix to a PxP matrix, and the best computational performance is obtained when R is linked against OpenBLAS, Intel MKL or other optimized BLAS library. This implementation aims at being compatible with ‘broom’ and ‘sandwich’ packages for summary statistics and clustering by providing S3 methods.</p>
+</div>
+<div id="details" class="section level2">
+<h2 class="hasAnchor">
+<a href="#details" class="anchor"></a>Details</h2>
+<p>This package takes ideas from glm2, speedglm, fastglm, and fixest, but the implementations here shall keep the functions and outputs as closely as possible to the stats package, therefore making this compatible with packages such as sandwich for robust estimation, even if that means to attenuate the speed gains.</p>
+<p>The ultimate aim of the project is to produce a package that:</p>
+<ul>
+<li>Does exactly the same as lm and glm in less time</li>
+<li>Is equally numerically stable as lm and glm</li>
+<li>Depends only on base R, with no Rcpp or other calls</li>
+<li>Uses R’s internal C code such as the <code>Cdqrls</code> function that the stats package uses for model fitting</li>
+<li>Can be used in Shiny dashboard and contexts where you need fast model fitting</li>
+<li>Is useful for memory consuming models</li>
+<li>Allows model fitting with limited hardware</li>
+</ul>
+</div>
+<div id="minimal-working-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minimal-working-example" class="anchor"></a>Minimal working example</h2>
+<div id="stats-base-package" class="section level3">
+<h3 class="hasAnchor">
+<a href="#stats-base-package" class="anchor"></a>Stats (base) package</h3>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">formula</span> <span class="op">&lt;-</span> <span class="st">"mpg ~ I(wt^2)"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; glm(formula = formula, data = mtcars)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Deviance Residuals: </span>
+<span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span>
+<span class="co">#&gt; -5.1583  -2.3882  -0.9648   1.8254   8.2256  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept) 28.05106    1.26324   22.21  &lt; 2e-16 ***</span>
+<span class="co">#&gt; I(wt^2)     -0.70583    0.09616   -7.34 3.56e-08 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; (Dispersion parameter for gaussian family taken to be 13.42544)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     Null deviance: 1126.05  on 31  degrees of freedom</span>
+<span class="co">#&gt; Residual deviance:  402.76  on 30  degrees of freedom</span>
+<span class="co">#&gt; AIC: 177.86</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Number of Fisher Scoring iterations: 2</span></code></pre></div>
+</div>
+<div id="eflm-package" class="section level3">
+<h3 class="hasAnchor">
+<a href="#eflm-package" class="anchor"></a>Eflm package</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pachamaltese/eflm/">eflm</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; eglm(formula = formula, data = mtcars)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Deviance residuals:</span>
+<span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span>
+<span class="co">#&gt; -5.1583  -2.3882  -0.9648   1.8254   8.2256  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;             Estimate Std. Error t value  Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)  28.0511    1.26324   22.21 3.548e-20 ***</span>
+<span class="co">#&gt; I(wt^2)      -0.7058    0.09616   -7.34 3.556e-08 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; (Dispersion parameter for gaussian family taken to be 13.42544)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     Null deviance: 1126.05  on 31  degrees of freedom</span>
+<span class="co">#&gt; Residual deviance:  402.76  on 30  degrees of freedom</span>
+<span class="co">#&gt; AIC: 177.86</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Number of Fisher Scoring iterations: 1</span></code></pre></div>
+</div>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of boostedglm from GitHub with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"pachamaltese/boostedglm"</span><span class="op">)</span></code></pre></div>
+<p>You can install the released version of eflm from CRAN with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"eflm"</span><span class="op">)</span></code></pre></div>
+<p>And the development version with:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"pachamaltese/eflm"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
+<div id="benchmarks" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p><code><a href="https://rdrr.io/pkg/boostedglm/man/bglm.html">boostedglm::bglm()</a></code> is ~15 times faster than <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> with an input data consisting in 25,830 rows and 7 columns (2 continuos, 3 binary and 2 of factor type,). See <code>dev/test-bglm-with-yotover-data.R</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Unit<span class="op">:</span><span class="st"> </span>seconds</span>
-<span id="cb2-2"><a href="#cb2-2"></a>expr</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">glm</span>(trade <span class="op">~</span><span class="st"> </span>log_dist <span class="op">+</span><span class="st"> </span>cntg <span class="op">+</span><span class="st"> </span>lang <span class="op">+</span><span class="st"> </span>clny <span class="op">+</span><span class="st"> </span>exp_year <span class="op">+</span><span class="st"> </span>imp_year,      <span class="dt">family =</span> <span class="kw">quasipoisson</span>(<span class="dt">link =</span> <span class="st">"log"</span>), <span class="dt">data =</span> ch1_application1_<span class="dv">2</span>,      <span class="dt">y =</span> <span class="ot">FALSE</span>, <span class="dt">model =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">bglm</span>(trade <span class="op">~</span><span class="st"> </span>log_dist <span class="op">+</span><span class="st"> </span>cntg <span class="op">+</span><span class="st"> </span>lang <span class="op">+</span><span class="st"> </span>clny <span class="op">+</span><span class="st"> </span>exp_year <span class="op">+</span><span class="st"> </span>imp_year,      <span class="dt">family =</span> <span class="kw">quasipoisson</span>(<span class="dt">link =</span> <span class="st">"log"</span>), <span class="dt">data =</span> ch1_application1_<span class="dv">2</span>,      <span class="dt">y =</span> <span class="ot">FALSE</span>, <span class="dt">model =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb2-5"><a href="#cb2-5"></a>      min        lq      mean    median       uq        max neval</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="fl">78.143386</span> <span class="fl">82.797031</span> <span class="fl">96.416335</span> <span class="fl">85.072021</span> <span class="fl">102.4835</span> <span class="fl">147.671117</span>    <span class="dv">10</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a> <span class="fl">5.842121</span>  <span class="fl">5.967758</span>  <span class="fl">6.125419</span>  <span class="fl">6.039139</span>   <span class="fl">6.1037</span>   <span class="fl">6.857986</span>    <span class="dv">10</span></span></code></pre></div>
+<a href="#benchmarks" class="anchor"></a>Benchmarks</h2>
+<p>I fitted computationally complex model from <a href="https://pacha.dev/yotover/partial-equilibrium-trade-policy-analysis-with-structural-gravity.html#ppml-estimation-controlling-for-multilateral-resistance-terms-with-fixed-effects">Yotov, et. al. (2016)</a>.</p>
+<p>The benchmark was be the model:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trade <span class="sc">~</span> log_dist <span class="sc">+</span> cntg <span class="sc">+</span> lang <span class="sc">+</span> clny <span class="sc">+</span> exp_year <span class="sc">+</span> imp_year</span></code></pre></div>
+<p>The variables are:</p>
+<ul>
+<li>trade: bilateral trade</li>
+<li>log_dist: log of distance</li>
+<li>cntg: contiguity</li>
+<li>lang: common language</li>
+<li>clny: colonial relation</li>
+<li>exp_year/imp_year: exporter/importer time fixed effects</li>
+</ul>
+<p>The data for this model consists in a 28,152 x 7 data frame with 5 numeric and 2 categorical columns. This results in a 28,152 x 23 design matrix:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 28,152 x 23</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Groups:   importer, year [414]</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    exporter importer pair_id  year  trade   dist  cntg  lang  clny log_trade</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;      &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ARG      AUS            1  1986  27.8  12045.     0     0     0      3.32</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ARG      AUT            2  1986   3.56 11751.     0     0     0      1.27</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ARG      BEL            4  1986  96.1  11305.     0     0     0      4.57</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ARG      BGR            3  1986   3.13 12116.     0     0     0      1.14</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ARG      BOL            6  1986  52.7   1866.     1     1     0      3.97</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ARG      BRA            8  1986 405.    2392.     1     0     0      6.00</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ARG      CAN           10  1986  48.3   9391.     0     0     0      3.88</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ARG      CHE           12  1986  23.6  11233.     0     0     0      3.16</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 ARG      CHL           14  1986 109.    1157.     1     1     0      4.69</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ARG      CHN           17  1986 161.   19110.     0     0     0      5.08</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 28,142 more rows, and 13 more variables: log_dist &lt;dbl&gt;, y &lt;dbl&gt;,</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   log_y &lt;dbl&gt;, e &lt;dbl&gt;, log_e &lt;dbl&gt;, total_e &lt;dbl&gt;, remoteness_exp &lt;dbl&gt;,</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   log_remoteness_exp &lt;dbl&gt;, total_y &lt;dbl&gt;, remoteness_imp &lt;dbl&gt;,</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   log_remoteness_imp &lt;dbl&gt;, exp_year &lt;chr&gt;, imp_year &lt;chr&gt;</span></span></code></pre></div>
+<p>The benchmark was conducted by using the microbenchmark package and running the code in different Digital Ocean droplets:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">benchmark_times</span> <span class="op">&lt;-</span> <span class="fu">microbenchmark</span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">trade</span> <span class="op">~</span> <span class="va">log_dist</span> <span class="op">+</span> <span class="va">cntg</span> <span class="op">+</span> <span class="va">lang</span> <span class="op">+</span> <span class="va">clny</span> <span class="op">+</span> <span class="va">exp_year</span> <span class="op">+</span> <span class="va">imp_year</span>,
+      family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">quasipoisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>,
+      data <span class="op">=</span> <span class="va">ch1_application1_2</span>,
+      y <span class="op">=</span> <span class="cn">FALSE</span>,
+      model <span class="op">=</span> <span class="cn">FALSE</span>
+  <span class="op">)</span>,
+  <span class="fu"><a href="reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">trade</span> <span class="op">~</span> <span class="va">log_dist</span> <span class="op">+</span> <span class="va">cntg</span> <span class="op">+</span> <span class="va">lang</span> <span class="op">+</span> <span class="va">clny</span> <span class="op">+</span> <span class="va">exp_year</span> <span class="op">+</span> <span class="va">imp_year</span>,
+       family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">quasipoisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>,
+       data <span class="op">=</span> <span class="va">ch1_application1_2</span>,
+       y <span class="op">=</span> <span class="cn">FALSE</span>,
+       model <span class="op">=</span> <span class="cn">FALSE</span>
+  <span class="op">)</span>,
+  times <span class="op">=</span> <span class="fl">500L</span>
+<span class="op">)</span></code></pre></div>
+<p>Here are the tests results which are very consistent across different hardware (this is surprising, more CPUs don’t reduce the median time). Also notice that this plot summarises 2,000 repetitions of the tests: <img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
 </div>
 <div id="progress-list" class="section level2">
 <h2 class="hasAnchor">
 <a href="#progress-list" class="anchor"></a>Progress list</h2>
-<div id="sandwich" class="section level3">
+<div id="sandwich-compatibility" class="section level3">
 <h3 class="hasAnchor">
-<a href="#sandwich" class="anchor"></a>Sandwich</h3>
-<ul>
+<a href="#sandwich-compatibility" class="anchor"></a>Sandwich compatibility</h3>
+<ul class="task-list">
 <li>
 <input type="checkbox" disabled checked>
 estfun</li>
@@ -147,10 +276,10 @@ vcovPL</li>
 meatPL</li>
 </ul>
 </div>
-<div id="broom" class="section level3">
+<div id="broom-compatibility" class="section level3">
 <h3 class="hasAnchor">
-<a href="#broom" class="anchor"></a>Broom</h3>
-<ul>
+<a href="#broom-compatibility" class="anchor"></a>Broom compatibility</h3>
+<ul class="task-list">
 <li>
 <input type="checkbox" disabled checked>
 augment</li>
@@ -167,6 +296,8 @@ tidy</li>
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=eflm">https://​cloud.r-project.org/​package=eflm</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/pachamaltese/eflm/">https://​github.com/​pachamaltese/​eflm/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/pachamaltese/eflm/issues/">https://​github.com/​pachamaltese/​eflm/​issues/​</a>
@@ -177,7 +308,7 @@ tidy</li>
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small>GPL (&gt;= 3)</small></li>
+<li><small>Apache License (&gt;= 2)</small></li>
 </ul>
 </div>
 <div class="community">
@@ -199,6 +330,10 @@ tidy</li>
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
+<li><a href="https://cran.r-project.org/package=eflm"><img src="https://www.r-pkg.org/badges/version/gravity" alt="CRAN status"></a></li>
+<li><a href="https://codecov.io/gh/pachamaltese/eflm"><img src="https://codecov.io/gh/pachamaltese/eflm/branch/main/graph/badge.svg?token=XI59cmGd15" alt="codecov"></a></li>
 <li><a href="https://github.com/pachamaltese/yotover-testing/actions"><img src="https://github.com/pachamaltese/yotover-testing/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
