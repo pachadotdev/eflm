@@ -1,3 +1,8 @@
+# eflm 0.2.1
+
+* Adds generic method for weights (i.e. now I can replicate the clotting example from glm)
+* Starts adding vignettes with all lm/glm tests from R source code
+
 # eflm 0.2
 
 * Allows to use formulas such as `mpg ~ log(wt)` instead of having to create `mtcars$logwt <- log(mtcars$wt)`
