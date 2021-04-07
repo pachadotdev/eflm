@@ -85,7 +85,11 @@ vcovBS.eglm <- function(x, cluster = NULL, R = 250, start = FALSE, ..., fix = FA
     ## bootstrap fitting function
     bootfit <- function(j, ...) {
       j <- unlist(cli[sample(names(cli), length(cli), replace = TRUE)])
-      glm.fit(xfit[j, , drop = FALSE], y[j], family = x$family, start = start, ...)$coefficients
+      eglm.wfit(
+        y = y[j],
+        X = xfit[j, , drop = FALSE],
+        family = x$family,
+        start = start, ...)$coefficients
     }
 
     ## actually refit
@@ -93,7 +97,7 @@ vcovBS.eglm <- function(x, cluster = NULL, R = 250, start = FALSE, ..., fix = FA
     cf <- do.call("rbind", cf)
 
     ## aggregate across cluster variables
-    rval <- rval + sign[i] * cov(cf, use = use)
+    rval <- rval + sign[i] * stats::cov(cf, use = use)
   }
 
   ## check (and fix) if sandwich is not positive semi-definite

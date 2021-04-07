@@ -17,8 +17,6 @@ test_that("eglm + vcovBS return the same as glm + vcovBS", {
   # vcovBS uses bootstrap so I need a seed to compare two results!
   with_seed <- function(seed, code) {
     code <- substitute(code)
-    orig.seed <- .Random.seed
-    on.exit(.Random.seed <<- orig.seed)
     set.seed(seed)
     eval.parent(code)
   }
