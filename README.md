@@ -124,10 +124,11 @@ remotes::install_github("pachamaltese/eflm")
 
 ## Benchmarks
 
-I fitted computationally complex model from [Yotov, et.
-al. (2016)](https://pacha.dev/yotover/partial-equilibrium-trade-policy-analysis-with-structural-gravity.html#ppml-estimation-controlling-for-multilateral-resistance-terms-with-fixed-effects).
+*PENDING*: Add more tests in vignette
 
-The benchmark was be the model:
+I fitted a computationally complex model from [Yotov, et.
+al. (2016)](https://pacha.dev/yotover/partial-equilibrium-trade-policy-analysis-with-structural-gravity.html#ppml-estimation-controlling-for-multilateral-resistance-terms-with-fixed-effects).
+The benchmark was the model:
 
     trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
 
