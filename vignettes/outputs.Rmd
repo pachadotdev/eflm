@@ -33,7 +33,7 @@ summary(glm(model1, family = gaussian, data = anorexia))
 
 And now with 'eglm':
 ```{r}
-summary(eglm(model1, family = gaussian(), data = anorexia))
+summary(eglm(model1, family = gaussian, data = anorexia))
 ```
 
 # A Gamma example
@@ -65,7 +65,7 @@ model1 <- "lot1 ~ log(u)"
 summary(glm(model1, data = clotting, family = Gamma))
 ```
 ```{r}
-summary(eglm(model1, data = clotting, family = Gamma()))
+summary(eglm(model1, data = clotting, family = Gamma))
 ```
 
 And now $lot2_i^{-1} = \beta_0 + \beta_1 \log(u_i) + \varepsilon_i$ with both 'glm' and 'eglm':
@@ -74,7 +74,7 @@ model2 <- "lot2 ~ log(u)"
 summary(glm(model2, data = clotting, family = Gamma))
 ```
 ```{r}
-summary(eglm(model2, data = clotting, family = Gamma()))
+summary(eglm(model2, data = clotting, family = Gamma))
 ```
 
 ## AIC comparison
@@ -82,7 +82,7 @@ summary(eglm(model2, data = clotting, family = Gamma()))
 Aside from summaries, we can compare the different AIC values for the first model with both 'glm' and 'eglm':
 ```{r}
 fm1 <- glm(model1, data = clotting, family = Gamma)
-fm2 <- eglm(model1, data = clotting, family = Gamma())
+fm2 <- eglm(model1, data = clotting, family = Gamma)
 
 hasDisp <- 1 # have dispersion (here, but not e.g., for binomial, poisson)
 
@@ -119,7 +119,7 @@ And now the same as above for the second model:
 
 ```{r}
 fm1 <- glm(model2, data = clotting, family = Gamma)
-fm2 <- eglm(model2, data = clotting, family = Gamma())
+fm2 <- eglm(model2, data = clotting, family = Gamma)
 
 test_AIC()
 ```
@@ -134,7 +134,7 @@ glm(model3, data = clotting, family = Gamma)
 
 And the same applies to 'eglm':
 ```{r}
-eglm(model3, data = clotting, family = Gamma())
+eglm(model3, data = clotting, family = Gamma)
 ```
 
 # Case when the fit for the null deviance fails to converge
@@ -156,6 +156,6 @@ fail1 <- glm(formula = Y ~ offset(cst) + beta + tau, family = poisson)
 
 Output for 'eglm':
 ```{r, error = TRUE}
-fail2 <- eglm(formula = Y ~ offset(cst) + beta + tau, family = poisson())
+fail2 <- eglm(formula = Y ~ offset(cst) + beta + tau, family = poisson)
 ```
 *PENDING*: I need to replicate the same error!

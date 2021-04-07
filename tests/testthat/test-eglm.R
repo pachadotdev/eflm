@@ -1,8 +1,8 @@
 # Gaussian ----
 
 test_that("eglm (gaussian) == glm", {
-  m1 <- glm(mpg ~ wt + am, family = gaussian(), data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian(), data = mtcars)
+  m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -28,8 +28,8 @@ test_that("eglm (gaussian) == glm", {
 })
 
 test_that("eglm (gaussian) + qr singularity.method == glm", {
-  m1 <- glm(mpg ~ wt + am, family = gaussian(), data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian(), data = mtcars, singularity.method = "qr")
+  m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, singularity.method = "qr")
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -49,8 +49,8 @@ test_that("eglm (gaussian) + qr singularity.method == glm", {
 })
 
 test_that("eglm (gaussian) + cholesky singularity.method == glm", {
-  m1 <- glm(mpg ~ wt + am, family = gaussian(), data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian(), data = mtcars, singularity.method = "Cholesky")
+  m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, singularity.method = "Cholesky")
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -81,8 +81,8 @@ test_that("eglm (gaussian) + cholesky singularity.method == glm", {
 # Inverse-Gaussian ----
 
 test_that("eglm (inverse.gaussian) == glm", {
-  m1 <- glm(mpg ~ wt + am, family = inverse.gaussian(), data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = inverse.gaussian(), data = mtcars)
+  m1 <- glm(mpg ~ wt + am, family = inverse.gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = inverse.gaussian, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -113,8 +113,8 @@ test_that("eglm (inverse.gaussian) == glm", {
 # Gamma ----
 
 test_that("eglm (gamma) == glm", {
-  m1 <- glm(mpg ~ wt + am, family = Gamma(), data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = Gamma(), data = mtcars)
+  m1 <- glm(mpg ~ wt + am, family = Gamma, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = Gamma, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -145,8 +145,8 @@ test_that("eglm (gamma) == glm", {
 # Binomial ----
 
 test_that("eglm (binomial) == glm", {
-  m1 <- glm(am ~ wt + mpg, family = binomial(), data = mtcars)
-  m2 <- eglm(am ~ wt + mpg, family = binomial(), data = mtcars)
+  m1 <- glm(am ~ wt + mpg, family = binomial, data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = binomial, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -177,8 +177,8 @@ test_that("eglm (binomial) == glm", {
 # Quasi-Binomial ----
 
 test_that("eglm (quasibinomial) == glm", {
-  m1 <- glm(am ~ wt + mpg, family = quasibinomial(), data = mtcars)
-  m2 <- eglm(am ~ wt + mpg, family = quasibinomial(), data = mtcars)
+  m1 <- glm(am ~ wt + mpg, family = quasibinomial, data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = quasibinomial, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -209,8 +209,8 @@ test_that("eglm (quasibinomial) == glm", {
 # Poisson ----
 
 test_that("eglm (poisson) == glm", {
-  m1 <- glm(am ~ wt + mpg, family = poisson(), data = mtcars)
-  m2 <- eglm(am ~ wt + mpg, family = poisson(), data = mtcars)
+  m1 <- glm(am ~ wt + mpg, family = poisson, data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = poisson, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -241,8 +241,8 @@ test_that("eglm (poisson) == glm", {
 # Quasi-Poisson ----
 
 test_that("eglm (quasipoisson) == glm", {
-  m1 <- glm(mpg ~ wt + am, family = quasipoisson(), data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = quasipoisson(), data = mtcars)
+  m1 <- glm(mpg ~ wt + am, family = quasipoisson, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = quasipoisson, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -273,8 +273,8 @@ test_that("eglm (quasipoisson) == glm", {
 # Quasi ----
 
 test_that("eglm (quasi) == glm", {
-  m1 <- glm(mpg ~ wt + am, family = quasi(), data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = quasi(), data = mtcars)
+  m1 <- glm(mpg ~ wt + am, family = quasi, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = quasi, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)
@@ -305,22 +305,31 @@ test_that("eglm (quasi) == glm", {
 # Convergence ----
 
 test_that("eglm converges the same as glm with a regular model", {
-  m1 <- eglm(am ~ mpg + wt, family = binomial(), data = mtcars)
-  m2 <- eglm(am ~ mpg + wt, family = binomial(), data = mtcars)
+  m1 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
+  m2 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
   expect_equal(m2$iter, m1$iter)
   expect_equal(m2$convergence, m1$convergence)
 })
 
 test_that("eglm logit fails to converge with a large number of variables", {
-  # expect_warning(glm(am ~ ., family = binomial(), data = mtcars))
-  expect_warning(eglm(am ~ ., family = binomial(), data = mtcars))
+  # Warning messages:
+  #  1: glm.fit: algorithm did not converge
+  #  2: glm.fit: fitted probabilities numerically 0 or 1 occurred
+  expect_warning(
+    expect_warning(glm(am ~ ., family = binomial, data = mtcars))
+  )
+
+  # Warning message:
+  #  In eglm(am ~ ., family = binomial, data = mtcars) :
+  #  Maximum number of iterations reached without convergence
+  expect_warning(eglm(am ~ ., family = binomial, data = mtcars))
 })
 
 # Fitting ----
 
 test_that("eglm returns the same fitted values as glm", {
-  m1 <- eglm(am ~ mpg + wt, family = binomial(), data = mtcars)
-  m2 <- eglm(am ~ mpg + wt, family = binomial(), data = mtcars)
+  m1 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
+  m2 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
   expect_equal(m1$fitted.values, m2$fitted.values)
   expect_equal(fitted(m1), fitted(m2))
 })

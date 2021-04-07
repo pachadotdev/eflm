@@ -1,10 +1,10 @@
 # Gaussian ----
 
 test_that("Drop: flgm (gaussian) == glm with no test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m1 <- drop1(m1)
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m2 <- drop1(m2)
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -13,10 +13,10 @@ test_that("Drop: flgm (gaussian) == glm with no test", {
 })
 
 test_that("Drop: flgm (gaussian) == glm with F test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m1 <- drop1(m1, test = "F")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m2 <- drop1(m2, test = "F")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -27,10 +27,10 @@ test_that("Drop: flgm (gaussian) == glm with F test", {
 })
 
 test_that("Drop: flgm (gaussian) == glm with Chisq test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m1 <- drop1(m1, test = "Chisq")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m2 <- drop1(m2, test = "Chisq")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -41,10 +41,10 @@ test_that("Drop: flgm (gaussian) == glm with Chisq test", {
 })
 
 test_that("Drop: flgm (gaussian) == glm with LRT test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m1 <- drop1(m1, test = "LRT")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m2 <- drop1(m2, test = "LRT")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -55,10 +55,10 @@ test_that("Drop: flgm (gaussian) == glm with LRT test", {
 })
 
 test_that("Drop: flgm (gaussian) == glm with Rao test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m1 <- drop1(m1, test = "Rao")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian)
   drop_m2 <- drop1(m2, test = "Rao")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -71,10 +71,10 @@ test_that("Drop: flgm (gaussian) == glm with Rao test", {
 # Inverse-Gaussian ----
 
 test_that("Drop: flgm (inverse.gaussian) == glm with no test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m1 <- drop1(m1)
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m2 <- drop1(m2)
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -83,10 +83,10 @@ test_that("Drop: flgm (inverse.gaussian) == glm with no test", {
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with F test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m1 <- drop1(m1, test = "F")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m2 <- drop1(m2, test = "F")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -97,10 +97,10 @@ test_that("Drop: flgm (inverse.gaussian) == glm with F test", {
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with Chisq test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m1 <- drop1(m1, test = "Chisq")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m2 <- drop1(m2, test = "Chisq")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -111,10 +111,10 @@ test_that("Drop: flgm (inverse.gaussian) == glm with Chisq test", {
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with LRT test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m1 <- drop1(m1, test = "LRT")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m2 <- drop1(m2, test = "LRT")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -125,10 +125,10 @@ test_that("Drop: flgm (inverse.gaussian) == glm with LRT test", {
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with Rao test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m1 <- drop1(m1, test = "Rao")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian)
   drop_m2 <- drop1(m2, test = "Rao")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -141,10 +141,10 @@ test_that("Drop: flgm (inverse.gaussian) == glm with Rao test", {
 # Binomial ----
 
 test_that("Drop: flgm (binomial) == glm with no test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m1 <- drop1(m1)
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m2 <- drop1(m2)
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -154,10 +154,10 @@ test_that("Drop: flgm (binomial) == glm with no test", {
 
 test_that("Drop: flgm (binomial) == glm with F test", {
   # F test assumes 'quasibinomial' family
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m1 <- expect_warning(drop1(m1, test = "F"))
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m2 <- expect_warning(drop1(m2, test = "F"))
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -168,10 +168,10 @@ test_that("Drop: flgm (binomial) == glm with F test", {
 })
 
 test_that("Drop: flgm (binomial) == glm with Chisq test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m1 <- drop1(m1, test = "Chisq")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m2 <- drop1(m2, test = "Chisq")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -182,10 +182,10 @@ test_that("Drop: flgm (binomial) == glm with Chisq test", {
 })
 
 test_that("Drop: flgm (binomial) == glm with LRT test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m1 <- drop1(m1, test = "LRT")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m2 <- drop1(m2, test = "LRT")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -196,10 +196,10 @@ test_that("Drop: flgm (binomial) == glm with LRT test", {
 })
 
 test_that("Drop: flgm (binomial) == glm with Rao test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m1 <- drop1(m1, test = "Rao")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial)
   drop_m2 <- drop1(m2, test = "Rao")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -212,10 +212,10 @@ test_that("Drop: flgm (binomial) == glm with Rao test", {
 # Quasi-Binomial ----
 
 test_that("Drop: flgm (quasibinomial) == glm with no test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m1 <- drop1(m1)
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m2 <- drop1(m2)
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -224,10 +224,10 @@ test_that("Drop: flgm (quasibinomial) == glm with no test", {
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with F test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m1 <- drop1(m1, test = "F")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m2 <- drop1(m2, test = "F")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -238,10 +238,10 @@ test_that("Drop: flgm (quasibinomial) == glm with F test", {
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with Chisq test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m1 <- drop1(m1, test = "Chisq")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m2 <- drop1(m2, test = "Chisq")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -252,10 +252,10 @@ test_that("Drop: flgm (quasibinomial) == glm with Chisq test", {
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with LRT test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m1 <- drop1(m1, test = "LRT")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m2 <- drop1(m2, test = "LRT")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -266,10 +266,10 @@ test_that("Drop: flgm (quasibinomial) == glm with LRT test", {
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with Rao test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m1 <- drop1(m1, test = "Rao")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial)
   drop_m2 <- drop1(m2, test = "Rao")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -282,10 +282,10 @@ test_that("Drop: flgm (quasibinomial) == glm with Rao test", {
 # Poisson ----
 
 test_that("Drop: flgm (poisson) == glm with no test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m1 <- drop1(m1)
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m2 <- drop1(m2)
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -295,10 +295,10 @@ test_that("Drop: flgm (poisson) == glm with no test", {
 
 test_that("Drop: flgm (poisson) == glm with F test", {
   # F test assumes 'quasipoisson' family
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m1 <- expect_warning(drop1(m1, test = "F"))
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m2 <- expect_warning(drop1(m2, test = "F"))
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -309,10 +309,10 @@ test_that("Drop: flgm (poisson) == glm with F test", {
 })
 
 test_that("Drop: flgm (poisson) == glm with Chisq test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m1 <- drop1(m1, test = "Chisq")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m2 <- drop1(m2, test = "Chisq")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -323,10 +323,10 @@ test_that("Drop: flgm (poisson) == glm with Chisq test", {
 })
 
 test_that("Drop: flgm (poisson) == glm with LRT test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m1 <- drop1(m1, test = "LRT")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m2 <- drop1(m2, test = "LRT")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -337,10 +337,10 @@ test_that("Drop: flgm (poisson) == glm with LRT test", {
 })
 
 test_that("Drop: flgm (poisson) == glm with Rao test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m1 <- drop1(m1, test = "Rao")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson)
   drop_m2 <- drop1(m2, test = "Rao")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -353,10 +353,10 @@ test_that("Drop: flgm (poisson) == glm with Rao test", {
 # Quasi-Poisson ----
 
 test_that("Drop: flgm (poisson) == glm with no test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m1 <- drop1(m1)
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m2 <- drop1(m2)
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -365,10 +365,10 @@ test_that("Drop: flgm (poisson) == glm with no test", {
 })
 
 test_that("Drop: flgm (poisson) == glm with F test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m1 <- drop1(m1, test = "F")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m2 <- drop1(m2, test = "F")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -379,10 +379,10 @@ test_that("Drop: flgm (poisson) == glm with F test", {
 })
 
 test_that("Drop: flgm (poisson) == glm with Chisq test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m1 <- drop1(m1, test = "Chisq")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m2 <- drop1(m2, test = "Chisq")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -393,10 +393,10 @@ test_that("Drop: flgm (poisson) == glm with Chisq test", {
 })
 
 test_that("Drop: flgm (poisson) == glm with LRT test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m1 <- drop1(m1, test = "LRT")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m2 <- drop1(m2, test = "LRT")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -407,10 +407,10 @@ test_that("Drop: flgm (poisson) == glm with LRT test", {
 })
 
 test_that("Drop: flgm (poisson) == glm with Rao test", {
-  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m1 <- glm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m1 <- drop1(m1, test = "Rao")
 
-  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson())
+  m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson)
   drop_m2 <- drop1(m2, test = "Rao")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -423,10 +423,10 @@ test_that("Drop: flgm (poisson) == glm with Rao test", {
 # Quasi ----
 
 test_that("Drop: flgm (quasi) == glm with no test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m1 <- drop1(m1)
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m2 <- drop1(m2)
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -435,10 +435,10 @@ test_that("Drop: flgm (quasi) == glm with no test", {
 })
 
 test_that("Drop: flgm (quasi) == glm with F test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m1 <- drop1(m1, test = "F")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m2 <- drop1(m2, test = "F")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -449,10 +449,10 @@ test_that("Drop: flgm (quasi) == glm with F test", {
 })
 
 test_that("Drop: flgm (quasi) == glm with Chisq test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m1 <- drop1(m1, test = "Chisq")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m2 <- drop1(m2, test = "Chisq")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -463,10 +463,10 @@ test_that("Drop: flgm (quasi) == glm with Chisq test", {
 })
 
 test_that("Drop: flgm (quasi) == glm with LRT test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m1 <- drop1(m1, test = "LRT")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m2 <- drop1(m2, test = "LRT")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -477,10 +477,10 @@ test_that("Drop: flgm (quasi) == glm with LRT test", {
 })
 
 test_that("Drop: flgm (quasi) == glm with Rao test", {
-  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m1 <- glm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m1 <- drop1(m1, test = "Rao")
 
-  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi())
+  m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi)
   drop_m2 <- drop1(m2, test = "Rao")
 
   expect_equal(drop_m1$Df, drop_m2$Df)
@@ -493,6 +493,6 @@ test_that("Drop: flgm (quasi) == glm with Rao test", {
 # Sanity check ----
 
 test_that("Drop: fails without model matrix", {
-  m1 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian(), model = FALSE)
+  m1 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian, model = FALSE)
   expect_error(drop1(m1))
 })

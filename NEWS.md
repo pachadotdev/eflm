@@ -1,3 +1,8 @@
+# eflm 0.2.2
+
+* allows `family = gaussian`, etc instead of `family = gaussian()`, just like `glm()`
+* supports `sandwich::vcovBS()`
+
 # eflm 0.2.1
 
 * Adds generic method for weights (i.e. now I can replicate the clotting example from glm)

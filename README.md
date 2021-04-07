@@ -30,11 +30,15 @@ packages for summary statistics and clustering by providing S3 methods.
 
 ## Details
 
-This package takes ideas from glm2, speedglm, fastglm, and fixest, but
-the implementations here shall keep the functions and outputs as closely
-as possible to the stats package, therefore making this compatible with
-packages such as sandwich for robust estimation, even if that means to
-attenuate the speed gains.
+This package takes ideas from glm2, speedglm, fastglm, and fixest
+packages, but the implementations here shall keep the functions and
+outputs as closely as possible to the stats package, therefore making
+the functions provided here compatible with packages such as sandwich
+for robust estimation, even if that means to attenuate the speed gains.
+
+The greatest strength of this package is testing. With more than 750
+(and counting) tests, we try to do exactly the same as lm/glm, even in
+edge cases, but faster.
 
 The ultimate aim of the project is to produce a package that:
 
@@ -199,8 +203,7 @@ Also notice that this plot summarises 2,000 repetitions of the tests:
 -   [x] vcovCL
 -   [x] meatCL
 -   [x] vcovCL
--   [ ] vcovBS
--   [ ] meatBS
+-   [x] vcovBS
 -   [ ] vcovHC
 -   [ ] meatHC
 -   [ ] vcovPC

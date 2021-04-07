@@ -19,8 +19,8 @@ test_that("elm returns the same regression output as lm with formulas", {
 })
 
 test_that("eglm (gaussian) == glm with formulas", {
-  m1 <- glm(mpg ~ I(wt^2) + log(cyl), family = gaussian(), data = mtcars)
-  m2 <- eglm(mpg ~ I(wt^2) + log(cyl), family = gaussian(), data = mtcars)
+  m1 <- glm(mpg ~ I(wt^2) + log(cyl), family = gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ I(wt^2) + log(cyl), family = gaussian, data = mtcars)
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$residuals, m2$residuals)

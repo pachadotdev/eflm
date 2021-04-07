@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eflm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -133,10 +133,10 @@
 <span class="co">#&gt; Number of Fisher Scoring iterations: 2</span></code></pre></div>
 <p>And now with ‘eglm’:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model1</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">anorexia</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model1</span>, family <span class="op">=</span> <span class="va">gaussian</span>, data <span class="op">=</span> <span class="va">anorexia</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; eglm(formula = model1, family = gaussian(), data = anorexia)</span>
+<span class="co">#&gt; eglm(formula = model1, family = gaussian, data = anorexia)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Deviance residuals:</span>
 <span class="co">#&gt;      Min        1Q    Median        3Q       Max  </span>
@@ -213,10 +213,10 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Number of Fisher Scoring iterations: 3</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model1</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">Gamma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model1</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="va">Gamma</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; eglm(formula = model1, family = Gamma(), data = clotting)</span>
+<span class="co">#&gt; eglm(formula = model1, family = Gamma, data = clotting)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Deviance residuals:</span>
 <span class="co">#&gt;      Min        1Q    Median        3Q       Max  </span>
@@ -263,10 +263,10 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Number of Fisher Scoring iterations: 3</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model2</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">Gamma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model2</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="va">Gamma</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; eglm(formula = model2, family = Gamma(), data = clotting)</span>
+<span class="co">#&gt; eglm(formula = model2, family = Gamma, data = clotting)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Deviance residuals:</span>
 <span class="co">#&gt;      Min        1Q    Median        3Q       Max  </span>
@@ -293,7 +293,7 @@
 <p>Aside from summaries, we can compare the different AIC values for the first model with both ‘glm’ and ‘eglm’:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">model1</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="va">Gamma</span><span class="op">)</span>
-<span class="va">fm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model1</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">Gamma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">fm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model1</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="va">Gamma</span><span class="op">)</span>
 
 <span class="va">hasDisp</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># have dispersion (here, but not e.g., for binomial, poisson)</span>
 
@@ -329,7 +329,7 @@
 <p>And now the same as above for the second model:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">model2</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="va">Gamma</span><span class="op">)</span>
-<span class="va">fm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model2</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">Gamma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">fm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model2</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="va">Gamma</span><span class="op">)</span>
 
 <span class="fu">test_AIC</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'log Lik.' -10.51608 (df=3)</span>
@@ -354,14 +354,14 @@
 <span class="co">#&gt; Residual Deviance: 0.01267   AIC: 27.03</span></code></pre></div>
 <p>And the same applies to ‘eglm’:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model3</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">Gamma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span><span class="va">model3</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="va">Gamma</span><span class="op">)</span>
 <span class="co">#&gt; Warning in predict.elm(object, newdata, type = "response", na.action =</span>
 <span class="co">#&gt; na.action): Prediction from a rank-deficient fit may be misleading.</span>
 
 <span class="co">#&gt; Warning in predict.elm(object, newdata, type = "response", na.action =</span>
 <span class="co">#&gt; na.action): Prediction from a rank-deficient fit may be misleading.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Call:  eglm(formula = model3, family = Gamma(), data = clotting)</span>
+<span class="co">#&gt; Call:  eglm(formula = model3, family = Gamma, data = clotting)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
 <span class="co">#&gt; (Intercept)       log(u)     log(u^2)  </span>
@@ -390,7 +390,7 @@
 <span class="co">#&gt; fitting to calculate the null deviance did not converge -- increase 'maxit'?</span></code></pre></div>
 <p>Output for ‘eglm’:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fail2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Y</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="va">cst</span><span class="op">)</span> <span class="op">+</span> <span class="va">beta</span> <span class="op">+</span> <span class="va">tau</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">fail2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fitting.html">eglm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Y</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="va">cst</span><span class="op">)</span> <span class="op">+</span> <span class="va">beta</span> <span class="op">+</span> <span class="va">tau</span>, family <span class="op">=</span> <span class="va">poisson</span><span class="op">)</span>
 <span class="co">#&gt; Warning in predict.eglm(rval, newdata = data, type = "response", na.action = na.action): Fitted values were not returned from the eglm object:</span>
 <span class="co">#&gt;             use the original data by setting argument 'newdata' or refit</span>
 <span class="co">#&gt;             the model by specifying fitted=TRUE.</span>

@@ -1,4 +1,4 @@
-test_that("functions from stats package (except summary()) return the same as lm", {
+test_that("functions from stats package (except summary) return the same as lm", {
   m1 <- lm(mpg ~ wt, data = mtcars)
   m2 <- glm(mpg ~ wt, data = mtcars)
 
@@ -10,9 +10,9 @@ test_that("functions from stats package (except summary()) return the same as lm
   expect_equal(model.matrix(m1), model.matrix(m2))
 })
 
-test_that("functions from stats package (except summary()) return the same as glm", {
-  m1 <- glm(mpg ~ wt, family = gaussian(), data = mtcars)
-  m2 <- eglm(mpg ~ wt, family = gaussian(), data = mtcars)
+test_that("functions from stats package (except summary) return the same as glm", {
+  m1 <- glm(mpg ~ wt, family = gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt, family = gaussian, data = mtcars)
 
   fm1 <- family(m1)
   fm2 <- family(m2)

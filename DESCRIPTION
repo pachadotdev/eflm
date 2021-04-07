@@ -1,6 +1,6 @@
 Package: eflm
 Title: Efficient Fitting of Linear and Generalized Linear Models
-Version: 0.2
+Version: 0.2.2
 Authors@R: c( 
         person(given = "Mauricio",
                family = "Vargas",

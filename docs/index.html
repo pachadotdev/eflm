@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">eflm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -106,7 +106,8 @@
 <div id="details" class="section level2">
 <h2 class="hasAnchor">
 <a href="#details" class="anchor"></a>Details</h2>
-<p>This package takes ideas from glm2, speedglm, fastglm, and fixest, but the implementations here shall keep the functions and outputs as closely as possible to the stats package, therefore making this compatible with packages such as sandwich for robust estimation, even if that means to attenuate the speed gains.</p>
+<p>This package takes ideas from glm2, speedglm, fastglm, and fixest packages, but the implementations here shall keep the functions and outputs as closely as possible to the stats package, therefore making the functions provided here compatible with packages such as sandwich for robust estimation, even if that means to attenuate the speed gains.</p>
+<p>The greatest strength of this package is testing. With more than 750 (and counting) tests, we try to do exactly the same as lm/glm, even in edge cases, but faster.</p>
 <p>The ultimate aim of the project is to produce a package that:</p>
 <ul>
 <li>Does exactly the same as lm and glm in less time</li>
@@ -193,8 +194,8 @@
 <div id="benchmarks" class="section level2">
 <h2 class="hasAnchor">
 <a href="#benchmarks" class="anchor"></a>Benchmarks</h2>
-<p>I fitted computationally complex model from <a href="https://pacha.dev/yotover/partial-equilibrium-trade-policy-analysis-with-structural-gravity.html#ppml-estimation-controlling-for-multilateral-resistance-terms-with-fixed-effects">Yotov, et. al. (2016)</a>.</p>
-<p>The benchmark was be the model:</p>
+<p><em>PENDING</em>: Add more tests in vignette</p>
+<p>I fitted a computationally complex model from <a href="https://pacha.dev/yotover/partial-equilibrium-trade-policy-analysis-with-structural-gravity.html#ppml-estimation-controlling-for-multilateral-resistance-terms-with-fixed-effects">Yotov, et. al. (2016)</a>. The benchmark was the model:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trade <span class="sc">~</span> log_dist <span class="sc">+</span> cntg <span class="sc">+</span> lang <span class="sc">+</span> clny <span class="sc">+</span> exp_year <span class="sc">+</span> imp_year</span></code></pre></div>
 <p>The variables are:</p>
 <ul>
@@ -266,11 +267,8 @@ meatCL</li>
 <input type="checkbox" disabled checked>
 vcovCL</li>
 <li>
-<input type="checkbox" disabled>
+<input type="checkbox" disabled checked>
 vcovBS</li>
-<li>
-<input type="checkbox" disabled>
-meatBS</li>
 <li>
 <input type="checkbox" disabled>
 vcovHC</li>
