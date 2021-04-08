@@ -163,6 +163,7 @@ the design matrix input (see the DESCRIPTION).</p>
   tol.estimation <span class='op'>=</span> <span class='fl'>1e-08</span>,
   maxit <span class='op'>=</span> <span class='fl'>25</span>,
   k <span class='op'>=</span> <span class='fl'>2</span>,
+  bypass <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -181,6 +182,7 @@ the design matrix input (see the DESCRIPTION).</p>
   tol.solve <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span>,
   tol.values <span class='op'>=</span> <span class='fl'>1e-07</span>,
   tol.vectors <span class='op'>=</span> <span class='fl'>1e-07</span>,
+  bypass <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -302,7 +304,9 @@ Defaults to 1e-8.</p></td>
     <tr>
       <th>k</th>
       <td><p>the penalty per parameter to be used, the default <code>k = 2</code>
-is the classical AIC.</p></td>
+is the classical AIC.
+@param bypass use <code><a href='https://rdrr.io/r/stats/lm.html'>lm()</a></code> or <code><a href='https://rdrr.io/r/stats/glm.html'>glm()</a></code> if the design matrix does not
+pass the condition \(N &gt; kP\). Defaults to <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>

@@ -22,6 +22,7 @@ eglm <- function(formula,
                  tol.estimation = 1e-8,
                  maxit = 25,
                  k = 2,
+                 bypass = TRUE,
                  ...) {
   call <- match.call()
   ## family (taken from R source)

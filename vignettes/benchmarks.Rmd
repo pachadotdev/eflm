@@ -14,10 +14,82 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+# Gaussian regression
+
+The next example compares the computing times for simulated data running in a
+Intel i5 (8th gen) laptop. This illustrates quite well that 'eglm' performs 
+*worse* than 'glm' in median time when the design matrix of dimension 
+$N \times P$ is such that $N < 7P$.
+
+For example, with a design matrix of $2,500 \times 500$, fitting the model 
+$y = \beta X + \varepsilon$ (with intercept) by using 'eglm', takes around 120%
+of the time it takes with 'glm'.
+
+Doing the same with a design matrix of $10,000 \times 500$ by using 'eglm', 
+takes around 75% of the time it takes with 'glm'. This is because of the 
+computation taken to transform the design matrix.
+
+Also, doing the same with a design matrix of $25,000 \times 500$ by using
+'eglm', takes around 60% of the time it takes with 'glm'. This is because of the
+computation taken to transform the design matrix.
+
+```{r, eval = FALSE}
 library(eflm)
+library(microbenchmark)
+
+n <- 250000; p <- 500
+set.seed(1813)
+M <- as.data.frame(matrix(rnorm(n * p), nrow = n, ncol = p))
+colnames(M) <- c("y", paste0("x", seq_len(p - 1)))
+
+model <- paste("y ~", paste(paste0("x", seq_len(p)), collapse = " + "))
+
+benchmarks <- list()
+r <- c(seq(2500, 5000, 500), 25000, 250000)
+for (i in seq_along(r)) {
+  benchmark <- microbenchmark(
+    glm(model, data = M[1:r[i],]),
+    eglm(model, data = M[1:r[i],], bypass = F),
+    times = 5L
+  )
+    
+  design_matrix <- sprintf("%s x %s", r[i], p - 1)
+  unit <- attr(microbenchmark:::convert_to_unit(benchmark$time, "t"), "unit")
+  
+  benchmarks[[i]] <- list(benchmark, design_matrix, unit)
+}
+
+benchmarks2 <- list()
+for (i in seq_along(benchmarks)) {
+  benchmarks2[[i]] <- summary(benchmarks[[i]][[1]])
+  benchmarks2[[i]]$design_matrix <- benchmarks[[i]][[2]]
+  benchmarks2[[i]]$unit <- benchmarks[[i]][[3]]
+}
+benchmarks2 <- do.call("rbind", benchmarks2)
+benchmarks2 <- benchmarks2[, !colnames(benchmarks2) %in% "neval"]
+benchmarks2$expr <- ifelse(benchmarks2$expr == "glm(model, data = M[1:r[i], ])", "glm", "eglm")
 ```
 
-## Benchmarks
-
-Add more benchmarks
+```
+    expr        min          lq        mean      median         uq          max design_matrix         unit
+1   glm  616.011174  638.934670  678.776770  695.533564  704.455367  738.949077    2500 x 500 milliseconds
+2  eglm  762.391761  786.558544  831.987421  817.222906  837.499547  956.264348    2500 x 500 milliseconds
+3   glm  743.268949  747.136271  790.970327  761.621835  832.273590  870.550989    3000 x 500 milliseconds
+4  eglm  799.852980  844.357497  877.883077  895.545376  896.431533  953.228000    3000 x 500 milliseconds
+5   glm  904.496076  911.569741  939.194804  943.664908  967.705583  968.537713    3500 x 500 milliseconds
+6  eglm  924.117828  928.725474  951.288303  942.921554  975.638656  985.038001    3500 x 500 milliseconds
+7   glm 1005.706938 1006.013007 1047.253907 1024.832566 1081.240069 1118.476953    4000 x 500 milliseconds
+8  eglm  991.198718 1008.175966 1037.203347 1008.826370 1043.442952 1134.372728    4000 x 500 milliseconds
+9   glm    1.168150    1.172175    1.203107    1.209172    1.225577    1.240458    4500 x 500      seconds
+10 eglm    1.062872    1.126721    1.165727    1.210058    1.211844    1.217141    4500 x 500      seconds
+11  glm    1.278036    1.288992    1.298237    1.290063    1.294052    1.340040    5000 x 500      seconds
+12 eglm    1.198148    1.199115    1.221272    1.209675    1.216400    1.283020    5000 x 500      seconds
+13  glm    1.269479    1.342986    1.336342    1.343196    1.354294    1.371754    5000 x 500      seconds
+14 eglm    1.200934    1.259185    1.312116    1.351253    1.373214    1.375995    5000 x 500      seconds
+15  glm    2.644157    2.668184    2.779018    2.727838    2.830710    3.024200   10000 x 500      seconds
+16 eglm    2.069815    2.074178    2.079957    2.074862    2.079378    2.101552   10000 x 500      seconds
+17  glm    9.419447    9.432489   10.070074   10.245888   10.508736   10.743813   25000 x 500      seconds
+18 eglm    5.865614    6.019966    6.353489    6.310145    6.776381    6.795341   25000 x 500      seconds
+19  glm   79.214734   81.412115   83.386018   83.457276   84.876193   87.969771  250000 x 500      seconds
+20 eglm   48.328730   50.112071   52.736012   53.307241   54.218640   57.713376  250000 x 500      seconds
+```

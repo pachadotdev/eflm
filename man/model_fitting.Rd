@@ -28,6 +28,7 @@ eglm(
   tol.estimation = 1e-08,
   maxit = 25,
   k = 2,
+  bypass = TRUE,
   ...
 )
 
@@ -46,6 +47,7 @@ elm(
   tol.solve = .Machine$double.eps,
   tol.values = 1e-07,
   tol.vectors = 1e-07,
+  bypass = TRUE,
   ...
 )
 }
@@ -125,7 +127,9 @@ Defaults to 1e-8.}
 \item{maxit}{integer giving the maximal number of IWLS iterations.}
 
 \item{k}{the penalty per parameter to be used, the default \code{k = 2}
-is the classical AIC.}
+is the classical AIC.
+@param bypass use \code{lm()} or \code{glm()} if the design matrix does not
+pass the condition \eqn{N > kP}. Defaults to \code{TRUE}.}
 
 \item{\dots}{for \emph{elm} or \emph{eglm}: additional arguments to be used
 to form the default control. On the one hand, use \code{symmetric = F}

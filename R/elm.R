@@ -15,6 +15,7 @@ elm <- function(formula,
                 tol.solve = .Machine$double.eps,
                 tol.values = 1e-7,
                 tol.vectors = 1e-7,
+                bypass = TRUE,
                 ...) {
   target <- y
   call <- match.call()

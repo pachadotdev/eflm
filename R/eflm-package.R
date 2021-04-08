@@ -62,6 +62,8 @@
 #' @param maxit integer giving the maximal number of IWLS iterations.
 #' @param k the penalty per parameter to be used, the default \code{k = 2}
 #'  is the classical AIC.
+#'  @param bypass use \code{lm()} or \code{glm()} if the design matrix does not
+#'  pass the condition \eqn{N > kP}. Defaults to \code{TRUE}.
 #' @param \dots for \emph{elm} or \emph{eglm}: additional arguments to be used
 #'  to form the default control. On the one hand, use \code{symmetric = F}
 #'  instead of the default \code{TRUE} to indicate that the XTX matrix passed
