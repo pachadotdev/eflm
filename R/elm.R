@@ -18,6 +18,7 @@ elm <- function(formula,
                 bypass = TRUE,
                 ...) {
   target <- y
+  # if (!is.null(subset)) { data <- subset(data, subset) }
   call <- match.call()
   M <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "subset", "weights", "na.action", "offset"),
@@ -30,10 +31,8 @@ elm <- function(formula,
   tf <- attr(M, "terms")
   X <- model.matrix(tf, M)
   offset <- model.offset(M)
-  if (is.null(offset)) {
-    offset <- rep(0, length(y))
-  }
-  if (is.null(weights)) weights <- rep(1, length(y))
+  if (is.null(offset)) { offset <- rep(0, length(y)) }
+  if (is.null(weights)) { weights <- rep(1, length(y)) }
   rval <- elm.wfit(
     y,
     X,
@@ -61,7 +60,7 @@ elm <- function(formula,
   if (model) rval$model <- M
   if (x) rval$x <- X
   if (target) rval$y <- y
-  rval$fitted.values <- predict.elm(rval, newdata = data)
+  rval$fitted.values <- predict.elm(rval, newdata = M)
   rval$residuals <- y - rval$fitted.values
   rval$formula <- eval(call[[2]])
   rval

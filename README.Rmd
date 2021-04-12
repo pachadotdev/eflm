@@ -181,3 +181,17 @@ tidy_benchmarks %>%
 
 - [x] augment
 - [x] tidy
+
+### CAR 
+
+RESIDUALPLOTS
+cooks.distance?
+hatvalues?
+influenceIndexPlot
+influencePlot
+QQpLOT
+compareCoefs
+
+ver fit4 <- update(fit, subset=!(rownames(datos2) %in% c("NY","SD","TX","NV","CT"))  )
+
+
