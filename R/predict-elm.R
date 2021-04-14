@@ -4,9 +4,9 @@
 predict.elm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
                         interval = c("none", "confidence", "prediction"), level = 0.95,
                         type = c("response", "terms"), terms = NULL, na.action = na.pass,
-                        pred.var = res.var/weights, weights = NULL, ...) {
+                        pred.var = res.var / weights, weights = NULL, ...) {
   tt <- terms(object)
-  if (!inherits(object, c("elm", "eglm"))) {
+  if (!inherits(object, "elm")) {
     warning("calling predict.elm(<fake-elm/eglm-object>) ...")
   }
   if (missing(newdata) || is.null(newdata)) {
@@ -56,7 +56,7 @@ predict.elm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
       r <- object$residuals
       rss <- sum(if (is.null(w)) r^2 else r^2 * w)
       df <- object$df.residual
-      rss/df
+      rss / df
     } else {
       scale^2
     }
@@ -70,7 +70,7 @@ predict.elm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
         XRinv <- if (missing(newdata) && is.null(w)) {
           qr.Q(object$qr)[, p1, drop = FALSE]
         } else {
-          X[, piv] %*% qr.solve(qr.R(object$qr)[p1,p1])
+          X[, piv] %*% qr.solve(qr.R(object$qr)[p1, p1])
         }
         ip <- drop(XRinv^2 %*% rep(res.var, p))
       } else {
@@ -80,13 +80,15 @@ predict.elm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
   }
   if (se.fit || all(!interval %in% "none")) {
     se <- sqrt(ip)
-    if (type == "terms" && !is.null(terms) && !se.fit)
+    if (type == "terms" && !is.null(terms) && !se.fit) {
       se <- se[, terms, drop = FALSE]
+    }
   }
   if (missing(newdata) && !is.null(na.act <- object$na.action)) {
     predictor <- napredict(na.act, predictor)
-    if (se.fit)
+    if (se.fit) {
       se <- napredict(na.act, se)
+    }
   }
   predictor
 }

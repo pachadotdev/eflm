@@ -4,8 +4,8 @@
 print.summary.elm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
   x$coefficients$coef <- if (any(abs(na.omit(x$coefficients$coef)) < 0.0001)) {
     format(x$coefficients$coef,
-           scientific = TRUE,
-           digits = 4
+      scientific = TRUE,
+      digits = 4
     )
   } else {
     round(x$coefficients$coef, digits = 6)
@@ -18,12 +18,12 @@ print.summary.elm <- function(x, digits = max(3, getOption("digits") - 3), ...) 
   x$coefficients$`t value` <- round(x$coefficients$`t value`, digits = 4)
   x$coefficients$`Pr(>|t|)` <- if (any(na.omit(x$coefficients$`Pr(>|t|)`) < 0.0001)) {
     format(x$coefficients$`Pr(>|t|)`,
-           scientific = TRUE,
-           digits = 3
+      scientific = TRUE,
+      digits = 3
     )
   } else {
     round(x$coefficients$`Pr(>|t|)`,
-          digits = 6
+      digits = 6
     )
   }
 
@@ -86,18 +86,18 @@ print.summary.elm <- function(x, digits = max(3, getOption("digits") - 3), ...) 
   }
   if (x$intercept) {
     cat("Residual standard error: ", round(sqrt(x$var.res), 3), " on ", x$rdf,
-        " degrees of freedom\n",
-        "Multiple R-squared: ", format(x$r.squared, digits = 4),
-        ",\tAdjusted R-squared: ", format(x$adj.r.squared, digits = 4), "\n",
-        "F-statistic: ", format(x$fstatistic[1], digits = 4), " on ", x$fstatistic[2],
-        " and ", x$fstatistic[3], " DF,\tp-value: ", format(x$f.pvalue, digits = 4),
-        ".\n",
-        sep = ""
+      " degrees of freedom\n",
+      "Multiple R-squared: ", format(x$r.squared, digits = 4),
+      ",\tAdjusted R-squared: ", format(x$adj.r.squared, digits = 4), "\n",
+      "F-statistic: ", format(x$fstatistic[1], digits = 4), " on ", x$fstatistic[2],
+      " and ", x$fstatistic[3], " DF,\tp-value: ", format(x$f.pvalue, digits = 4),
+      ".\n",
+      sep = ""
     )
   } else {
     cat("Residual standard error: ", round(sqrt(x$var.res), 6), " on ", x$rdf,
-        " degrees of freedom\n",
-        sep = ""
+      " degrees of freedom\n",
+      sep = ""
     )
   }
   if (s == 1) cat("One coefficient not defined because of singularities.\n")

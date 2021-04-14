@@ -3,20 +3,20 @@
 #' @keywords internal
 print.eglm <- function(x, digits = max(3, getOption("digits") - 3), ...) {
   cat("\nCall:  ", paste(deparse(x$call), sep = "\n", collapse = "\n"),
-      "\n\n",
-      sep = ""
+    "\n\n",
+    sep = ""
   )
   if (length(coef(x))) {
     cat("Coefficients")
     if (is.character(co <- x$contrasts)) {
       cat("  [contrasts: ", apply(cbind(names(co), co),
-                                  1L, paste,
-                                  collapse = "="
+        1L, paste,
+        collapse = "="
       ), "]")
     }
     cat(":\n")
     print.default(format(x$coefficients, digits = digits),
-                  print.gap = 2, quote = FALSE
+      print.gap = 2, quote = FALSE
     )
   }
   else {

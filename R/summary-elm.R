@@ -50,7 +50,7 @@ summary.elm <- function(object, ...) {
     r.squared <- as.numeric(mss / (mss + rss))
     adj.r.squared <- 1 - (1 - r.squared) * ((n - df.int) / rdf)
     fstatistic <- c(value = (as(mss, "numeric") /
-                               (z$rank - df.int)) / var_res, numdf = z$rank - df.int, dendf = rdf)
+      (z$rank - df.int)) / var_res, numdf = z$rank - df.int, dendf = rdf)
     f.pvalue <- 1 - pf(fstatistic[1], fstatistic[2], fstatistic[3])
   }
   else {

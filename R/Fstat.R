@@ -7,7 +7,7 @@ Fstat <- function(table, rdf) {
   P <- Fs
   nnas <- !is.na(Fs)
   P[nnas] <- safe_pf(Fs[nnas], df[nnas], rdf - df[nnas],
-                     lower.tail = FALSE
+    lower.tail = FALSE
   )
   list(Fs = Fs, P = P)
 }

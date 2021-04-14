@@ -1,10 +1,10 @@
 # Dynamically exported, see zzz.R
 
 #' @importFrom stats rstandard cooks.distance
-augment.eglm <- function (x, data = NULL, newdata = NULL,
-                          type.predict = c("link","response", "terms"),
-                          type.residuals = c("deviance", "pearson"),
-                          se_fit = FALSE, ...) {
+augment.eglm <- function(x, data = NULL, newdata = NULL,
+                         type.predict = c("link", "response", "terms"),
+                         type.residuals = c("deviance", "pearson"),
+                         se_fit = FALSE, ...) {
   type.predict <- match.arg(type.predict)
   type.residuals <- match.arg(type.residuals)
   if (is.null(newdata)) data <- try(eval(x$call$data))
@@ -19,13 +19,16 @@ augment.eglm <- function (x, data = NULL, newdata = NULL,
     df$.fitted <- unname(predict(x, newdata, type = type.predict))
   }
   if (is.null(newdata)) {
-    tryCatch({
-      infl <- stats::influence(x, do.coef = FALSE)
-      df$.resid <- unname(residuals(x, type = type.residuals))
-      df$.std.resid <- unname(rstandard(x, infl = infl, type = type.residuals))
-      df <- add_hat_sigma_cols(df, x, infl)
-      df$.cooksd <- unname(cooks.distance(x, infl = infl))
-    }, error = data_error)
+    tryCatch(
+      {
+        infl <- stats::influence(x, do.coef = FALSE)
+        df$.resid <- unname(residuals(x, type = type.residuals))
+        df$.std.resid <- unname(rstandard(x, infl = infl, type = type.residuals))
+        df <- add_hat_sigma_cols(df, x, infl)
+        df$.cooksd <- unname(cooks.distance(x, infl = infl))
+      },
+      error = data_error
+    )
   }
   df
 }

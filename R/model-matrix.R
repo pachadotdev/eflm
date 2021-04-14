@@ -1,6 +1,6 @@
 #' @export
 #' @keywords internal
-model.matrix.eglm <- function (object, ...) {
+model.matrix.eglm <- function(object, ...) {
   y <- if (is.null(object$x)) {
     obtain_model_matrix <- function(model, data) {
       call <- match.call()
@@ -17,8 +17,10 @@ model.matrix.eglm <- function (object, ...) {
       X
     }
 
-    obtain_model_matrix(model = object$call$formula,
-                        data = eval(object$call$data))
+    obtain_model_matrix(
+      model = object$call$formula,
+      data = eval(object$call$data)
+    )
   } else {
     object$x
   }

@@ -13,8 +13,10 @@ update_with_more_data <- function(object, data, subset = NULL, weights = NULL,
   M <- match.call(expand.dots = F)
   formula <- eval(object$call[[2]])
   M$formula <- formula
-  m <- match(c("formula", "data", "subset", "weights", "na.action", "offset"),
-             names(M), 0L)
+  m <- match(
+    c("formula", "data", "subset", "weights", "na.action", "offset"),
+    names(M), 0L
+  )
   M <- M[c(1L, m)]
   M$drop.unused.levels <- TRUE
   M[[1L]] <- quote(stats::model.frame)
@@ -27,14 +29,16 @@ update_with_more_data <- function(object, data, subset = NULL, weights = NULL,
     for (i in 1:length(fa)) {
       j <- j + 1
       eval(parse(text = paste("flevels$'", names(M)[fa[i]],
-                              "'", "<-levels(M[,fa[i]])",
-                              sep = ""
+        "'", "<-levels(M[,fa[i]])",
+        sep = ""
       )))
       a <- c(object$levels[[j]][!(object$levels[[j]] %in% flevels[[j]])], flevels[[j]])
       flevels[[j]] <- a
     }
-    M <- model.frame(formula, data, subset = subset, drop.unused.levels = TRUE,
-                     xlev = flevels, offset = offset)
+    M <- model.frame(formula, data,
+      subset = subset, drop.unused.levels = TRUE,
+      xlev = flevels, offset = offset
+    )
     X <- model.matrix(formula, M, xlev = flevels, offset = offset)
     object$levels <- flevels
   } else {

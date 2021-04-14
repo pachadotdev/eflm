@@ -1,7 +1,7 @@
 # Dynamically exported, see zzz.R
 
 # taken from broom::: to make augment.eglm work
-has_rownames <- function (df) {
+has_rownames <- function(df) {
   if (tibble::is_tibble(df)) {
     return(FALSE)
   }

@@ -89,7 +89,8 @@ vcovBS.eglm <- function(x, cluster = NULL, R = 250, start = FALSE, ..., fix = FA
         y = y[j],
         X = xfit[j, , drop = FALSE],
         family = x$family,
-        start = start, ...)$coefficients
+        start = start, ...
+      )$coefficients
     }
 
     ## actually refit

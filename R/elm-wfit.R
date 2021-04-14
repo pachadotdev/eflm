@@ -33,7 +33,7 @@ elm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
     coefficients <- rep(NA, nvar)
     coefficients[ok] <- coef
     RSS <- yy - 2 * crossprod(coef, Xy[ok]) + t(coef) %*% ris$XTX %*% coef
-  } else
+  } else {
     if (singularity.method == "Cholesky") {
       ris <- control(A, , tol.values, tol.vectors, , singularity.method)
       ris$XTX <- as(ris$XTX, "matrix")
@@ -42,7 +42,7 @@ elm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
       coefficients <- rep(NA, nvar)
       coefficients[ok] <- coef
       RSS <- yy - 2 * crossprod(coef, Xy[ok]) + t(coef) %*% ris$XTX %*% coef
-    } else
+    } else {
       if (singularity.method == "qr") {
         C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
         ris <- c(list(XTX = A), .Call(C_Cdqrls, A, Xy, tol.values, FALSE))
@@ -58,10 +58,12 @@ elm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
       } else {
         stop("elm.fit: Unknown singularity.method value")
       }
-
+    }
+  }
   names(coefficients) <- coefficient_names(col.names, coefficients, intercept)
   zero.w <- sum(w == 0)
   dfr <- nrow(X) - ris$rank - zero.w
+
   rval <- list(
     coefficients = coefficients,
     weights = w,

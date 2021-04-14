@@ -45,9 +45,12 @@ predict.eglm <- function(object, newdata, se.fit = FALSE, scale = NULL, df = Inf
       type = "response",
       na.action = na.action
     )
-    switch(type, response = {
-      pred <- stats::family(object)$linkinv(pred)
-    }, link = )
+    switch(type,
+      response = {
+        pred <- stats::family(object)$linkinv(pred)
+      },
+      link =
+      )
   }
   pred
 }

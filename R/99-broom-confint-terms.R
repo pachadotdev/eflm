@@ -2,7 +2,7 @@
 
 # taken from broom::: (makes tidy.eglm work)
 #' @importFrom stats confint
-confint_terms <- function (x, ...) {
+confint_terms <- function(x, ...) {
   ci <- suppressMessages(confint(x, ...))
   if (is.null(dim(ci))) {
     ci <- matrix(ci, nrow = 1)
