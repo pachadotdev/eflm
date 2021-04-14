@@ -17,7 +17,7 @@ elm <- function(formula,
                 tol.vectors = 1e-7,
                 bypass = TRUE,
                 ...) {
-  if (!is.null(subset)) {
+  if (!missing(subset)) {
     data <- safe_subset(data, substitute(subset))
   }
   target <- y
@@ -68,7 +68,7 @@ elm <- function(formula,
   if (model) rval$model <- M
   if (x) rval$x <- X
   if (target) rval$y <- y
-  rval$fitted.values <- predict.elm(rval, data = data, subset)
+  rval$fitted.values <- predict.elm(rval, newdata = data)
   rval$formula <- eval(call[[2]])
   rval
 }
