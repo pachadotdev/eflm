@@ -128,16 +128,34 @@ remotes::install_github("pachamaltese/eflm")
 
 ## Benchmarks
 
-*PENDING*: Add more tests in vignette
+Let’s fit two computationally demanding models from [Yotov, et
+al. (2016)](https://pacha.dev/yotover/).
 
-I fitted a computationally complex model from [Yotov, et.
-al. (2016)](https://pacha.dev/yotover/partial-equilibrium-trade-policy-analysis-with-structural-gravity.html#ppml-estimation-controlling-for-multilateral-resistance-terms-with-fixed-effects).
-The benchmark was the model:
+The dataset for the benchmark was also taken from Yotov, et al. and
+consists in a 28,152 x 8 data frame with 6 numeric and 2 categorical
+columns:
 
-    trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
+``` r
+trade_data_yotov
+#> # A tibble: 28,152 x 8
+#>     year  trade   dist  cntg  lang  clny exp_year imp_year
+#>    <int>  <dbl>  <dbl> <int> <int> <int> <chr>    <chr>   
+#>  1  1986  27.8  12045.     0     0     0 ARG1986  AUS1986 
+#>  2  1986   3.56 11751.     0     0     0 ARG1986  AUT1986 
+#>  3  1986  96.1  11305.     0     0     0 ARG1986  BEL1986 
+#>  4  1986   3.13 12116.     0     0     0 ARG1986  BGR1986 
+#>  5  1986  52.7   1866.     1     1     0 ARG1986  BOL1986 
+#>  6  1986 405.    2392.     1     0     0 ARG1986  BRA1986 
+#>  7  1986  48.3   9391.     0     0     0 ARG1986  CAN1986 
+#>  8  1986  23.6  11233.     0     0     0 ARG1986  CHE1986 
+#>  9  1986 109.    1157.     1     1     0 ARG1986  CHL1986 
+#> 10  1986 161.   19110.     0     0     0 ARG1986  CHN1986 
+#> # … with 28,142 more rows
+```
 
 The variables are:
 
+-   year: time of export/import flow
 -   trade: bilateral trade
 -   log\_dist: log of distance
 -   cntg: contiguity
@@ -145,53 +163,47 @@ The variables are:
 -   clny: colonial relation
 -   exp\_year/imp\_year: exporter/importer time fixed effects
 
-The data for this model consists in a 28,152 x 7 data frame with 5
-numeric and 2 categorical columns. This results in a 28,152 x 23 design
-matrix:
+### OLS estimation controlling for multilateral resistance terms with fixed effects
 
-    #> # A tibble: 28,152 x 23
-    #> # Groups:   importer, year [414]
-    #>    exporter importer pair_id  year  trade   dist  cntg  lang  clny log_trade
-    #>    <chr>    <chr>      <int> <int>  <dbl>  <dbl> <int> <int> <int>     <dbl>
-    #>  1 ARG      AUS            1  1986  27.8  12045.     0     0     0      3.32
-    #>  2 ARG      AUT            2  1986   3.56 11751.     0     0     0      1.27
-    #>  3 ARG      BEL            4  1986  96.1  11305.     0     0     0      4.57
-    #>  4 ARG      BGR            3  1986   3.13 12116.     0     0     0      1.14
-    #>  5 ARG      BOL            6  1986  52.7   1866.     1     1     0      3.97
-    #>  6 ARG      BRA            8  1986 405.    2392.     1     0     0      6.00
-    #>  7 ARG      CAN           10  1986  48.3   9391.     0     0     0      3.88
-    #>  8 ARG      CHE           12  1986  23.6  11233.     0     0     0      3.16
-    #>  9 ARG      CHL           14  1986 109.    1157.     1     1     0      4.69
-    #> 10 ARG      CHN           17  1986 161.   19110.     0     0     0      5.08
-    #> # … with 28,142 more rows, and 13 more variables: log_dist <dbl>, y <dbl>,
-    #> #   log_y <dbl>, e <dbl>, log_e <dbl>, total_e <dbl>, remoteness_exp <dbl>,
-    #> #   log_remoteness_exp <dbl>, total_y <dbl>, remoteness_imp <dbl>,
-    #> #   log_remoteness_imp <dbl>, exp_year <chr>, imp_year <chr>
+*This test was conducted on a 2 dedicated CPUs and 4GB of RAM
+DigitalOcean droplet.*
 
-The benchmark was conducted by using the microbenchmark package and
-running the code in different Digital Ocean droplets:
+The general equation for this model is:
 
-``` r
-benchmark_times <- microbenchmark(
-  glm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
-      family = quasipoisson(link = "log"),
-      data = ch1_application1_2,
-      y = FALSE,
-      model = FALSE
-  ),
-  eglm(trade ~ log_dist + cntg + lang + clny + exp_year + imp_year,
-       family = quasipoisson(link = "log"),
-       data = ch1_application1_2,
-       y = FALSE,
-       model = FALSE
-  ),
-  times = 500L
-)
-```
+By running regressions with cumulative subset of the data for 1986, …,
+2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),
+we obtain the next fitting times depending on the design matrix
+dimensions:
 
-Here are the tests results which are very consistent across different
-hardware (this is surprising, more CPUs don’t reduce the median time).
-Also notice that this plot summarises 2,000 repetitions of the tests:
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+The general equation for this model is:
+
+### PPML estimation controlling for multilateral resistance terms with fixed effects:
+
+*This test was conducted on a 2 dedicated CPUs and 4GB of RAM
+DigitalOcean droplet.*
+
+By running regressions with cumulative subset of the data for 1986, …,
+2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),
+we obtain the next fitting times depending on the design matrix
+dimensions:
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+### Performance on scaled hardware
+
+*This test was conducted on different dedicated CPUs DigitalOcean
+droplets.*
+
+We can repeatedly run the Quasi-Poisson regression with the full dataset
+and compare the results on different hardware.
+
+The results which are very consistent across different hardware (this is
+surprising, more CPUs don’t reduce the median fitting time). The next
+plot summarises 4,000 repetitions of the tests, with 500 repetions for
+both `glm()` and `eglm()` on different hardware:
+
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ## Progress list
@@ -215,3 +227,11 @@ Also notice that this plot summarises 2,000 repetitions of the tests:
 
 -   [x] augment
 -   [x] tidy
+
+### CAR
+
+RESIDUALPLOTS cooks.distance? hatvalues? influenceIndexPlot
+influencePlot QQpLOT compareCoefs
+
+ver fit4 &lt;- update(fit, subset=!(rownames(datos2) %in%
+c(“NY”,“SD”,“TX”,“NV”,“CT”)) )

@@ -98,9 +98,6 @@ the design matrix input (see the DESCRIPTION)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/benchmarks.html">Comparing 'glm' and 'eglm' speed</a>
-    </li>
-    <li>
       <a href="../articles/outputs.html">Comparing 'glm' and 'eglm' outputs</a>
     </li>
   </ul>
@@ -304,8 +301,11 @@ Defaults to 1e-8.</p></td>
     <tr>
       <th>k</th>
       <td><p>the penalty per parameter to be used, the default <code>k = 2</code>
-is the classical AIC.
-@param bypass use <code><a href='https://rdrr.io/r/stats/lm.html'>lm()</a></code> or <code><a href='https://rdrr.io/r/stats/glm.html'>glm()</a></code> if the design matrix does not
+is the classical AIC.</p></td>
+    </tr>
+    <tr>
+      <th>bypass</th>
+      <td><p>use <code><a href='https://rdrr.io/r/stats/lm.html'>lm()</a></code> or <code><a href='https://rdrr.io/r/stats/glm.html'>glm()</a></code> if the design matrix does not
 pass the condition \(N &gt; kP\). Defaults to <code>TRUE</code>.</p></td>
     </tr>
     <tr>

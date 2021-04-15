@@ -59,7 +59,11 @@ ch1_application1_2 <- ch1_application1_2 %>%
     imp_year = paste0(importer, year)
   )
 
-trade_demo_glm <- ch1_application1_2 %>%
+trade_data_yotov <- ch1_application1_2 %>%
   filter(exporter != importer)
 
-use_data(trade_demo_glm, compress = "xz")
+trade_data_yotov <- trade_data_yotov %>%
+  ungroup() %>%
+  select(year, trade, dist, cntg, lang, clny, exp_year, imp_year)
+
+use_data(trade_data_yotov, compress = "xz", overwrite = T)
