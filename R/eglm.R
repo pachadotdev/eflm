@@ -24,7 +24,6 @@ eglm <- function(formula,
                  k = 2,
                  bypass = TRUE,
                  ...) {
-  call <- match.call()
   ## family (taken from R source)
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
@@ -36,7 +35,11 @@ eglm <- function(formula,
     print(family)
     stop("'family' not recognized")
   }
+  if (!missing(subset)) {
+    data <- safe_subset(data, substitute(subset))
+  }
   target <- y
+  call <- match.call()
   M <- match.call(expand.dots = FALSE)
   m <- match(c(
     "formula", "data", "weights", "subset", "na.action", "etastart",

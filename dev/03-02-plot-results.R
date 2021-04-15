@@ -5,6 +5,9 @@ library(tidyr)
 library(wesanderson)
 library(forcats)
 
+# the results for each droplet were manually downloaded from each RStudio Server
+# instance at http://123.456.789:8787 and then merged in Google Sheets
+
 tidy_benchmarks <- read_excel("tidy benchmarks.xlsx")
 
 tidy_benchmarks %>%

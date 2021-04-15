@@ -127,8 +127,9 @@ Defaults to 1e-8.}
 \item{maxit}{integer giving the maximal number of IWLS iterations.}
 
 \item{k}{the penalty per parameter to be used, the default \code{k = 2}
-is the classical AIC.
-@param bypass use \code{lm()} or \code{glm()} if the design matrix does not
+is the classical AIC.}
+
+\item{bypass}{use \code{lm()} or \code{glm()} if the design matrix does not
 pass the condition \eqn{N > kP}. Defaults to \code{TRUE}.}
 
 \item{\dots}{for \emph{elm} or \emph{eglm}: additional arguments to be used
