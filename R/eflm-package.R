@@ -1,9 +1,9 @@
-#' Efficient Fitting of (Generalized) Linear Models
+#' Efficient Fitting of Generalized Linear Models
 #'
-#' Efficient Linear Model (\code{"elm"}) and Efficient Generalized Linear Model
-#' (\code{"eglm"}) are used to fit linear models in an equivalent way to
-#' \code{"\link{lm}"} and \code{"\link{glm}"} but in a reduced time depending on
-#' the design matrix input (see the DESCRIPTION).
+#' Efficient Generalized Linear Model (\code{"eglm"}) is used to fit linear
+#' models in an equivalent way to \code{"\link{glm}"} but in a reduced time
+#' depending on the design matrix and the family (or link)
+#' (see the DESCRIPTION).
 #'
 #' @param formula an object of class \code{"\link{formula}"} (or one that can be
 #'  coerced to that class): a symbolic description of the model to be fitted.
@@ -50,11 +50,12 @@
 #'  takes the same arguments as \code{glm.fit} from the \bold{stats} package.
 #'  If specified as a character string it is looked up from within the
 #'  \bold{eflm} namespace.
-#' @param x,y For \code{elm/eglm}: logical values indicating whether the
+#' @param x,y For \code{eglm}: logical values indicating whether the
 #'  \emph{model matrix} (\code{x}) and the \emph{response vector} (\code{y})
 #'  used in the fitting process should be returned as components of the returned
-#'  value. For \code{elm.wfit/eglm.wfit}: x is a design matrix of dimension
-#'  \code{n * p}, and y is a vector of observations of length n.
+#'  value. For \code{eglm.wfit}: x is a design matrix of dimension
+#'  \code{n * p}, and y is a vector of observations of length n, or a matrix
+#'  with n rows.
 #' @param singular.ok logical; if FALSE a singular fit is an error.
 #' @param contrasts an optional list. See the \code{contrasts.arg} of
 #'  \code{model.matrix.default}.
@@ -78,10 +79,71 @@
 #' @return an object of class "elm" that behaves the same way as the "lm" class,
 #'  see the function \link{lm}.
 #' @examples
-#' # Linear model
-#' elm(mpg ~ wt, data = mtcars)
-#'
-#' # Generalized linear model with Gaussian link
 #' eglm(mpg ~ wt, family = gaussian, data = mtcars)
-#' @name model_fitting
+#' @name generalized_linear_models
+NULL
+
+#' Efficient Fitting of Linear Models
+#'
+#' Efficient Linear Model (\code{"elm"}) is used to fit linear
+#' models in an equivalent way to \code{"\link{lm}"} but in a reduced time
+#' depending on the design matrix (see the DESCRIPTION).
+#'
+#' @param formula an object of class \code{"\link{formula}"} (or one that can be
+#'  coerced to that class): a symbolic description of the model to be fitted.
+#'  The details of model specification are given under \sQuote{Details}.
+#' @param data an optional data frame, list or environment (or object coercible
+#'  by \code{\link{as.data.frame}} to a data frame) containing the variables in
+#'  the model. If not found in \code{data}, the variables are taken from
+#'  \code{environment(formula)}, typically the environment from which \code{lm}
+#'  is called.
+#' @param w,weights an optional vector of weights to be used in the fitting
+#'  process. Should be \code{NULL} or a numeric vector. If non-NULL, weighted
+#'  least squares is used with weights \code{weights} (that is, minimizing
+#'  \code{sum(w*e^2)}); otherwise ordinary least squares is used.
+#' @param subset an optional vector specifying a subset of observations to be
+#'  used in the fitting process.
+#' @param na.action a function which indicates what should happen when the data
+#'  contain \code{NA}s. The default is set by the \code{na.action} setting of
+#'  \code{\link{options}}, and is \code{\link{na.fail}} if that is unset. The
+#'  \sQuote{factory-fresh} default is \code{\link{na.omit}}. Another possible
+#'  value is \code{NULL}, no action. Value \code{\link{na.exclude}} can be
+#'  useful.
+#' @param offset this can be used to specify an \emph{a priori} known component
+#'  to be included in the linear predictor during fitting. This should be
+#'  \code{NULL} or a numeric vector or matrix of extents matching those of the
+#'  response. One or more \code{\link{offset}} terms can be included in the
+#'  formula instead or as well, and if more than one are specified their sum is
+#'  used. See \code{\link{model.offset}}.
+#' @param method currently, only \code{method = "qr"} is supported.
+#' @param model,x,y,qr For \code{elm}: logicals. If TRUE the corresponding
+#'  components of the fit (the model frame, the model matrix, the response,
+#'  the QR decomposition) are returned. For \code{lm.wfit}: x is a design matrix
+#'  of dimension \code{n * p}, and y is a vector of observations of length n,
+#'  or a matrix with n rows.
+#' @param singular.ok logical; if FALSE a singular fit is an error.
+#' @param contrasts an optional list. See the \code{contrasts.arg} of
+#'  \code{model.matrix.default}.
+#' @param intercept logical. Should an intercept be included in the \emph{null}
+#'  model?
+#' @param \dots For eglm: arguments to be used to form the default control
+#'  argument if it is not supplied directly. For weights: further arguments
+#'  passed to or from other methods.
+#' @details Models for \code{elm} and \code{eglm} are specified symbolically.
+#'  A typical model has the form \code{response ~ terms} where \code{response}
+#'  is the (numeric) response vector and \code{terms} is a series of terms which
+#'  specifies a linear predictor for \code{response}. A terms specification of
+#'  the form \code{first + second} indicates all the terms in \code{first}
+#'  together with all the terms in \code{second} with duplicates removed. A
+#'  specification of the form \code{first:second} indicates the set of
+#'  terms obtained by taking the interactions of all terms in \code{first}
+#'  with all terms in \code{second}. The specification \code{first*second}
+#'  indicates the \emph{cross} of \code{first} and \code{second}. This is
+#'  the same as \code{first + second + first:second}, and exactly the same as
+#'  \code{"\link{lm}"} and \code{"\link{glm}"} from the \link{stats} package.
+#' @return an object of class "elm" that behaves the same way as the "lm" class,
+#'  see the function \link{lm}.
+#' @examples
+#' elm(mpg ~ wt, data = mtcars)
+#' @name linear_models
 NULL

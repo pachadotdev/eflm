@@ -1,4 +1,4 @@
-#' @rdname model_fitting
+#' @rdname generalized_linear_models
 #' @export
 eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
                       etastart = NULL, mustart = NULL, offset = rep.int(0, nobs),

@@ -1,10 +1,10 @@
-#' @rdname model_fitting
+#' @rdname linear_models
 #' @importFrom stats gaussian na.pass
 #' @export
 elm <- function(formula, data, subset, weights, na.action,
                 method = "qr", model = TRUE, x = FALSE, y = FALSE,
                 qr = TRUE, singular.ok = TRUE, contrasts = NULL,
-                offset, ...) {
+                offset, reduce = TRUE, ...) {
   ret.x <- x
   ret.y <- y
   cl <- match.call()
@@ -67,9 +67,10 @@ elm <- function(formula, data, subset, weights, na.action,
   else {
     x <- model.matrix(mt, mf, contrasts)
     ## unlike stats::, here w is always passed to elm.wfit
-    z <- elm.wfit(x, y, w, offset = offset, singular.ok = singular.ok, ...)
+    z <- elm.wfit(x, y, w, offset = offset, singular.ok = singular.ok,
+                  reduce = reduce, ...)
   }
-  class(z) <- c(if (mlm) "mlm", "lm")
+  class(z) <- c(if (mlm) "melm", "elm", "lm")
   z$na.action <- attr(mf, "na.action")
   z$offset <- offset
   z$contrasts <- attr(x, "contrasts")
@@ -79,6 +80,7 @@ elm <- function(formula, data, subset, weights, na.action,
   if (model) {
     z$model <- mf
   }
+  z$reduce <- reduce
   if (ret.x) {
     z$x <- x
   }
@@ -86,5 +88,9 @@ elm <- function(formula, data, subset, weights, na.action,
     z$y <- y
   }
   if (!qr) z$qr <- NULL
+  if (isTRUE(reduce)) {
+    z$xtx <- crossprod(x)
+    z$qr$original.dimensions <- dim(x)
+  }
   z
 }

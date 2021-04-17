@@ -1,7 +1,7 @@
-#' @rdname model_fitting
+#' @rdname linear_models
 #' @export
 elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
-                     singular.ok = TRUE, ...) {
+                     singular.ok = TRUE, reduce = TRUE, ...) {
   if (is.null(n <- nrow(x))) stop("'x' must be a matrix")
   if (n == 0) stop("0 (non-NA) cases")
   ny <- NCOL(y)
@@ -57,14 +57,21 @@ elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
   }
   wts <- sqrt(w)
   C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
-  z <- .Call(C_Cdqrls, x * wts, y * wts, tol, FALSE)
+  if (isTRUE(reduce)) {
+    wxw_t_wxw <- crossprod(wts * (x * wts))
+    wyx_t_wyx_t <- t(crossprod((w * y), x))
+    z <- .Call(C_Cdqrls, wxw_t_wxw, wyx_t_wyx_t, tol, FALSE)
+  } else {
+    z <- .Call(C_Cdqrls, x * wts, y * wts, tol, FALSE)
+  }
   if (!singular.ok && z$rank < p) stop("singular fit encountered")
   coef <- z$coefficients
   pivot <- z$pivot
   r1 <- seq_len(z$rank)
   dn <- colnames(x)
   if (is.null(dn)) dn <- paste0("x", 1L:p)
-  nmeffects <- c(dn[pivot[r1]], rep.int("", n - z$rank))
+  nmeffects <- c(dn[pivot[r1]], rep.int("",
+    if (isTRUE(reduce)) nrow(wxw_t_wxw) - z$rank else n - z$rank))
   r2 <- if (z$rank < p) (z$rank + 1L):p else integer()
   if (is.matrix(y)) {
     coef[r2, ] <- NA
@@ -78,8 +85,15 @@ elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
     names(z$effects) <- nmeffects
   }
   z$coefficients <- coef
-  z$residuals <- z$residuals / wts
-  z$fitted.values <- y - z$residuals
+  if (isTRUE(reduce)) {
+    z$fitted.values <- as.numeric(x %*% matrix(z$coefficients, ncol = 1))
+    z$residuals <- as.numeric((y - z$fitted.values) / wts)
+    names(z$fitted.values) <- rownames(x)
+    names(z$residuals) <- rownames(x)
+  } else {
+    z$residuals <- z$residuals / wts
+    z$fitted.values <- y - z$residuals
+  }
   z$weights <- w
   if (zero.weights) {
     coef[is.na(coef)] <- 0

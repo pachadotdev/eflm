@@ -1,6 +1,6 @@
 utils::globalVariables("n", add = TRUE)
 
-#' @rdname model_fitting
+#' @rdname generalized_linear_models
 #' @importFrom stats gaussian na.pass model.response is.empty.model
 #'  model.matrix model.weights model.offset model.extract .getXlevels
 #' @export
@@ -10,7 +10,8 @@ eglm <- function(formula, family = gaussian, data, weights,
                  control = list(...),
                  model = TRUE, method = "eglm.wfit",
                  x = FALSE, y = TRUE,
-                 singular.ok = TRUE, contrasts = NULL, ...) {
+                 singular.ok = TRUE, contrasts = NULL,
+                 reduce = FALSE, ...) {
   cal <- match.call()
   ## family
   if (is.character(family)) {
