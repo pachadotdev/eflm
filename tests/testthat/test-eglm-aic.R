@@ -1,6 +1,6 @@
 test_that("Same AIC for glm and eglm with gaussian link", {
   m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, reduce = FALSE)
   expect_equal(AIC(m1), AIC(m2))
 
   aic_m1_m2 <- AIC(m1, m2)
@@ -11,6 +11,6 @@ test_that("Same AIC for glm and eglm with gaussian link", {
 
 test_that("Same AIC for glm and eglm with Gamma link", {
   m1 <- glm(mpg ~ wt + am, family = Gamma, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = Gamma, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = Gamma, data = mtcars, reduce = FALSE)
   expect_equal(AIC(m1), AIC(m2))
 })

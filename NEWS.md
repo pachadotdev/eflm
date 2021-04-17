@@ -1,3 +1,8 @@
+# eflm 0.3
+
+* all functions adapted from stats:: with minimal new S3 methods
+* uses Matrix and C in all possible cases
+
 # eflm 0.2.2
 
 * allows `family = gaussian`, etc instead of `family = gaussian()`, just like `glm()`
