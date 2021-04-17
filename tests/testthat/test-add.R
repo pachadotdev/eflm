@@ -5,7 +5,7 @@ test_that("Add: eglm (gaussian) == glm with no test", {
   add_m1 <- add1(m1, ~ . + am)
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m2 <- add1(m2, ~ . +  am)
+  add_m2 <- add1(m2, ~ . + am)
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -14,10 +14,10 @@ test_that("Add: eglm (gaussian) == glm with no test", {
 
 test_that("Add: eglm (gaussian) == glm with F test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "F")
+  add_m1 <- add1(m1, ~ . + am, test = "F")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "F")
+  add_m2 <- add1(m2, ~ . + am, test = "F")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -28,10 +28,10 @@ test_that("Add: eglm (gaussian) == glm with F test", {
 
 test_that("Add: eglm (gaussian) == glm with Chisq test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "Chisq")
+  add_m1 <- add1(m1, ~ . + am, test = "Chisq")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "Chisq")
+  add_m2 <- add1(m2, ~ . + am, test = "Chisq")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -42,10 +42,10 @@ test_that("Add: eglm (gaussian) == glm with Chisq test", {
 
 test_that("Add: eglm (gaussian) == glm with LRT test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "LRT")
+  add_m1 <- add1(m1, ~ . + am, test = "LRT")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "LRT")
+  add_m2 <- add1(m2, ~ . + am, test = "LRT")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -56,10 +56,10 @@ test_that("Add: eglm (gaussian) == glm with LRT test", {
 
 test_that("Add: eglm (gaussian) == glm with Rao test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "Rao")
+  add_m1 <- add1(m1, ~ . + am, test = "Rao")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "Rao")
+  add_m2 <- add1(m2, ~ . + am, test = "Rao")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -72,10 +72,10 @@ test_that("Add: eglm (gaussian) == glm with Rao test", {
 
 test_that("Add: eglm (inverse.gaussian) == glm with no test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m1 <- add1(m1, ~ . +  am)
+  add_m1 <- add1(m1, ~ . + am)
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m2 <- add1(m2, ~ . +  am)
+  add_m2 <- add1(m2, ~ . + am)
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -84,10 +84,10 @@ test_that("Add: eglm (inverse.gaussian) == glm with no test", {
 
 test_that("Add: eglm (inverse.gaussian) == glm with F test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "F")
+  add_m1 <- add1(m1, ~ . + am, test = "F")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "F")
+  add_m2 <- add1(m2, ~ . + am, test = "F")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -98,10 +98,10 @@ test_that("Add: eglm (inverse.gaussian) == glm with F test", {
 
 test_that("Add: eglm (inverse.gaussian) == glm with Chisq test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "Chisq")
+  add_m1 <- add1(m1, ~ . + am, test = "Chisq")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "Chisq")
+  add_m2 <- add1(m2, ~ . + am, test = "Chisq")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -112,10 +112,10 @@ test_that("Add: eglm (inverse.gaussian) == glm with Chisq test", {
 
 test_that("Add: eglm (inverse.gaussian) == glm with LRT test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "LRT")
+  add_m1 <- add1(m1, ~ . + am, test = "LRT")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "LRT")
+  add_m2 <- add1(m2, ~ . + am, test = "LRT")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -126,10 +126,10 @@ test_that("Add: eglm (inverse.gaussian) == glm with LRT test", {
 
 test_that("Add: eglm (inverse.gaussian) == glm with Rao test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m1 <- add1(m1, ~ . +  am, test = "Rao")
+  add_m1 <- add1(m1, ~ . + am, test = "Rao")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = inverse.gaussian)
-  add_m2 <- add1(m2, ~ . +  am, test = "Rao")
+  add_m2 <- add1(m2, ~ . + am, test = "Rao")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -354,10 +354,10 @@ test_that("Add: eglm (poisson) == glm with Rao test", {
 
 test_that("Add: eglm (quasipoisson) == glm with no test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m1 <- add1(m1, ~ . +  am)
+  add_m1 <- add1(m1, ~ . + am)
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m2 <- add1(m2, ~ . +  am)
+  add_m2 <- add1(m2, ~ . + am)
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -366,10 +366,10 @@ test_that("Add: eglm (quasipoisson) == glm with no test", {
 
 test_that("Add: eglm (quasipoisson) == glm with F test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m1 <- add1(m1, ~ . +  am, test = "F")
+  add_m1 <- add1(m1, ~ . + am, test = "F")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m2 <- add1(m2, ~ . +  am, test = "F")
+  add_m2 <- add1(m2, ~ . + am, test = "F")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -380,10 +380,10 @@ test_that("Add: eglm (quasipoisson) == glm with F test", {
 
 test_that("Add: eglm (quasipoisson) == glm with Chisq test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m1 <- add1(m1, ~ . +  am, test = "Chisq")
+  add_m1 <- add1(m1, ~ . + am, test = "Chisq")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m2 <- add1(m2, ~ . +  am, test = "Chisq")
+  add_m2 <- add1(m2, ~ . + am, test = "Chisq")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -394,10 +394,10 @@ test_that("Add: eglm (quasipoisson) == glm with Chisq test", {
 
 test_that("Add: eglm (quasipoisson) == glm with LRT test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m1 <- add1(m1, ~ . +  am, test = "LRT")
+  add_m1 <- add1(m1, ~ . + am, test = "LRT")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m2 <- add1(m2, ~ . +  am, test = "LRT")
+  add_m2 <- add1(m2, ~ . + am, test = "LRT")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -408,10 +408,10 @@ test_that("Add: eglm (quasipoisson) == glm with LRT test", {
 
 test_that("Add: eglm (quasipoisson) == glm with Rao test", {
   m1 <- glm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m1 <- add1(m1, ~ . +  am, test = "Rao")
+  add_m1 <- add1(m1, ~ . + am, test = "Rao")
 
   m2 <- eglm(mpg ~ wt, data = mtcars, family = quasipoisson)
-  add_m2 <- add1(m2, ~ . +  am, test = "Rao")
+  add_m2 <- add1(m2, ~ . + am, test = "Rao")
 
   expect_equal(add_m1$Df, add_m2$Df)
   expect_equal(add_m1$Deviance, add_m2$Deviance)
@@ -488,11 +488,4 @@ test_that("Add: eglm (quasi) == glm with Rao test", {
   expect_equal(add_m1$AIC, add_m2$AIC)
   expect_equal(add_m1$`scaled Rao sc.`, add_m2$`scaled Rao sc.`)
   expect_equal(add_m1$`Pr(>Chi)`, add_m2$`Pr(>Chi)`)
-})
-
-# Sanity checks ----
-
-test_that("Add: eglm fails without model matrix", {
-  m1 <- eglm(mpg ~ wt, data = mtcars, family = gaussian, model = FALSE)
-  expect_error(add1(m1, ~ . + am))
 })

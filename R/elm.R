@@ -1,75 +1,90 @@
 #' @rdname model_fitting
 #' @importFrom stats gaussian na.pass
 #' @export
-elm <- function(formula,
-                data,
-                subset = NULL,
-                weights = NULL,
-                na.action = na.omit,
-                model = TRUE,
-                x = FALSE,
-                y = TRUE,
-                offset = NULL,
-                intercept = TRUE,
-                singularity.method = c("eigen", "Cholesky", "qr"),
-                tol.solve = .Machine$double.eps,
-                tol.values = 1e-7,
-                tol.vectors = 1e-7,
-                bypass = TRUE,
-                ...) {
-  if (!is.null(substitute(subset))) {
-    data <- safe_subset(data, substitute(subset))
-  }
-  target <- y
-  call <- match.call()
-  M <- match.call(expand.dots = FALSE)
+elm <- function(formula, data, subset, weights, na.action,
+                method = "qr", model = TRUE, x = FALSE, y = FALSE,
+                qr = TRUE, singular.ok = TRUE, contrasts = NULL,
+                offset, ...) {
+  ret.x <- x
+  ret.y <- y
+  cl <- match.call()
+  mf <- match.call(expand.dots = FALSE)
   m <- match(
     c("formula", "data", "subset", "weights", "na.action", "offset"),
-    names(M), 0L
+    names(mf), 0L
   )
-  M <- M[c(1L, m)]
-  M$drop.unused.levels <- TRUE
-  M[[1L]] <- quote(stats::model.frame)
-  M <- eval(M, parent.frame())
-  y <- model.response(M, "numeric")
-  tf <- attr(M, "terms")
-  X <- model.matrix(tf, M)
-  offset <- model.offset(M)
-  if (is.null(offset)) {
-    offset <- rep(0, length(y))
+  mf <- mf[c(1L, m)]
+  mf$drop.unused.levels <- TRUE
+  ## need stats:: for non-standard evaluation
+  mf[[1L]] <- quote(stats::model.frame)
+  mf <- eval(mf, parent.frame())
+  if (method == "model.frame") {
+    return(mf)
+  } else if (method != "qr") {
+    warning(gettextf("method = '%s' is not supported. Using 'qr'", method),
+      domain = NA
+    )
   }
-  if (is.null(weights)) {
-    weights <- rep(1, length(y))
+  mt <- attr(mf, "terms") # allow model.frame to update it
+  y <- model.response(mf, "numeric")
+  ## avoid any problems with 1D or nx1 arrays by as.vector.
+  w <- as.vector(model.weights(mf))
+  ## w will be passed straight to elm.wfit, there is no elm.fit in this package
+  if (is.null(w)) w <- rep.int(1, length(y))
+  if (!is.null(w) && !is.numeric(w)) {
+    stop("'weights' must be a numeric vector")
   }
-  rval <- elm.wfit(
-    y,
-    X,
-    offset = offset,
-    w = weights,
-    tol.solve = tol.solve,
-    tol.values = tol.values,
-    tol.vectors = tol.vectors,
-    singularity.method = singularity.method,
-    intercept = attr(tf, "intercept")
-  )
-
-  rval$terms <- tf
-  rval$call <- call
-  if (ncol(M) > 1) {
-    for (i in 2:ncol(M)) {
-      if (is.factor(M[, i])) {
-        eval(parse(text = paste("rval$levels$'", names(M)[i],
-          "'", "<-levels(M[,i])",
-          sep = ""
-        )))
-      }
+  offset <- model.offset(mf)
+  mlm <- is.matrix(y)
+  ny <- if (mlm) nrow(y) else length(y)
+  if (!is.null(offset)) {
+    if (!mlm) offset <- as.vector(offset)
+    if (NROW(offset) != ny) {
+      stop(gettextf(
+        "number of offsets is %d, should equal %d (number of observations)",
+        NROW(offset), ny
+      ), domain = NA)
     }
   }
-  if (model) rval$model <- M
-  if (x) rval$x <- X
-  if (target) rval$y <- y
-  rval$fitted.values <- predict.elm(rval, newdata = data)
-  rval$residuals <- y - rval$fitted.values
-  rval$formula <- eval(call[[2]])
-  rval
+
+  if (is.empty.model(mt)) {
+    x <- NULL
+    z <- list(
+      coefficients = if (mlm) {
+        matrix(NA_real_, 0, ncol(y))
+      } else {
+        numeric()
+      },
+      residuals = y,
+      fitted.values = 0 * y, weights = w, rank = 0L,
+      df.residual = if (!is.null(w)) sum(w != 0) else ny
+    )
+    if (!is.null(offset)) {
+      z$fitted.values <- offset
+      z$residuals <- y - offset
+    }
+  }
+  else {
+    x <- model.matrix(mt, mf, contrasts)
+    ## unlike stats::, here w is always passed to elm.wfit
+    z <- elm.wfit(x, y, w, offset = offset, singular.ok = singular.ok, ...)
+  }
+  class(z) <- c(if (mlm) "mlm", "lm")
+  z$na.action <- attr(mf, "na.action")
+  z$offset <- offset
+  z$contrasts <- attr(x, "contrasts")
+  z$xlevels <- .getXlevels(mt, mf)
+  z$call <- cl
+  z$terms <- mt
+  if (model) {
+    z$model <- mf
+  }
+  if (ret.x) {
+    z$x <- x
+  }
+  if (ret.y) {
+    z$y <- y
+  }
+  if (!qr) z$qr <- NULL
+  z
 }

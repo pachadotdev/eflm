@@ -4,9 +4,9 @@ test_that("family arguments are correctly converted", {
   m2 <- eglm(mpg ~ wt, family = gaussian(), data = mtcars)
   m3 <- eglm(mpg ~ wt, family = "gaussian", data = mtcars)
 
-  expect_s3_class(m1, "eglm")
-  expect_s3_class(m2, "eglm")
-  expect_s3_class(m3, "eglm")
+  expect_s3_class(m1, "glm")
+  expect_s3_class(m2, "glm")
+  expect_s3_class(m3, "glm")
 
   expect_equal(m1$coefficients, m2$coefficients)
   expect_equal(m1$coefficients, m3$coefficients)

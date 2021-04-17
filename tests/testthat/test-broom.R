@@ -32,6 +32,5 @@ test_that("broom outputs not explicitly defined are the same as glm", {
   m1 <- glm(mpg ~ wt, family = gaussian, data = mtcars)
   m2 <- eglm(mpg ~ wt, family = gaussian, data = mtcars)
 
-  # THIS IS WHAT WORKS FOR NOW
   expect_equal(broom::augment(m1, newdata = mtcars), broom::augment(m2, newdata = mtcars))
 })

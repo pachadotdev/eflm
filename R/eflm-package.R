@@ -17,7 +17,7 @@
 #'  the model. If not found in \code{data}, the variables are taken from
 #'  \code{environment(formula)}, typically the environment from which \code{lm}
 #'  is called.
-#' @param weights an optional vector of weights to be used in the fitting
+#' @param w,weights an optional vector of weights to be used in the fitting
 #'  process. Should be \code{NULL} or a numeric vector. If non-NULL, weighted
 #'  least squares is used with weights \code{weights} (that is, minimizing
 #'  \code{sum(w*e^2)}); otherwise ordinary least squares is used.
@@ -38,39 +38,31 @@
 #'  response. One or more \code{\link{offset}} terms can be included in the
 #'  formula instead or as well, and if more than one are specified their sum is
 #'  used. See \code{\link{model.offset}}.
+#' @param control a list of parameters for controlling the fitting process. For
+#'  \code{\link{eglm.wfit}} this is passed to \code{\link{eglm.control}}.
 #' @param model logical value indicating whether \emph{model frame} should be
 #'  included as a component of the returned value. Defaults to \code{TRUE}.
-#' @param x,y logical values indicating whether the \emph{model matrix}
-#'  (\code{x}) and the \emph{response vector} (\code{y}) used in the fitting
-#'  process should be returned as components of the returned value. Defaults to
-#'  \code{FALSE}.
-#' @param intercept logical value indicating whether \emph{intercept} should be
-#'  included in the \emph{null} model. Defaults to \code{TRUE}.
-#' @param singularity.method the chosen method to detect for singularity.
-#'  Defaults to \code{"eigen"} but it can also be \code{"Cholesky"} or
-#'  \code{"qr"}. The spectral decomposition (eigenvectors decomposition) method
-#'  is slower than Cholesky, but the former accepts tolerance arguments and
-#'  tends to be more stable for opportune tolerance values.
-#' @param tol.solve defaults to \code{.Machine$double.eps}, see the function
-#'  \link{solve}.
-#' @param tol.values tolerance to consider \emph{eigenvalues} equal to zero.
-#'  Defaults to 1e-7.
-#' @param tol.vectors tolerance to consider \emph{eigenvectors} equal to zero.
-#'  Defaults to 1e-7.
-#' @param tol.estimation Tolerance to be used for the estimation.
-#'  Defaults to 1e-8.
-#' @param maxit integer giving the maximal number of IWLS iterations.
-#' @param k the penalty per parameter to be used, the default \code{k = 2}
-#'  is the classical AIC.
-#' @param bypass use \code{lm()} or \code{glm()} if the design matrix does not
-#'  pass the condition \eqn{N > kP}. Defaults to \code{TRUE}.
-#' @param \dots for \emph{elm} or \emph{eglm}: additional arguments to be used
-#'  to form the default control. On the one hand, use \code{symmetric = F}
-#'  instead of the default \code{TRUE} to indicate that the XTX matrix passed
-#'  internally for least squares estimation is not symmetric. On the other, use
-#'  \code{out.B = FALSE} not to return internal control's matrix output.
-#'  argument if it is not supplied directly. For \emph{weights}: further
-#'  arguments passed to or from other methods.
+#' @param method the method to be used in fitting the model. The default method
+#'  \code{"eglm.wfit"} uses iteratively reweighted least squares (IWLS): the
+#'  alternative \code{"model.frame"} returns the model frame and does no
+#'  fitting. User-supplied fitting functions can be supplied either as a
+#'  function or a character string naming a function, with a function which
+#'  takes the same arguments as \code{glm.fit} from the \bold{stats} package.
+#'  If specified as a character string it is looked up from within the
+#'  \bold{eflm} namespace.
+#' @param x,y For \code{elm/eglm}: logical values indicating whether the
+#'  \emph{model matrix} (\code{x}) and the \emph{response vector} (\code{y})
+#'  used in the fitting process should be returned as components of the returned
+#'  value. For \code{elm.wfit/eglm.wfit}: x is a design matrix of dimension
+#'  \code{n * p}, and y is a vector of observations of length n.
+#' @param singular.ok logical; if FALSE a singular fit is an error.
+#' @param contrasts an optional list. See the \code{contrasts.arg} of
+#'  \code{model.matrix.default}.
+#' @param intercept logical. Should an intercept be included in the \emph{null}
+#'  model?
+#' @param \dots For eglm: arguments to be used to form the default control
+#'  argument if it is not supplied directly. For weights: further arguments
+#'  passed to or from other methods.
 #' @details Models for \code{elm} and \code{eglm} are specified symbolically.
 #'  A typical model has the form \code{response ~ terms} where \code{response}
 #'  is the (numeric) response vector and \code{terms} is a series of terms which
@@ -90,6 +82,6 @@
 #' elm(mpg ~ wt, data = mtcars)
 #'
 #' # Generalized linear model with Gaussian link
-#' eglm(mpg ~ wt, family = gaussian(), data = mtcars)
+#' eglm(mpg ~ wt, family = gaussian, data = mtcars)
 #' @name model_fitting
 NULL

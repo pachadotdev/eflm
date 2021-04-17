@@ -37,10 +37,7 @@ BugReports: https://github.com/pachamaltese/eflm/issues/
 License: Apache License (>= 2)
 Imports:
     stats,
-    zoo,
-    methods,
-    utils,
-    vctrs
+    utils
 Suggests: 
     testthat (>= 3.0.0),
     covr,

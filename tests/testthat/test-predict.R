@@ -1,8 +1,8 @@
 # Gaussian ----
 
-test_that("eglm (gaussian) + cholesky singularity.method == glm", {
+test_that("eglm (gaussian) == glm", {
   m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, singularity.method = "Cholesky")
+  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars)
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "link"),
@@ -124,15 +124,4 @@ test_that("eglm (quasi) == glm", {
     predict(m1, newdata = mtcars, type = "response"),
     predict(m2, newdata = mtcars, type = "response")
   )
-})
-
-# NULL warnings ----
-
-test_that("predict.eglm fails with NULL fitted values + newdata", {
-  m1 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars)
-
-  expect_equal(predict(m1), predict(m2))
-  m1$fitted.values <- NULL
-  expect_warning(predict(m1, newdata = NULL))
 })

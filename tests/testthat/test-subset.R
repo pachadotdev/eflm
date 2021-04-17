@@ -42,12 +42,14 @@ test_that("subset works and returns the same results for glm and eglm", {
 
   expect_equal(m1$residuals, m2$residuals)
   expect_equal(m1$fitted.values, m2$fitted.values)
+
+  # prediction from a rank-deficient fit here !!
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    suppressWarnings(predict(m1, newdata = mtcars, type = "link")),
+    suppressWarnings(predict(m2, newdata = mtcars, type = "link"))
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    suppressWarnings(predict(m1, newdata = mtcars, type = "response")),
+    suppressWarnings(predict(m2, newdata = mtcars, type = "response"))
   )
 })

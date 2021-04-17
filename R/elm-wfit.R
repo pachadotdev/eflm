@@ -1,91 +1,119 @@
-elm.wfit <- function(y, X, w, intercept = FALSE, offset = NULL,
-                     tol.solve = .Machine$double.eps, tol.values = 1e-07,
-                     tol.vectors = 1e-07, singularity.method = c("eigen", "Cholesky", "qr"), ...) {
-  nvar <- ncol(X)
-  nobs <- nrow(X)
-  if (is.null(offset)) {
-    offset <- rep(0, length(y))
+#' @rdname model_fitting
+#' @export
+elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
+                     singular.ok = TRUE, ...) {
+  if (is.null(n <- nrow(x))) stop("'x' must be a matrix")
+  if (n == 0) stop("0 (non-NA) cases")
+  ny <- NCOL(y)
+  ## treat one-col matrix as vector
+  if (is.matrix(y) && ny == 1L) {
+    y <- drop(y)
   }
-  if (any(is.na(w))) {
-    stop("some weights are NA")
+  if (!is.null(offset)) {
+    y <- y - offset
   }
-  if (any(w < 0)) {
-    stop("weights must not be negative")
+  if (NROW(y) != n | length(w) != n) {
+    stop("incompatible dimensions")
   }
-  col.names <- colnames(X)
-  pw <- sum(log(w[w != 0]))
-  sqw <- sqrt(w)
-  sqwX <- sqw * X
-  SW <- sum(w)
-  yy <- crossprod(sqw * y)
-  X1X <- colSums(sqwX)
-  names(X1X) <- col.names
-  XW1 <- crossprod(w, X)
-  A <- cp(sqwX)
-  y <- y - offset
-  Xy <- t(crossprod((w * y), X))
-  singularity.method <- match.arg(singularity.method)
-  if (singularity.method == "eigen") {
-    ris <- control(A, , tol.values, tol.vectors, , singularity.method)
-    ris$XTX <- as(ris$XTX, "matrix")
-    ok <- ris$pivot[1:ris$rank]
-    coef <- as(solve(ris$XTX, Xy[ok]), "numeric")
-    coefficients <- rep(NA, nvar)
-    coefficients[ok] <- coef
-    RSS <- yy - 2 * crossprod(coef, Xy[ok]) + t(coef) %*% ris$XTX %*% coef
+  if (any(w < 0 | is.na(w))) {
+    stop("missing or negative weights not allowed")
+  }
+  if (method != "qr") {
+    warning(gettextf("method = '%s' is not supported. Using 'qr'", method),
+      domain = NA
+    )
+  }
+  chkDots(...)
+  x.asgn <- attr(x, "assign") # save
+  zero.weights <- any(w == 0)
+  if (zero.weights) {
+    save.r <- y
+    save.f <- y
+    save.w <- w
+    ok <- w != 0
+    nok <- !ok
+    w <- w[ok]
+    x0 <- x[!ok, , drop = FALSE]
+    x <- x[ok, , drop = FALSE]
+    n <- nrow(x)
+    y0 <- if (ny > 1L) y[!ok, , drop = FALSE] else y[!ok]
+    y <- if (ny > 1L) y[ok, , drop = FALSE] else y[ok]
+  }
+  p <- ncol(x)
+  if (p == 0) {
+    ## oops, null model
+    return(list(
+      coefficients = numeric(), residuals = y,
+      fitted.values = 0 * y, weights = w, rank = 0L,
+      df.residual = length(y)
+    ))
+  }
+  if (n == 0) { # all cases have weight zero
+    return(list(
+      coefficients = rep(NA_real_, p), residuals = y,
+      fitted.values = 0 * y, weights = w, rank = 0L,
+      df.residual = 0L
+    ))
+  }
+  wts <- sqrt(w)
+  C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
+  z <- .Call(C_Cdqrls, x * wts, y * wts, tol, FALSE)
+  if (!singular.ok && z$rank < p) stop("singular fit encountered")
+  coef <- z$coefficients
+  pivot <- z$pivot
+  r1 <- seq_len(z$rank)
+  dn <- colnames(x)
+  if (is.null(dn)) dn <- paste0("x", 1L:p)
+  nmeffects <- c(dn[pivot[r1]], rep.int("", n - z$rank))
+  r2 <- if (z$rank < p) (z$rank + 1L):p else integer()
+  if (is.matrix(y)) {
+    coef[r2, ] <- NA
+    if (z$pivoted) coef[pivot, ] <- coef
+    dimnames(coef) <- list(dn, colnames(y))
+    dimnames(z$effects) <- list(nmeffects, colnames(y))
   } else {
-    if (singularity.method == "Cholesky") {
-      ris <- control(A, , tol.values, tol.vectors, , singularity.method)
-      ris$XTX <- as(ris$XTX, "matrix")
-      ok <- ris$pivot[1:ris$rank]
-      coef <- as(solve(ris$XTX, Xy[ok]), "numeric")
-      coefficients <- rep(NA, nvar)
-      coefficients[ok] <- coef
-      RSS <- yy - 2 * crossprod(coef, Xy[ok]) + t(coef) %*% ris$XTX %*% coef
-    } else {
-      if (singularity.method == "qr") {
-        C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
-        ris <- c(list(XTX = A), .Call(C_Cdqrls, A, Xy, tol.values, FALSE))
-        coefficients <- ris$coefficients
-        coef <- coefficients[ris$pivot[1:ris$rank]]
-        ord <- order(ris$pivot)
-        RSS <- yy - 2 * crossprod(coefficients, Xy[ris$pivot]) + t(coefficients[ord]) %*% ris$XTX %*% coefficients[ord]
-        ok <- ris$pivot[1:ris$rank]
-        if (ris$rank < nvar) {
-          coefficients[(ris$rank + 1L):nvar] <- NA
-        }
-        coefficients <- coefficients[ord]
-      } else {
-        stop("elm.fit: Unknown singularity.method value")
-      }
-    }
+    coef[r2] <- NA
+    if (z$pivoted) coef[pivot] <- coef
+    names(coef) <- dn
+    names(z$effects) <- nmeffects
   }
-  names(coefficients) <- coefficient_names(col.names, coefficients, intercept)
-  zero.w <- sum(w == 0)
-  dfr <- nrow(X) - ris$rank - zero.w
-
-  rval <- list(
-    coefficients = coefficients,
-    weights = w,
-    df.residual = dfr,
-    XTX = as(ris$XTX, "matrix"),
-    Xy = Xy,
-    nobs = nrow(X),
-    nvar = nvar,
-    ok = ok,
-    A = as(A, "matrix"),
-    RSS = as.numeric(RSS),
-    rank = ris$rank,
-    pivot = ris$pivot,
-    yy = yy,
-    X1X = X1X,
-    SW = SW,
-    XW1 = XW1,
-    zero.w = zero.w,
-    pw = pw,
-    intercept = intercept,
-    singularity.method = singularity.method
+  z$coefficients <- coef
+  z$residuals <- z$residuals / wts
+  z$fitted.values <- y - z$residuals
+  z$weights <- w
+  if (zero.weights) {
+    coef[is.na(coef)] <- 0
+    f0 <- x0 %*% coef
+    if (ny > 1) {
+      save.r[ok, ] <- z$residuals
+      save.r[nok, ] <- y0 - f0
+      save.f[ok, ] <- z$fitted.values
+      save.f[nok, ] <- f0
+    }
+    else {
+      save.r[ok] <- z$residuals
+      save.r[nok] <- y0 - f0
+      save.f[ok] <- z$fitted.values
+      save.f[nok] <- f0
+    }
+    z$residuals <- save.r
+    z$fitted.values <- save.f
+    z$weights <- save.w
+  }
+  if (!is.null(offset)) {
+    z$fitted.values <- z$fitted.values + offset
+  }
+  if (z$pivoted) colnames(z$qr) <- colnames(x)[z$pivot]
+  qr <- z[c("qr", "qraux", "pivot", "tol", "rank")]
+  c(
+    z[c(
+      "coefficients", "residuals", "fitted.values", "effects",
+      "weights", "rank"
+    )],
+    list(
+      assign = x.asgn,
+      qr = structure(qr, class = "qr"),
+      df.residual = n - z$rank
+    )
   )
-  class(rval) <- "elm"
-  rval
 }
