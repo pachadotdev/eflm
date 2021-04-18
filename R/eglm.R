@@ -94,7 +94,7 @@ eglm <- function(formula, family = gaussian, data, weights,
                  model = TRUE, method = "eglm.wfit",
                  x = FALSE, y = TRUE,
                  singular.ok = TRUE, contrasts = NULL,
-                 reduce = FALSE, ...) {
+                 reduce = TRUE, ...) {
   cal <- match.call()
   ## family
   if (is.character(family)) {

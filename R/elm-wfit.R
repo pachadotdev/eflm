@@ -67,9 +67,7 @@ elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
   wts <- sqrt(weights)
   C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
   if (isTRUE(reduce)) {
-    wxw_t_wxw <- crossprod(wts * (x * wts))
-    wyx_t_wyx_t <- t(crossprod((weights * y), x))
-    z <- .Call(C_Cdqrls, wxw_t_wxw, wyx_t_wyx_t, tol, FALSE)
+    z <- .Call(C_Cdqrls, crossprod(wts * (x * wts)), t(crossprod((weights * y), x)), tol, FALSE)
   } else {
     z <- .Call(C_Cdqrls, x * wts, y * wts, tol, FALSE)
   }
@@ -79,8 +77,9 @@ elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
   r1 <- seq_len(z$rank)
   dn <- colnames(x)
   if (is.null(dn)) dn <- paste0("x", 1L:p)
+  # for nmeffects I used ncol(x) when reduce = T, because nrow((wXw)t(wXw)) = ncol(X)
   nmeffects <- c(dn[pivot[r1]], rep.int("",
-    if (isTRUE(reduce)) nrow(wxw_t_wxw) - z$rank else n - z$rank))
+    if (isTRUE(reduce)) ncol(x) - z$rank else n - z$rank))
   r2 <- if (z$rank < p) (z$rank + 1L):p else integer()
   if (is.matrix(y)) {
     coef[r2, ] <- NA

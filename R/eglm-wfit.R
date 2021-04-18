@@ -16,7 +16,7 @@
 eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
                       etastart = NULL, mustart = NULL, offset = rep.int(0, nobs),
                       family = gaussian(), control = list(), intercept = TRUE,
-                      singular.ok = TRUE) {
+                      singular.ok = TRUE, reduce = TRUE) {
   control <- do.call("eglm.control", control)
   x <- as.matrix(x)
   xnames <- dimnames(x)[[2L]]

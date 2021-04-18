@@ -22,7 +22,7 @@ eglm(
   y = TRUE,
   singular.ok = TRUE,
   contrasts = NULL,
-  reduce = FALSE,
+  reduce = TRUE,
   ...
 )
 }

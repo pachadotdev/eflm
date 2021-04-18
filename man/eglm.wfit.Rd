@@ -15,7 +15,8 @@ eglm.wfit(
   family = gaussian(),
   control = list(),
   intercept = TRUE,
-  singular.ok = TRUE
+  singular.ok = TRUE,
+  reduce = TRUE
 )
 }
 \arguments{
@@ -53,6 +54,9 @@ function. See \code{\link{family}} for details of family functions.}
 included in the \emph{null} model. Defaults to \code{TRUE}.}
 
 \item{singular.ok}{logical; if FALSE a singular fit is an error.}
+
+\item{reduce}{logical. Should an alternate design matrix of \code{p * p} be
+used instead of the traditional \code{n * p} design matrix}
 }
 \description{
 Efficient Generalized Linear Model Weighted Fit (\code{"eglm.wfit"}) is used

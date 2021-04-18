@@ -4,7 +4,7 @@ class(x)
 
 y = matrix(mtcars$mpg, ncol = 1)
 
-w = rep(1,length(mtcars$mpg))
+weights = rep(1,length(mtcars$mpg))
 
 elm.wfit(x, y, w, reduce = F)
 elm.wfit(x, y, w, reduce = T)
