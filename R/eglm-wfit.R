@@ -1,4 +1,17 @@
-#' @rdname generalized_linear_models
+#' Fitting Generalized Linear Models
+#'
+#' Efficient Generalized Linear Model Weighted Fit (\code{"eglm.wfit"}) is used
+#'  to fit generalized linear models in an equivalent way to
+#'  \code{"\link{glm.fit}"} but in a reduced time depending on the design matrix
+#'  and the family (or link) (see the DESCRIPTION).
+#'
+#' @inheritParams eglm
+#' @param x,y For \code{eglm.wfit}: x is a design matrix of dimension
+#'  \code{n * p}, and y is a vector of observations of length n, or a matrix
+#'  with n rows.
+#' @param intercept logical value indicating whether \emph{intercept} should be
+#'  included in the \emph{null} model. Defaults to \code{TRUE}.
+#'
 #' @export
 eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
                       etastart = NULL, mustart = NULL, offset = rep.int(0, nobs),

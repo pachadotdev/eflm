@@ -1,5 +1,33 @@
-#' @rdname linear_models
+#' Efficient Fitting of Linear Models
+#'
+#' Efficient Linear Model (\code{"elm"}) is used to fit linear
+#'  models in an equivalent way to \code{"\link{lm}"} but in a reduced time
+#'  depending on the design matrix.
+#'
+#' @inheritParams eglm
+#' @param qr logical. If TRUE the corresponding QR decomposition component of
+#'  the fit is returned.
+#'
+#' @details Models for \code{elm} and \code{eglm} are specified symbolically.
+#'  A typical model has the form \code{response ~ terms} where \code{response}
+#'  is the (numeric) response vector and \code{terms} is a series of terms which
+#'  specifies a linear predictor for \code{response}. A terms specification of
+#'  the form \code{first + second} indicates all the terms in \code{first}
+#'  together with all the terms in \code{second} with duplicates removed. A
+#'  specification of the form \code{first:second} indicates the set of
+#'  terms obtained by taking the interactions of all terms in \code{first}
+#'  with all terms in \code{second}. The specification \code{first*second}
+#'  indicates the \emph{cross} of \code{first} and \code{second}. This is
+#'  the same as \code{first + second + first:second}, and exactly the same as
+#'  \code{"\link{lm}"} and \code{"\link{glm}"} from the \link{stats} package.
+#' @return an object of class "elm" that behaves the same way as the "lm" class,
+#'  see the function \link{lm}.
+#'
+#' @examples
+#' elm(mpg ~ wt, data = mtcars)
+#'
 #' @importFrom stats gaussian na.pass
+#'
 #' @export
 elm <- function(formula, data, subset, weights, na.action,
                 method = "qr", model = TRUE, x = FALSE, y = FALSE,

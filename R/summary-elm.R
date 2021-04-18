@@ -1,3 +1,4 @@
+#' @importFrom stats coef pt var
 #' @export
 #' @noRd
 summary.elm <- function (object, correlation = FALSE, symbolic.cor = FALSE, ...) {

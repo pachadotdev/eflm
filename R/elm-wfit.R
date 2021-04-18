@@ -1,6 +1,15 @@
-#' @rdname linear_models
+#' Fitting Linear Models
+#'
+#' Efficient Linear Model Weighted Fit (\code{"elm.wfit"}) is used
+#'  to fit linear models in an equivalent way to \code{"\link{glm.fit}"} but in
+#'  a reduced time depending on the design matrix and the family (or link).
+#'
+#' @inheritParams elm
+#' @inheritParams eglm.wfit
+#' @param tol tolerance for the \code{\link{qr}} decomposition. Default is 1e-7.
+#'
 #' @export
-elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
+elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
                      singular.ok = TRUE, reduce = TRUE, ...) {
   if (is.null(n <- nrow(x))) stop("'x' must be a matrix")
   if (n == 0) stop("0 (non-NA) cases")
@@ -12,10 +21,10 @@ elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
   if (!is.null(offset)) {
     y <- y - offset
   }
-  if (NROW(y) != n | length(w) != n) {
+  if (NROW(y) != n | length(weights) != n) {
     stop("incompatible dimensions")
   }
-  if (any(w < 0 | is.na(w))) {
+  if (any(weights < 0 | is.na(weights))) {
     stop("missing or negative weights not allowed")
   }
   if (method != "qr") {
@@ -25,14 +34,14 @@ elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
   }
   chkDots(...)
   x.asgn <- attr(x, "assign") # save
-  zero.weights <- any(w == 0)
+  zero.weights <- any(weights == 0)
   if (zero.weights) {
     save.r <- y
     save.f <- y
-    save.w <- w
-    ok <- w != 0
+    save.weights <- weights
+    ok <- weights != 0
     nok <- !ok
-    w <- w[ok]
+    weights <- weights[ok]
     x0 <- x[!ok, , drop = FALSE]
     x <- x[ok, , drop = FALSE]
     n <- nrow(x)
@@ -44,22 +53,22 @@ elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
     ## oops, null model
     return(list(
       coefficients = numeric(), residuals = y,
-      fitted.values = 0 * y, weights = w, rank = 0L,
+      fitted.values = 0 * y, weights = weights, rank = 0L,
       df.residual = length(y)
     ))
   }
   if (n == 0) { # all cases have weight zero
     return(list(
       coefficients = rep(NA_real_, p), residuals = y,
-      fitted.values = 0 * y, weights = w, rank = 0L,
+      fitted.values = 0 * y, weights = weights, rank = 0L,
       df.residual = 0L
     ))
   }
-  wts <- sqrt(w)
+  wts <- sqrt(weights)
   C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
   if (isTRUE(reduce)) {
     wxw_t_wxw <- crossprod(wts * (x * wts))
-    wyx_t_wyx_t <- t(crossprod((w * y), x))
+    wyx_t_wyx_t <- t(crossprod((weights * y), x))
     z <- .Call(C_Cdqrls, wxw_t_wxw, wyx_t_wyx_t, tol, FALSE)
   } else {
     z <- .Call(C_Cdqrls, x * wts, y * wts, tol, FALSE)
@@ -94,7 +103,7 @@ elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
     z$residuals <- z$residuals / wts
     z$fitted.values <- y - z$residuals
   }
-  z$weights <- w
+  z$weights <- weights
   if (zero.weights) {
     coef[is.na(coef)] <- 0
     f0 <- x0 %*% coef
@@ -112,7 +121,7 @@ elm.wfit <- function(x, y, w, offset = NULL, method = "qr", tol = 1e-7,
     }
     z$residuals <- save.r
     z$fitted.values <- save.f
-    z$weights <- save.w
+    z$weights <- save.weights
   }
   if (!is.null(offset)) {
     z$fitted.values <- z$fitted.values + offset
