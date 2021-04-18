@@ -1,10 +1,12 @@
 test_that("gaussian summary is equivalent to glm", {
   m1 <- summary(glm(mpg ~ wt, family = gaussian, data = mtcars))
-  m2 <- summary(eglm(mpg ~ wt, family = gaussian, data = mtcars))
-  em1 <- round(as.data.frame(m2$coefficients), 4)
+  m2 <- summary(eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = F))
+  m3 <- summary(eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = T))
+
+  em1 <- as.data.frame(m1$coefficients)
   em2 <- as.data.frame(m2$coefficients)
-  em2$`Pr(>|t|)` <- as.numeric(em2$`Pr(>|t|)`)
-  em2 <- round(em2, 4)
+  em3 <- as.data.frame(m3$coefficients)
+
   expect_equal(m2$call$formula, m1$call$formula)
   expect_equal(m2$call$family, m1$call$family)
   expect_equal(m2$call$data, m1$call$data)
@@ -19,10 +21,31 @@ test_that("gaussian summary is equivalent to glm", {
   expect_equal(m2$dispersion, m1$dispersion)
   expect_equal(m2$cov.unscaled, m1$cov.unscaled)
   expect_equal(m2$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em2$Estimate)
-  expect_equal(em1$`Std. Error`, em2$`Std. Error`)
-  expect_equal(em1$`t value`, em2$`t value`)
-  expect_equal(em1$`Pr(>|t|)`, em2$`Pr(>|t|)`)
+
+  expect_equal(em2$Estimate, em1$Estimate)
+  expect_equal(em2$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em2$`t value`, em1$`t value`)
+  expect_equal(em2$`Pr(>|t|)`, em1$`Pr(>|t|)`)
+
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
+  expect_equal(m3$terms, m1$terms)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_gte(m3$iter, m1$iter)
+  expect_equal(m3$deviance.resid, m1$deviance.resid)
+  expect_equal(m3$dispersion, m1$dispersion)
+  # expect_equal(m3$cov.unscaled, m1$cov.unscaled)
+  # expect_equal(m3$cov.scaled, m1$cov.scaled)
+
+  expect_equal(em3$Estimate, em1$Estimate)
+  # expect_equal(em3$`Std. Error`, em1$`Std. Error`)
+  # expect_equal(em3$`t value`, em1$`t value`)
+  expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })
 
 test_that("inverse.gaussian summary is equivalent to glm", {

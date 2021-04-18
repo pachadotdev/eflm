@@ -82,7 +82,6 @@ utils::globalVariables("n", add = TRUE)
 #'
 #' @examples
 #' eglm(mpg ~ wt, family = gaussian, data = mtcars)
-#'
 #' @importFrom stats gaussian na.pass model.response is.empty.model
 #'  model.matrix model.weights model.offset model.extract .getXlevels
 #'
@@ -94,7 +93,7 @@ eglm <- function(formula, family = gaussian, data, weights,
                  model = TRUE, method = "eglm.wfit",
                  x = FALSE, y = TRUE,
                  singular.ok = TRUE, contrasts = NULL,
-                 reduce = TRUE, ...) {
+                 reduce = FALSE, ...) {
   cal <- match.call()
   ## family
   if (is.character(family)) {
@@ -171,7 +170,8 @@ eglm <- function(formula, family = gaussian, data, weights,
     x = X, y = Y, weights = weights, start = start,
     etastart = etastart, mustart = mustart,
     offset = offset, family = family, control = control,
-    intercept = attr(mt, "intercept") > 0L, singular.ok = singular.ok
+    intercept = attr(mt, "intercept") > 0L, singular.ok = singular.ok,
+    reduce = reduce
   ))
 
   ## This calculated the null deviance from the intercept-only model

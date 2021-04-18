@@ -64,12 +64,11 @@ elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
       df.residual = 0L
     ))
   }
-  wts <- sqrt(weights)
   C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
   if (isTRUE(reduce)) {
-    z <- .Call(C_Cdqrls, crossprod(wts * (x * wts)), t(crossprod((weights * y), x)), tol, FALSE)
+    z <- .Call(C_Cdqrls, crossprod(x * weights), crossprod(x, y * weights), tol, FALSE)
   } else {
-    z <- .Call(C_Cdqrls, x * wts, y * wts, tol, FALSE)
+    z <- .Call(C_Cdqrls, x * sqrt(weights), y * sqrt(weights), tol, FALSE)
   }
   if (!singular.ok && z$rank < p) stop("singular fit encountered")
   coef <- z$coefficients
@@ -78,8 +77,10 @@ elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
   dn <- colnames(x)
   if (is.null(dn)) dn <- paste0("x", 1L:p)
   # for nmeffects I used ncol(x) when reduce = T, because nrow((wXw)t(wXw)) = ncol(X)
-  nmeffects <- c(dn[pivot[r1]], rep.int("",
-    if (isTRUE(reduce)) ncol(x) - z$rank else n - z$rank))
+  nmeffects <- c(dn[pivot[r1]], rep.int(
+    "",
+    if (isTRUE(reduce)) ncol(x) - z$rank else n - z$rank
+  ))
   r2 <- if (z$rank < p) (z$rank + 1L):p else integer()
   if (is.matrix(y)) {
     coef[r2, ] <- NA
@@ -95,11 +96,11 @@ elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
   z$coefficients <- coef
   if (isTRUE(reduce)) {
     z$fitted.values <- as.numeric(x %*% matrix(z$coefficients, ncol = 1))
-    z$residuals <- as.numeric((y - z$fitted.values) / wts)
+    z$residuals <- as.numeric((y - z$fitted.values) / sqrt(weights))
     names(z$fitted.values) <- rownames(x)
     names(z$residuals) <- rownames(x)
   } else {
-    z$residuals <- z$residuals / wts
+    z$residuals <- z$residuals / sqrt(weights)
     z$fitted.values <- y - z$residuals
   }
   z$weights <- weights

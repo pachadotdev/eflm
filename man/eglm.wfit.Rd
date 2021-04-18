@@ -16,7 +16,7 @@ eglm.wfit(
   control = list(),
   intercept = TRUE,
   singular.ok = TRUE,
-  reduce = TRUE
+  reduce = FALSE
 )
 }
 \arguments{

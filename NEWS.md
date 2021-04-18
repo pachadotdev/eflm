@@ -1,7 +1,8 @@
 # eflm 0.3
 
-* all functions adapted from stats:: with minimal new S3 methods
-* uses Matrix and C in all possible cases
+* All functions were re-written, by adapting from stats:: and new S3 methods when required
+* Uses R's internal C code for all matrix decompositions
+* Fixes rounding problem with broom's exponentiation
 
 # eflm 0.2.2
 

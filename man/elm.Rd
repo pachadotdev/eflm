@@ -117,5 +117,4 @@ the same as \code{first + second + first:second}, and exactly the same as
 }
 \examples{
 elm(mpg ~ wt, data = mtcars)
-
 }

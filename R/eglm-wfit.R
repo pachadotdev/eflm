@@ -16,7 +16,7 @@
 eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
                       etastart = NULL, mustart = NULL, offset = rep.int(0, nobs),
                       family = gaussian(), control = list(), intercept = TRUE,
-                      singular.ok = TRUE, reduce = TRUE) {
+                      singular.ok = TRUE, reduce = FALSE) {
   control <- do.call("eglm.control", control)
   x <- as.matrix(x)
   xnames <- dimnames(x)[[2L]]
@@ -126,10 +126,19 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
       z <- (eta - offset)[good] + (y - mu)[good] / mu.eta.val[good]
       w <- sqrt((weights[good] * mu.eta.val[good]^2) / variance(mu)[good])
       ## call Fortran code via C wrapper
-      fit <- .Call(C_Cdqrls, x[good, , drop = FALSE] * w, z * w,
-        min(1e-7, control$epsilon / 1000),
-        check = FALSE
-      )
+      if (isTRUE(reduce)) {
+        fit <- .Call(C_Cdqrls,
+                     crossprod(x[good, , drop = FALSE] * w),
+                     crossprod(x[good, , drop = FALSE], z * w^2),
+                     min(1e-7, control$epsilon / 1000),
+                     check = FALSE
+        )
+      } else {
+        fit <- .Call(C_Cdqrls, x[good, , drop = FALSE] * w, z * w,
+          min(1e-7, control$epsilon / 1000),
+          check = FALSE
+        )
+      }
       if (any(!is.finite(fit$coefficients))) {
         conv <- FALSE
         warning(gettextf("non-finite coefficients at iteration %d", iter), domain = NA)
@@ -236,8 +245,6 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
     xxnames <- xnames[fit$pivot]
     ## update by accurate calculation, including 0-weight cases.
     residuals <- (y - mu) / mu.eta(eta)
-    ##        residuals <- rep.int(NA, nobs)
-    ##        residuals[good] <- z - (eta - offset)[good] # z does not have offset in.
     fit$qr <- as.matrix(fit$qr)
     nr <- min(sum(good), nvars)
     if (nr < nvars) {
@@ -263,8 +270,10 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
   names(weights) <- ynames
   names(y) <- ynames
   if (!EMPTY) {
+    # for effects I used ncol(x) when reduce = T, because nrow((wXw)t(wXw)) = ncol(X)
     names(fit$effects) <-
-      c(xxnames[seq_len(fit$rank)], rep.int("", sum(good) - fit$rank))
+      c(xxnames[seq_len(fit$rank)],
+        rep.int("", if (isTRUE(reduce)) ncol(x) - fit$rank else sum(good) - fit$rank))
   }
   ## calculate null deviance -- corrected in eglm() if offset and intercept
   wtdmu <-

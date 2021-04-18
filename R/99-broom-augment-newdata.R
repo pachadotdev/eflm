@@ -9,7 +9,7 @@ augment_newdata <- function(x, data, newdata, .se_fit, interval = NULL, ...) {
   response_var_in_newdata <- is.element(all.vars(x$call)[[1]], names(df))
   if (.se_fit) {
     pred_obj <- predict(x, newdata = newdata, na.action = na.pass, se.fit = .se_fit, interval = interval, ...)
-    if (is.null(interval) || interval=="none") {
+    if (is.null(interval) || interval == "none") {
       df$.fitted <- unname(pred_obj$fit)
     } else {
       df$.fitted <- pred_obj$fit[, "fit"]
@@ -18,13 +18,13 @@ augment_newdata <- function(x, data, newdata, .se_fit, interval = NULL, ...) {
     }
     se_idx <- which(names(pred_obj) %in% c("se.fit", "se"))
     df$.se.fit <- pred_obj[[se_idx]]
-  } else if (!is.null(interval) && interval!="none") {
+  } else if (!is.null(interval) && interval != "none") {
     pred_obj <- predict(x, newdata = newdata, na.action = na.pass, se.fit = FALSE, interval = interval, ...)
     df$.fitted <- pred_obj[, "fit"]
     df$.lower <- pred_obj[, "lwr"]
     df$.upper <- pred_obj[, "upr"]
   } else if (passed_newdata) {
-    if (is.null(interval) || interval=="none") {
+    if (is.null(interval) || interval == "none") {
       df$.fitted <- unname(predict(x, newdata = newdata, na.action = na.pass, ...))
     } else {
       pred_obj <- predict(x, newdata = newdata, na.action = na.pass, interval = interval, ...)
@@ -33,7 +33,7 @@ augment_newdata <- function(x, data, newdata, .se_fit, interval = NULL, ...) {
       df$.upper <- pred_obj$fit[, "upr"]
     }
   } else {
-    if (is.null(interval) || interval=="none") {
+    if (is.null(interval) || interval == "none") {
       df$.fitted <- unname(predict(x, na.action = na.pass, ...))
     } else {
       pred_obj <- predict(x, newdata = newdata, na.action = na.pass, interval = interval, ...)

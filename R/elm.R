@@ -25,7 +25,6 @@
 #'
 #' @examples
 #' elm(mpg ~ wt, data = mtcars)
-#'
 #' @importFrom stats gaussian na.pass
 #'
 #' @export
@@ -95,8 +94,10 @@ elm <- function(formula, data, subset, weights, na.action,
   else {
     x <- model.matrix(mt, mf, contrasts)
     ## unlike stats::, here w is always passed to elm.wfit
-    z <- elm.wfit(x, y, w, offset = offset, singular.ok = singular.ok,
-                  reduce = reduce, ...)
+    z <- elm.wfit(x, y, w,
+      offset = offset, singular.ok = singular.ok,
+      reduce = reduce, ...
+    )
   }
   class(z) <- c("elm", if (mlm) "melm", "lm")
   z$na.action <- attr(mf, "na.action")

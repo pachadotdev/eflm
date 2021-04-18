@@ -22,7 +22,7 @@ eglm(
   y = TRUE,
   singular.ok = TRUE,
   contrasts = NULL,
-  reduce = TRUE,
+  reduce = FALSE,
   ...
 )
 }
@@ -127,5 +127,4 @@ the same as \code{first + second + first:second}, and exactly the same as
 }
 \examples{
 eglm(mpg ~ wt, family = gaussian, data = mtcars)
-
 }
