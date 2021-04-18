@@ -2,6 +2,8 @@
 
 S3method(qr,elm)
 S3method(summary,elm)
+S3method(vcov,elm)
+S3method(vcov,summary.elm)
 export(eglm)
 export(eglm.control)
 export(eglm.wfit)

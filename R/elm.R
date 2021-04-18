@@ -98,7 +98,7 @@ elm <- function(formula, data, subset, weights, na.action,
     z <- elm.wfit(x, y, w, offset = offset, singular.ok = singular.ok,
                   reduce = reduce, ...)
   }
-  class(z) <- c(if (mlm) "melm", "elm", "lm")
+  class(z) <- c("elm", if (mlm) "melm", "lm")
   z$na.action <- attr(mf, "na.action")
   z$offset <- offset
   z$contrasts <- attr(x, "contrasts")

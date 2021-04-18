@@ -212,20 +212,20 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
     } ## -------------- end IRLS iteration -------------------------------
 
     if (!conv) {
-      warning("eglm.fit: algorithm did not converge", call. = FALSE)
+      warning("eglm.wfit: algorithm did not converge", call. = FALSE)
     }
     if (boundary) {
-      warning("eglm.fit: algorithm stopped at boundary value", call. = FALSE)
+      warning("eglm.wfit: algorithm stopped at boundary value", call. = FALSE)
     }
     eps <- 10 * .Machine$double.eps
     if (family$family == "binomial") {
       if (any(mu > 1 - eps) || any(mu < eps)) {
-        warning("eglm.fit: fitted probabilities numerically 0 or 1 occurred", call. = FALSE)
+        warning("eglm.wfit: fitted probabilities numerically 0 or 1 occurred", call. = FALSE)
       }
     }
     if (family$family == "poisson") {
       if (any(mu < eps)) {
-        warning("eglm.fit: fitted rates numerically 0 occurred", call. = FALSE)
+        warning("eglm.wfit: fitted rates numerically 0 occurred", call. = FALSE)
       }
     }
     ## If X matrix was not full rank then columns were pivoted,

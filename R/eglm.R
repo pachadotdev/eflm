@@ -210,6 +210,6 @@ eglm <- function(formula, family = gaussian, data, weights,
       xlevels = .getXlevels(mt, mf)
     )
   ),
-  class = c(fit$class, c("glm", "lm"))
+  class = c(fit$class, c("eglm", "glm", "lm"))
   )
 }

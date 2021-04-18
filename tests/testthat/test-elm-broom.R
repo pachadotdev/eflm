@@ -23,12 +23,12 @@ test_that("eglm returns the same broom output as glm", {
 
   bm1 <- broom::tidy(m1, conf.int = TRUE)
   bm2 <- broom::tidy(m2, conf.int = TRUE)
-  # bm3 <- broom::tidy(m3, conf.int = TRUE)
+  bm3 <- broom::tidy(m3, conf.int = TRUE)
 
   expect_equal(bm2$conf.low, bm1$conf.low)
   expect_equal(bm2$conf.high, bm1$conf.high)
-  # expect_equal(bm3$conf.low, bm1$conf.low)
-  # expect_equal(bm3$conf.high, bm1$conf.high)
+  expect_equal(bm3$conf.low, bm1$conf.low)
+  expect_equal(bm3$conf.high, bm1$conf.high)
 })
 
 test_that("broom outputs not explicitly defined are the same as glm", {

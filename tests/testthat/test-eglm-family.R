@@ -8,7 +8,7 @@ test_that("family arguments are correctly converted", {
   expect_s3_class(m2, "glm")
   expect_s3_class(m3, "glm")
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$coefficients, m3$coefficients)
-  expect_equal(m2$coefficients, m3$coefficients)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$coefficients, m2$coefficients)
 })

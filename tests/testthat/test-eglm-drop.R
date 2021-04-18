@@ -7,9 +7,9 @@ test_that("Drop: flgm (gaussian) == glm with no test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2)
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
 })
 
 test_that("Drop: flgm (gaussian) == glm with F test", {
@@ -19,11 +19,11 @@ test_that("Drop: flgm (gaussian) == glm with F test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "F")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (gaussian) == glm with Chisq test", {
@@ -33,11 +33,11 @@ test_that("Drop: flgm (gaussian) == glm with Chisq test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Chisq")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (gaussian) == glm with LRT test", {
@@ -47,11 +47,11 @@ test_that("Drop: flgm (gaussian) == glm with LRT test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "LRT")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled dev.`, drop_m2$`scaled dev.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled dev.`, drop_m1$`scaled dev.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 test_that("Drop: flgm (gaussian) == glm with Rao test", {
@@ -61,11 +61,11 @@ test_that("Drop: flgm (gaussian) == glm with Rao test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Rao")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled Rao sc.`, drop_m1$`scaled Rao sc.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 # Inverse-Gaussian ----
@@ -77,9 +77,9 @@ test_that("Drop: flgm (inverse.gaussian) == glm with no test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2)
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with F test", {
@@ -89,11 +89,11 @@ test_that("Drop: flgm (inverse.gaussian) == glm with F test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "F")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with Chisq test", {
@@ -103,11 +103,11 @@ test_that("Drop: flgm (inverse.gaussian) == glm with Chisq test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Chisq")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with LRT test", {
@@ -117,11 +117,11 @@ test_that("Drop: flgm (inverse.gaussian) == glm with LRT test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "LRT")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled dev.`, drop_m2$`scaled dev.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled dev.`, drop_m1$`scaled dev.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 test_that("Drop: flgm (inverse.gaussian) == glm with Rao test", {
@@ -131,11 +131,11 @@ test_that("Drop: flgm (inverse.gaussian) == glm with Rao test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = inverse.gaussian, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Rao")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled Rao sc.`, drop_m1$`scaled Rao sc.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 # Binomial ----
@@ -147,9 +147,9 @@ test_that("Drop: flgm (binomial) == glm with no test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial, reduce = FALSE)
   drop_m2 <- drop1(m2)
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
 })
 
 test_that("Drop: flgm (binomial) == glm with F test", {
@@ -160,11 +160,11 @@ test_that("Drop: flgm (binomial) == glm with F test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial, reduce = FALSE)
   drop_m2 <- expect_warning(drop1(m2, test = "F"))
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (binomial) == glm with Chisq test", {
@@ -174,11 +174,11 @@ test_that("Drop: flgm (binomial) == glm with Chisq test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Chisq")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (binomial) == glm with LRT test", {
@@ -188,11 +188,11 @@ test_that("Drop: flgm (binomial) == glm with LRT test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "LRT")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled dev.`, drop_m2$`scaled dev.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled dev.`, drop_m1$`scaled dev.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 test_that("Drop: flgm (binomial) == glm with Rao test", {
@@ -202,11 +202,11 @@ test_that("Drop: flgm (binomial) == glm with Rao test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = binomial, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Rao")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled Rao sc.`, drop_m1$`scaled Rao sc.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 # Quasi-Binomial ----
@@ -218,9 +218,9 @@ test_that("Drop: flgm (quasibinomial) == glm with no test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial, reduce = FALSE)
   drop_m2 <- drop1(m2)
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with F test", {
@@ -230,11 +230,11 @@ test_that("Drop: flgm (quasibinomial) == glm with F test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "F")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with Chisq test", {
@@ -244,11 +244,11 @@ test_that("Drop: flgm (quasibinomial) == glm with Chisq test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Chisq")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with LRT test", {
@@ -258,11 +258,11 @@ test_that("Drop: flgm (quasibinomial) == glm with LRT test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "LRT")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled dev.`, drop_m2$`scaled dev.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled dev.`, drop_m1$`scaled dev.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 test_that("Drop: flgm (quasibinomial) == glm with Rao test", {
@@ -272,11 +272,11 @@ test_that("Drop: flgm (quasibinomial) == glm with Rao test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasibinomial, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Rao")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled Rao sc.`, drop_m1$`scaled Rao sc.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 # Poisson ----
@@ -288,9 +288,9 @@ test_that("Drop: flgm (poisson) == glm with no test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson, reduce = FALSE)
   drop_m2 <- drop1(m2)
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
 })
 
 test_that("Drop: flgm (poisson) == glm with F test", {
@@ -301,11 +301,11 @@ test_that("Drop: flgm (poisson) == glm with F test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson, reduce = FALSE)
   drop_m2 <- expect_warning(drop1(m2, test = "F"))
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (poisson) == glm with Chisq test", {
@@ -315,11 +315,11 @@ test_that("Drop: flgm (poisson) == glm with Chisq test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Chisq")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (poisson) == glm with LRT test", {
@@ -329,11 +329,11 @@ test_that("Drop: flgm (poisson) == glm with LRT test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "LRT")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled dev.`, drop_m2$`scaled dev.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled dev.`, drop_m1$`scaled dev.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 test_that("Drop: flgm (poisson) == glm with Rao test", {
@@ -343,11 +343,11 @@ test_that("Drop: flgm (poisson) == glm with Rao test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = poisson, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Rao")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled Rao sc.`, drop_m1$`scaled Rao sc.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 # Quasi-Poisson ----
@@ -359,9 +359,9 @@ test_that("Drop: flgm (poisson) == glm with no test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson, reduce = FALSE)
   drop_m2 <- drop1(m2)
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
 })
 
 test_that("Drop: flgm (poisson) == glm with F test", {
@@ -371,11 +371,11 @@ test_that("Drop: flgm (poisson) == glm with F test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "F")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (poisson) == glm with Chisq test", {
@@ -385,11 +385,11 @@ test_that("Drop: flgm (poisson) == glm with Chisq test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Chisq")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (poisson) == glm with LRT test", {
@@ -399,11 +399,11 @@ test_that("Drop: flgm (poisson) == glm with LRT test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "LRT")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled dev.`, drop_m2$`scaled dev.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled dev.`, drop_m1$`scaled dev.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 test_that("Drop: flgm (poisson) == glm with Rao test", {
@@ -413,11 +413,11 @@ test_that("Drop: flgm (poisson) == glm with Rao test", {
   m2 <- eglm(mpg ~ wt + am, data = mtcars, family = quasipoisson, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Rao")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled Rao sc.`, drop_m1$`scaled Rao sc.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 # Quasi ----
@@ -429,9 +429,9 @@ test_that("Drop: flgm (quasi) == glm with no test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi, reduce = FALSE)
   drop_m2 <- drop1(m2)
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
 })
 
 test_that("Drop: flgm (quasi) == glm with F test", {
@@ -441,11 +441,11 @@ test_that("Drop: flgm (quasi) == glm with F test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "F")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (quasi) == glm with Chisq test", {
@@ -455,11 +455,11 @@ test_that("Drop: flgm (quasi) == glm with Chisq test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Chisq")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`F value`, drop_m2$`F value`)
-  expect_equal(drop_m1$`Pr(>F)`, drop_m2$`Pr(>F)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`F value`, drop_m1$`F value`)
+  expect_equal(drop_m2$`Pr(>F)`, drop_m1$`Pr(>F)`)
 })
 
 test_that("Drop: flgm (quasi) == glm with LRT test", {
@@ -469,11 +469,11 @@ test_that("Drop: flgm (quasi) == glm with LRT test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "LRT")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled dev.`, drop_m2$`scaled dev.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled dev.`, drop_m1$`scaled dev.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
 
 test_that("Drop: flgm (quasi) == glm with Rao test", {
@@ -483,9 +483,9 @@ test_that("Drop: flgm (quasi) == glm with Rao test", {
   m2 <- eglm(am ~ wt + mpg, data = mtcars, family = quasi, reduce = FALSE)
   drop_m2 <- drop1(m2, test = "Rao")
 
-  expect_equal(drop_m1$Df, drop_m2$Df)
-  expect_equal(drop_m1$Deviance, drop_m2$Deviance)
-  expect_equal(drop_m1$AIC, drop_m2$AIC)
-  expect_equal(drop_m1$`scaled Rao sc.`, drop_m2$`scaled Rao sc.`)
-  expect_equal(drop_m1$`Pr(>Chi)`, drop_m2$`Pr(>Chi)`)
+  expect_equal(drop_m2$Df, drop_m1$Df)
+  expect_equal(drop_m2$Deviance, drop_m1$Deviance)
+  expect_equal(drop_m2$AIC, drop_m1$AIC)
+  expect_equal(drop_m2$`scaled Rao sc.`, drop_m1$`scaled Rao sc.`)
+  expect_equal(drop_m2$`Pr(>Chi)`, drop_m1$`Pr(>Chi)`)
 })
