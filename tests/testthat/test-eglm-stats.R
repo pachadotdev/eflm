@@ -1,7 +1,7 @@
 test_that("functions from stats package (except summary) return the same as glm", {
   m1 <- glm(mpg ~ wt, family = gaussian, data = mtcars)
   m2 <- eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = F)
-  m2 <- eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = T)
+  m3 <- eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = T)
 
   fm1 <- family(m1)
   fm2 <- family(m2)

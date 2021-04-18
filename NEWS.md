@@ -1,8 +1,9 @@
 # eflm 0.3
 
 * All functions were re-written, by adapting from stats:: and new S3 methods when required
-* Uses R's internal C code for all matrix decompositions
+* Uses R's internal C code for all matrix decompositions, and LAPACK when possible
 * Fixes rounding problem with broom's exponentiation
+* Performs better on Windows, the previous code relied heavily on Unix-specific matrix products
 
 # eflm 0.2.2
 

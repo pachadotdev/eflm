@@ -75,7 +75,11 @@ summary.elm <- function(object, correlation = FALSE, symbolic.cor = FALSE, ...) 
   }
   p1 <- 1L:p
   # R is obtained with a bypass in case the fitting includes reduction=TRUE
-  R <- if (isTRUE(z$reduce)) solve.qr(qr(z$xtx, LAPACK = T)) else chol2inv(Qr$qr[p1, p1, drop = FALSE])
+  R <- if (isTRUE(z$reduce)) {
+      solve.qr(qr(z$xtx, LAPACK = T))
+    } else {
+      chol2inv(Qr$qr[p1, p1, drop = FALSE])
+    }
   se <- sqrt(diag(R) * resvar)
   est <- z$coefficients[Qr$pivot[p1]]
   tval <- est / se

@@ -184,8 +184,7 @@ eglm <- function(formula, family = gaussian, data, weights,
   ## re-calculated by setting an offset (provided there is an intercept).
   ## Prior to 2.4.0 this was only done for non-zero offsets.
   if (length(offset) && attr(mt, "intercept") > 0L) {
-    fit2 <-
-      eval(call(if (is.function(method)) "method" else method,
+    fit2 <- eval(call(if (is.function(method)) "method" else method,
         x = X[, "(Intercept)", drop = FALSE], y = Y,
         weights = weights, offset = offset, family = family,
         control = control, intercept = TRUE
@@ -200,6 +199,12 @@ eglm <- function(formula, family = gaussian, data, weights,
   fit$na.action <- attr(mf, "na.action")
   if (x) fit$x <- X
   if (!y) fit$y <- NULL
+  fit$reduce <- reduce
+  # moved to eglm-wfit to have additional information in list-type objects
+  # if (isTRUE(reduce)) {
+  #   fit$xtx <- crossprod(X)
+  #   fit$qr$original.dimensions <- dim(X)
+  # }
   structure(c(
     fit,
     list(

@@ -6,7 +6,11 @@ y = matrix(mtcars$mpg, ncol = 1)
 
 weights = rep(1,length(mtcars$mpg))
 
-elm.wfit(x, y, w, reduce = F)
-elm.wfit(x, y, w, reduce = T)
+lm1 <- elm.wfit(x, y, weights, reduce = F)
+lm2 <- elm.wfit(x, y, weights, reduce = T)
 
-eglm.wfit(x, y, w)
+glm1 <- eglm.wfit(x, y, weights, reduce = F)
+glm2 <- eglm.wfit(x, y, weights, reduce = T)
+
+glm12 <- eglm(mpg ~ wt, data = mtcars, reduce = F, x = T)
+glm22 <- eglm(mpg ~ wt, data = mtcars, reduce = T, x = T)

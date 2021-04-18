@@ -128,10 +128,10 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
       ## call Fortran code via C wrapper
       if (isTRUE(reduce)) {
         fit <- .Call(C_Cdqrls,
-                     crossprod(x[good, , drop = FALSE] * w),
-                     crossprod(x[good, , drop = FALSE], z * w^2),
-                     min(1e-7, control$epsilon / 1000),
-                     check = FALSE
+          crossprod(x[good, , drop = FALSE] * w),
+          crossprod(x[good, , drop = FALSE], z * w^2),
+          min(1e-7, control$epsilon / 1000),
+          check = FALSE
         )
       } else {
         fit <- .Call(C_Cdqrls, x[good, , drop = FALSE] * w, z * w,
@@ -272,12 +272,17 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
   if (!EMPTY) {
     # for effects I used ncol(x) when reduce = T, because nrow((wXw)t(wXw)) = ncol(X)
     names(fit$effects) <-
-      c(xxnames[seq_len(fit$rank)],
-        rep.int("", if (isTRUE(reduce)) ncol(x) - fit$rank else sum(good) - fit$rank))
+      c(
+        xxnames[seq_len(fit$rank)],
+        rep.int("", if (isTRUE(reduce)) ncol(x) - fit$rank else sum(good) - fit$rank)
+      )
   }
   ## calculate null deviance -- corrected in eglm() if offset and intercept
-  wtdmu <-
-    if (intercept) sum(weights * y) / sum(weights) else linkinv(offset)
+  wtdmu <- if (intercept) {
+    sum(weights * y) / sum(weights)
+  } else {
+    linkinv(offset)
+  }
   nulldev <- sum(dev.resids(y, wtdmu, weights))
   ## calculate df
   n.ok <- nobs - sum(weights == 0)
@@ -285,17 +290,36 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
   rank <- if (EMPTY) 0 else fit$rank
   resdf <- n.ok - rank
   ## calculate AIC
-  aic.model <-
-    aic(y, n, mu, weights, dev) + 2 * rank
+  aic.model <- aic(y, n, mu, weights, dev) + 2 * rank
   ##     ^^ is only initialize()d for "binomial" [yuck!]
-  list(
-    coefficients = coef, residuals = residuals, fitted.values = mu,
-    effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
-    qr = if (!EMPTY) structure(fit[c("qr", "rank", "qraux", "pivot", "tol")], class = "qr"),
-    family = family,
-    linear.predictors = eta, deviance = dev, aic = aic.model,
-    null.deviance = nulldev, iter = iter, weights = wt,
-    prior.weights = weights, df.residual = resdf, df.null = nulldf,
-    y = y, converged = conv, boundary = boundary
-  )
+  if (isTRUE(reduce)) {
+    fit$original.dimensions <- dim(x[good, , drop = FALSE])
+
+    list(
+      coefficients = coef, residuals = residuals, fitted.values = mu,
+      effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
+      qr = if (!EMPTY) structure(
+        fit[c("qr", "rank", "qraux", "pivot", "tol", "original.dimensions")],
+        class = "qr"),
+      family = family,
+      linear.predictors = eta, deviance = dev, aic = aic.model,
+      null.deviance = nulldev, iter = iter, weights = wt,
+      prior.weights = weights, df.residual = resdf, df.null = nulldf,
+      y = y, converged = conv, boundary = boundary, reduce = reduce,
+      xtx = crossprod(x[good, , drop = FALSE])
+    )
+  } else {
+    list(
+      coefficients = coef, residuals = residuals, fitted.values = mu,
+      effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
+      qr = if (!EMPTY) structure(
+        fit[c("qr", "rank", "qraux", "pivot", "tol")],
+        class = "qr"),
+      family = family,
+      linear.predictors = eta, deviance = dev, aic = aic.model,
+      null.deviance = nulldev, iter = iter, weights = wt,
+      prior.weights = weights, df.residual = resdf, df.null = nulldf,
+      y = y, converged = conv, boundary = boundary, reduce = reduce
+    )
+  }
 }

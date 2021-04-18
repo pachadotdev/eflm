@@ -28,10 +28,6 @@ test_that("elm returns the same regression output as lm", {
   expect_equal(m3$rank, m1$rank)
   expect_equal(m3$fitted.values, m1$fitted.values)
   expect_equal(m3$assign, m1$assign)
-  # the QR decomposition is different by definition
-  # expect_equal(m3$effects, m1$effects)
-  # expect_equal(m3$qr$qr, m1$qr$qr)
-  # expect_equal(m3$qr$qraux, m1$qr$qraux)
   expect_equal(m3$qr$pivot, m1$qr$pivot)
   expect_equal(m3$qr$tol, m1$qr$tol)
   expect_equal(m3$qr$rank, m1$qr$rank)
@@ -41,6 +37,12 @@ test_that("elm returns the same regression output as lm", {
   expect_equal(m3$call$data, m1$call$data)
   expect_equal(m3$terms, m1$terms)
   expect_equal(m3$model, m1$model)
+
+  # the QR decomposition is different by definition
+  # expect_equal(m3$effects, m1$effects)
+  # expect_equal(m3$qr$qr, m1$qr$qr)
+  # expect_equal(m3$qr$qraux, m1$qr$qraux)
+  expect_lte(prod(dim(m3)), prod(dim(m1)))
 
   expect_equal(
     predict(m1, newdata = mtcars, type = "response"),

@@ -185,9 +185,9 @@ X_{ij,t} =& \:\exp\left[\pi_{i,t} + \chi_{i,t} + \beta_1 \log(DIST)_{i,j} + \bet
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times depending on the design matrix dimensions:
 
 ```{r echo=FALSE}
-benchmark <- do.call("rbind", trade_data_yotov_benchmark$ppml)
-benchmark$dimensions <- benchmark$mm_rows * benchmark$mm_cols
-benchmark$expression2 <- ifelse(grepl("eglm", benchmark$expression), "EGLM", "GLM")
+benchmark2 <- do.call("rbind", trade_data_yotov_benchmark$ppml)
+benchmark2$dimensions <- benchmark$mm_rows * benchmark$mm_cols
+benchmark2$expression2 <- ifelse(grepl("eglm", benchmark$expression), "EGLM", "GLM")
 
 g1 <- ggplot(benchmark, aes(x = dimensions, y = median, color = expression2)) +
   geom_point() +
@@ -285,3 +285,19 @@ QQpLOT
 compareCoefs
 
 ver fit4 <- update(fit, subset=!(rownames(datos2) %in% c("NY","SD","TX","NV","CT"))  )
+
+## Acknowledgements 
+
+*"If I have seen further it is by standing on the shoulders of Giants."*
+
+The original generalized linear model implementation via iteratively reweighted
+least squares for any family was written in R by Simon Davies in Dec, 1995. This
+implementation was later improved by Thomas Lumley back in Apr, 1997, and then
+other developers. In 2021, their work was adapted by me, Mauricio 'Pachá' Vargas
+Sepúlveda for large datasets.
+
+This work got very well received feedback from:
+
+* Constanza Prado
+* Alexey Kravchenko
+* Yoto Yotov
