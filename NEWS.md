@@ -7,9 +7,9 @@
 
 # eflm 0.2.2
 
-* allows `family = gaussian`, etc instead of `family = gaussian()`, just like `glm()`
-* supports `sandwich::vcovBS()`
-* supports `subset = (cyl == 4)` and similar subsetting
+* Allows `family = gaussian`, etc instead of `family = gaussian()`, just like `glm()`
+* Supports `sandwich::vcovBS()`
+* Supports `subset = (cyl == 4)` and similar subsetting
 
 # eflm 0.2.1
 

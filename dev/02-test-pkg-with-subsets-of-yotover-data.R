@@ -1,4 +1,5 @@
 library(eflm)
+if (!require(bench)) install.packages("bench")
 
 # OLS
 
@@ -63,4 +64,4 @@ trade_data_yotov_benchmark <- list(
   ppml = trade_data_yotov_benchmark2
 )
 
-usethis::use_data(trade_data_yotov_benchmark, compress = "xz", overwrite = T)
+saveRDS(trade_data_yotov_benchmark, file = "dev/trade_data_yotov_benchmark.rds", compress = "xz")

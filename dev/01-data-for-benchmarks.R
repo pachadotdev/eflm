@@ -66,4 +66,4 @@ trade_data_yotov <- trade_data_yotov %>%
   ungroup() %>%
   select(year, trade, dist, cntg, lang, clny, exp_year, imp_year)
 
-use_data(trade_data_yotov, compress = "xz", overwrite = T)
+saveRDS(trade_data_yotov, file = "dev/trade_data_yotov.rds", compress = "xz")
