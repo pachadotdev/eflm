@@ -133,7 +133,7 @@ By running regressions with cumulative subset of the data for 1986, …,
 we obtain the next fitting times and memory allocation depending on the
 design matrix dimensions:
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
+<img src="man/figures/README-elm-benchmark-1.png" width="100%" /><img src="man/figures/README-elm-benchmark-2.png" width="100%" />
 
 ### PPML estimation controlling for multilateral resistance terms with fixed effects:
 
@@ -147,7 +147,7 @@ By running regressions with cumulative subset of the data for 1986, …,
 we obtain the next fitting times depending on the design matrix
 dimensions:
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-4-2.png" width="100%" />
+<img src="man/figures/README-eglm-benchmark-1.png" width="100%" /><img src="man/figures/README-eglm-benchmark-2.png" width="100%" />
 
 <!-- ## Progress list -->
 <!-- ### Sandwich compatibility -->

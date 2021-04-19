@@ -137,7 +137,7 @@ The general equation for this model is:
 
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times and memory allocation depending on the design matrix dimensions:
 
-```{r echo=FALSE}
+```{r elm-benchmark, echo=FALSE}
 benchmark <- read.csv(system.file("extdata", "elm-benchmarks.csv", package = "eflm"))
 
 g1 <- ggplot(benchmark, aes(x = dimensions, y = median_milliseconds, color = expression2)) +
@@ -186,7 +186,7 @@ X_{ij,t} =& \:\exp\left[\pi_{i,t} + \chi_{i,t} + \beta_1 \log(DIST)_{i,j} + \bet
 
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times depending on the design matrix dimensions:
 
-```{r echo=FALSE}
+```{r eglm-benchmark, echo=FALSE}
 benchmark <- read.csv(system.file("extdata", "eglm-benchmarks.csv", package = "eflm"))
 
 g1 <- ggplot(benchmark, aes(x = dimensions, y = median_milliseconds, color = expression2)) +
