@@ -8,7 +8,7 @@
 #' @param qr logical. If TRUE the corresponding QR decomposition component of
 #'  the fit is returned.
 #'
-#' @details Models for \code{elm} and \code{eglm} are specified symbolically.
+#' @details Models for \code{elm} are specified symbolically.
 #'  A typical model has the form \code{response ~ terms} where \code{response}
 #'  is the (numeric) response vector and \code{terms} is a series of terms which
 #'  specifies a linear predictor for \code{response}. A terms specification of
@@ -19,12 +19,16 @@
 #'  with all terms in \code{second}. The specification \code{first*second}
 #'  indicates the \emph{cross} of \code{first} and \code{second}. This is
 #'  the same as \code{first + second + first:second}, and exactly the same as
-#'  \code{"\link{lm}"} and \code{"\link{glm}"} from the \link{stats} package.
-#' @return an object of class "elm" that behaves the same way as the "lm" class,
-#'  see the function \link{lm}.
+#'  \code{"\link{lm}"} from the \link{stats} package.
+#'
+#' @return An object of class "elm" that behaves the same way as the "lm"
+#'  class, see the function \code{"\link{lm}"}. This output also includes the
+#'  logical "reduce" and, depending on it, the reduced design matrix "xtx"
+#'  when the reduce argument is set to TRUE.
 #'
 #' @examples
 #' elm(mpg ~ wt, data = mtcars)
+#'
 #' @importFrom stats gaussian na.pass
 #'
 #' @export

@@ -3,7 +3,7 @@
 #' Efficient Generalized Linear Model Weighted Fit (\code{"eglm.wfit"}) is used
 #'  to fit generalized linear models in an equivalent way to
 #'  \code{"\link{glm.fit}"} but in a reduced time depending on the design matrix
-#'  and the family (or link) (see the DESCRIPTION).
+#'  and the family (or link).
 #'
 #' @inheritParams eglm
 #' @param x,y For \code{eglm.wfit}: x is a design matrix of dimension
@@ -11,6 +11,20 @@
 #'  with n rows.
 #' @param intercept logical value indicating whether \emph{intercept} should be
 #'  included in the \emph{null} model. Defaults to \code{TRUE}.
+#'
+#' @details \code{eglm.wfit} is a workhorse function: it is not normally called
+#'  directly but can be more efficient where the response vector, design matrix
+#'  and family have already been calculated. Use \code{eglm} for most of the
+#'  cases.
+#'
+#' @return A list that contains the same elements as the output from
+#'  \code{"\link{glm.fit}"}, with the addition of the vector "good" that
+#'  indicates with logicals which observations were used in the fitting process.
+#'
+#' @examples
+#' x = cbind(rep(1, nrow(mtcars)), mtcars$wt)
+#' y = mtcars$mpg
+#' eglm.wfit(x, y)
 #'
 #' @export
 eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,

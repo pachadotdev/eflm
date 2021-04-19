@@ -57,8 +57,8 @@ takes the same arguments as \code{glm.fit} from the \bold{stats} package.
 If specified as a character string it is looked up from within the
 \bold{eflm} namespace.}
 
-\item{model}{logical value indicating whether \emph{model frame} should be
-included as a component of the returned value. Defaults to \code{TRUE}.}
+\item{model}{a logical value indicating whether \emph{model frame} should be
+included as a component of the returned value.}
 
 \item{x}{logical values indicating whether the
 \emph{model matrix} (\code{x}) and the \emph{response vector} (\code{y})
@@ -85,16 +85,18 @@ response. One or more \code{\link{offset}} terms can be included in the
 formula instead or as well, and if more than one are specified their sum is
 used. See \code{\link{model.offset}}.}
 
-\item{reduce}{logical. Should an alternate design matrix of \code{p * p} be
-used instead of the traditional \code{n * p} design matrix}
+\item{reduce}{logical; if TRUE an alternate design matrix of \code{p * p} is
+used for the fitting instead of the traditional \code{n * p} design matrix.}
 
 \item{...}{For eglm: arguments to be used to form the default control
 argument if it is not supplied directly. For weights: further arguments
 passed to or from other methods.}
 }
 \value{
-an object of class "elm" that behaves the same way as the "lm" class,
-see the function \link{lm}.
+An object of class "elm" that behaves the same way as the "lm"
+class, see the function \code{"\link{lm}"}. This output also includes the
+logical "reduce" and, depending on it, the reduced design matrix "xtx"
+when the reduce argument is set to TRUE.
 }
 \description{
 Efficient Linear Model (\code{"elm"}) is used to fit linear
@@ -102,7 +104,7 @@ models in an equivalent way to \code{"\link{lm}"} but in a reduced time
 depending on the design matrix.
 }
 \details{
-Models for \code{elm} and \code{eglm} are specified symbolically.
+Models for \code{elm} are specified symbolically.
 A typical model has the form \code{response ~ terms} where \code{response}
 is the (numeric) response vector and \code{terms} is a series of terms which
 specifies a linear predictor for \code{response}. A terms specification of
@@ -113,8 +115,9 @@ terms obtained by taking the interactions of all terms in \code{first}
 with all terms in \code{second}. The specification \code{first*second}
 indicates the \emph{cross} of \code{first} and \code{second}. This is
 the same as \code{first + second + first:second}, and exactly the same as
-\code{"\link{lm}"} and \code{"\link{glm}"} from the \link{stats} package.
+\code{"\link{lm}"} from the \link{stats} package.
 }
 \examples{
 elm(mpg ~ wt, data = mtcars)
+
 }

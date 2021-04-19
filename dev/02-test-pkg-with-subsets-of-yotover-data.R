@@ -1,6 +1,8 @@
 library(eflm)
 if (!require(bench)) install.packages("bench")
 
+trade_data_yotov <- readRDS("dev/trade_data_yotov.rds")
+
 # OLS
 
 trade_data_yotov_benchmark1 <- list()
@@ -14,8 +16,9 @@ for (i in seq_along(y)) {
   d <- d[d$trade > 0, ]
 
   out <- bench::mark(
-    lm(model, data = d)$coefficients,
-    elm(model, data = d, bypass = F)$coefficients
+    lm(model, data = d, model = F)$coefficients,
+    elm(model, data = d, model = F, reduce = T)$coefficients,
+    iterations = 5L
   )
 
   mm <- model.matrix(~log(dist) + cntg + lang + clny + exp_year + imp_year, d)
@@ -39,14 +42,10 @@ for (i in seq_along(y)) {
 
   out <- bench::mark(
     glm(model, data = d,
-        family = quasipoisson(link = "log"),
-        y = FALSE,
-        model = FALSE)$coefficients,
+        family = quasipoisson(link = "log"), y = F, model = F)$coefficients,
     eglm(model, data = d,
-         family = quasipoisson(link = "log"),
-         bypass = F,
-         y = FALSE,
-         model = FALSE)$coefficients
+         family = quasipoisson(link = "log"), y = F, model = F, reduce = T)$coefficients,
+    iterations = 5L
   )
 
   mm <- model.matrix(~log(dist) + cntg + lang + clny + exp_year + imp_year, d)

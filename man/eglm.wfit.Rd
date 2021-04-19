@@ -55,12 +55,29 @@ included in the \emph{null} model. Defaults to \code{TRUE}.}
 
 \item{singular.ok}{logical; if FALSE a singular fit is an error.}
 
-\item{reduce}{logical. Should an alternate design matrix of \code{p * p} be
-used instead of the traditional \code{n * p} design matrix}
+\item{reduce}{logical; if TRUE an alternate design matrix of \code{p * p} is
+used for the fitting instead of the traditional \code{n * p} design matrix.}
+}
+\value{
+A list that contains the same elements as the output from
+\code{"\link{glm.fit}"}, with the addition of the vector "good" that
+indicates with logicals which observations were used in the fitting process.
 }
 \description{
 Efficient Generalized Linear Model Weighted Fit (\code{"eglm.wfit"}) is used
 to fit generalized linear models in an equivalent way to
 \code{"\link{glm.fit}"} but in a reduced time depending on the design matrix
-and the family (or link) (see the DESCRIPTION).
+and the family (or link).
+}
+\details{
+\code{eglm.wfit} is a workhorse function: it is not normally called
+directly but can be more efficient where the response vector, design matrix
+and family have already been calculated. Use \code{eglm} for most of the
+cases.
+}
+\examples{
+x = cbind(rep(1, nrow(mtcars)), mtcars$wt)
+y = mtcars$mpg
+eglm.wfit(x, y)
+
 }

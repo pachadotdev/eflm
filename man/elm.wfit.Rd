@@ -52,15 +52,31 @@ If specified as a character string it is looked up from within the
 
 \item{singular.ok}{logical; if FALSE a singular fit is an error.}
 
-\item{reduce}{logical. Should an alternate design matrix of \code{p * p} be
-used instead of the traditional \code{n * p} design matrix}
+\item{reduce}{logical; if TRUE an alternate design matrix of \code{p * p} is
+used for the fitting instead of the traditional \code{n * p} design matrix.}
 
 \item{...}{For eglm: arguments to be used to form the default control
 argument if it is not supplied directly. For weights: further arguments
 passed to or from other methods.}
 }
+\value{
+A list that contains the same elements as the output from
+\code{"\link{lm.fit}"}.
+}
 \description{
 Efficient Linear Model Weighted Fit (\code{"elm.wfit"}) is used
 to fit linear models in an equivalent way to \code{"\link{glm.fit}"} but in
 a reduced time depending on the design matrix and the family (or link).
+}
+\details{
+\code{elm.wfit} is a workhorse function: it is not normally called
+directly but can be more efficient where the response vector, design matrix
+and family have already been calculated. Use \code{elm} for most of the
+cases.
+}
+\examples{
+x = cbind(rep(1, nrow(mtcars)), mtcars$wt)
+y = mtcars$mpg
+elm.wfit(x, y)
+
 }

@@ -41,8 +41,8 @@ utils::globalVariables("n", add = TRUE)
 #'  used. See \code{\link{model.offset}}.
 #' @param control a list of parameters for controlling the fitting process. For
 #'  \code{eglm.wfit} this is passed to \code{eglm.control}.
-#' @param model logical value indicating whether \emph{model frame} should be
-#'  included as a component of the returned value. Defaults to \code{TRUE}.
+#' @param model a logical value indicating whether \emph{model frame} should be
+#'  included as a component of the returned value.
 #' @param method the method to be used in fitting the model. The default method
 #'  \code{"eglm.wfit"} uses iteratively reweighted least squares (IWLS): the
 #'  alternative \code{"model.frame"} returns the model frame and does no
@@ -58,13 +58,13 @@ utils::globalVariables("n", add = TRUE)
 #' @param singular.ok logical; if FALSE a singular fit is an error.
 #' @param contrasts an optional list. See the \code{contrasts.arg} of
 #'  \code{model.matrix.default}.
-#' @param reduce logical. Should an alternate design matrix of \code{p * p} be
-#'  used instead of the traditional \code{n * p} design matrix
+#' @param reduce logical; if TRUE an alternate design matrix of \code{p * p} is
+#'  used for the fitting instead of the traditional \code{n * p} design matrix.
 #' @param \dots For eglm: arguments to be used to form the default control
 #'  argument if it is not supplied directly. For weights: further arguments
 #'  passed to or from other methods.
 #'
-#' @details Models for \code{elm} and \code{eglm} are specified symbolically.
+#' @details Models for \code{eglm} are specified symbolically.
 #'  A typical model has the form \code{response ~ terms} where \code{response}
 #'  is the (numeric) response vector and \code{terms} is a series of terms which
 #'  specifies a linear predictor for \code{response}. A terms specification of
@@ -75,13 +75,16 @@ utils::globalVariables("n", add = TRUE)
 #'  with all terms in \code{second}. The specification \code{first*second}
 #'  indicates the \emph{cross} of \code{first} and \code{second}. This is
 #'  the same as \code{first + second + first:second}, and exactly the same as
-#'  \code{"\link{lm}"} and \code{"\link{glm}"} from the \link{stats} package.
+#'  \code{"\link{glm}"} from the \link{stats} package.
 #'
-#' @return an object of class "elm" that behaves the same way as the "lm" class,
-#'  see the function \link{lm}.
+#' @return An object of class "eglm" that behaves the same way as the "glm"
+#'  class, see the function \code{"\link{glm}"}. This output also includes the
+#'  logical "reduce" and, depending on it, the reduced design matrix "xtx"
+#'  when the reduce argument is set to TRUE.
 #'
 #' @examples
 #' eglm(mpg ~ wt, family = gaussian, data = mtcars)
+#'
 #' @importFrom stats gaussian na.pass model.response is.empty.model
 #'  model.matrix model.weights model.offset model.extract .getXlevels
 #'

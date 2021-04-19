@@ -8,6 +8,19 @@
 #' @inheritParams eglm.wfit
 #' @param tol tolerance for the \code{\link{qr}} decomposition. Default is 1e-7.
 #'
+#' @details \code{elm.wfit} is a workhorse function: it is not normally called
+#'  directly but can be more efficient where the response vector, design matrix
+#'  and family have already been calculated. Use \code{elm} for most of the
+#'  cases.
+#'
+#' @return A list that contains the same elements as the output from
+#'  \code{"\link{lm.fit}"}.
+#'
+#' @examples
+#' x = cbind(rep(1, nrow(mtcars)), mtcars$wt)
+#' y = mtcars$mpg
+#' elm.wfit(x, y)
+#'
 #' @export
 elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
                      singular.ok = TRUE, reduce = TRUE, ...) {
