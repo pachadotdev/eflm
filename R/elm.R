@@ -28,7 +28,6 @@
 #'
 #' @examples
 #' elm(mpg ~ wt, data = mtcars)
-#'
 #' @importFrom stats gaussian na.pass
 #'
 #' @export

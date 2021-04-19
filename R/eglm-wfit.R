@@ -22,10 +22,9 @@
 #'  indicates with logicals which observations were used in the fitting process.
 #'
 #' @examples
-#' x = cbind(rep(1, nrow(mtcars)), mtcars$wt)
-#' y = mtcars$mpg
+#' x <- cbind(rep(1, nrow(mtcars)), mtcars$wt)
+#' y <- mtcars$mpg
 #' eglm.wfit(x, y)
-#'
 #' @export
 eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
                       etastart = NULL, mustart = NULL, offset = rep.int(0, nobs),
@@ -109,7 +108,7 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
     devold <- sum(dev.resids(y, mu, weights))
     boundary <- conv <- FALSE
 
-    ## ------------- THE Iteratively Reweighting L.S. iteration -----------
+    # The Iteratively Reweighting L.S. iteration ----
 
     C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
 
@@ -232,7 +231,9 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
         devold <- dev
         coef <- coefold <- start
       }
-    } ## -------------- end IRLS iteration -------------------------------
+    }
+
+    # end IRLS iteration ----
 
     if (!conv) {
       warning("eglm.wfit: algorithm did not converge", call. = FALSE)

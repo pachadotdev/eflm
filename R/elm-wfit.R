@@ -17,10 +17,9 @@
 #'  \code{"\link{lm.fit}"}.
 #'
 #' @examples
-#' x = cbind(rep(1, nrow(mtcars)), mtcars$wt)
-#' y = mtcars$mpg
+#' x <- cbind(rep(1, nrow(mtcars)), mtcars$wt)
+#' y <- mtcars$mpg
 #' elm.wfit(x, y)
-#'
 #' @export
 elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
                      singular.ok = TRUE, reduce = TRUE, ...) {

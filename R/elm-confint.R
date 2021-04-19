@@ -1,3 +1,4 @@
+#' @importFrom stats setNames vcov qt
 confint.elm <- function(object, parm, level = 0.95, ...) {
   cf <- coef(object)
   ses <- sqrt(diag(vcov(object))) # gives NA for aliased parms

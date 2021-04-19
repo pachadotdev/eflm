@@ -75,8 +75,7 @@ and family have already been calculated. Use \code{elm} for most of the
 cases.
 }
 \examples{
-x = cbind(rep(1, nrow(mtcars)), mtcars$wt)
-y = mtcars$mpg
+x <- cbind(rep(1, nrow(mtcars)), mtcars$wt)
+y <- mtcars$mpg
 elm.wfit(x, y)
-
 }

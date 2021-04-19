@@ -84,7 +84,6 @@ utils::globalVariables("n", add = TRUE)
 #'
 #' @examples
 #' eglm(mpg ~ wt, family = gaussian, data = mtcars)
-#'
 #' @importFrom stats gaussian na.pass model.response is.empty.model
 #'  model.matrix model.weights model.offset model.extract .getXlevels
 #'

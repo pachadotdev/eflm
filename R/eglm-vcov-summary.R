@@ -1,3 +1,4 @@
+#' @importFrom stats .vcov.aliased
 #' @export
 #' @noRd
 vcov.summary.eglm <- function(object, complete = TRUE, ...) {

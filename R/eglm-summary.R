@@ -1,3 +1,4 @@
+#' @importFrom stats pnorm
 #' @export
 #' @noRd
 summary.eglm <- function(object, dispersion = NULL,
