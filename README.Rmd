@@ -7,13 +7,6 @@ output: github_document
 ```{r setup, include = FALSE}
 library(eflm)
 library(ggplot2)
-library(patchwork)
-
-library(readxl)
-library(dplyr)
-library(tidyr)
-library(wesanderson)
-library(forcats)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -56,7 +49,7 @@ possible to the stats package, therefore making the functions provided here
 compatible with packages such as sandwich for robust estimation, even if that
 means to attenuate the speed gains.
 
-The greatest strength of this package is testing. With more than 750 
+The greatest strength of this package is testing. With more than 1300 
 (and counting) tests, we try to do exactly the same as lm/glm, even in edge 
 cases, but faster.
 
@@ -75,15 +68,16 @@ The ultimate aim of the project is to produce a package that:
 ### Stats (base) package
 ```{r message=FALSE, warning=FALSE}
 formula <- "mpg ~ I(wt^2)"
-summary(glm(formula, data = mtcars))
+lm(formula, data = mtcars)$coefficients
 ```
 
 ### Eflm package
 
 ```{r message=FALSE, warning=FALSE}
-library(eflm)
-summary(eglm(formula, data = mtcars))
+elm(formula, data = mtcars)$coefficients
 ```
+
+Please read the documentation for the full details.
 
 ## Installation
 
@@ -103,8 +97,21 @@ Let's fit two computationally demanding models from [Yotov, et al. (2016)](https
 
 The dataset for the benchmark was also taken from Yotov, et al. and consists in a 28,152 x 8 data frame with 6 numeric and 2 categorical columns:
 
-```{r}
-trade_data_yotov
+```
+# A tibble: 28,152 x 8
+    year  trade   dist  cntg  lang  clny exp_year imp_year
+   <int>  <dbl>  <dbl> <int> <int> <int> <chr>    <chr>   
+ 1  1986  27.8  12045.     0     0     0 ARG1986  AUS1986 
+ 2  1986   3.56 11751.     0     0     0 ARG1986  AUT1986 
+ 3  1986  96.1  11305.     0     0     0 ARG1986  BEL1986 
+ 4  1986   3.13 12116.     0     0     0 ARG1986  BGR1986 
+ 5  1986  52.7   1866.     1     1     0 ARG1986  BOL1986 
+ 6  1986 405.    2392.     1     0     0 ARG1986  BRA1986 
+ 7  1986  48.3   9391.     0     0     0 ARG1986  CAN1986 
+ 8  1986  23.6  11233.     0     0     0 ARG1986  CHE1986 
+ 9  1986 109.    1157.     1     1     0 ARG1986  CHL1986 
+10  1986 161.   19110.     0     0     0 ARG1986  CHN1986 
+# … with 28,142 more rows
 ```
 
 The variables are:
@@ -128,34 +135,14 @@ The general equation for this model is:
 \text{ }& \:\beta_4 CLNY_{i,j} + \varepsilon_{ij,t}
 \end{align}
 
-By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times depending on the design matrix dimensions:
+By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times and memory allocation depending on the design matrix dimensions:
 
 ```{r echo=FALSE}
-benchmark <- do.call("rbind", trade_data_yotov_benchmark$ols)
-benchmark$dimensions <- benchmark$mm_rows * benchmark$mm_cols
-benchmark$expression2 <- ifelse(grepl("elm", benchmark$expression), "ELM", "LM")
+benchmark <- read.csv(system.file("extdata", "elm-benchmarks.csv", package = "eflm"))
 
-g1 <- ggplot(benchmark, aes(x = dimensions, y = median, color = expression2)) +
+g1 <- ggplot(benchmark, aes(x = dimensions, y = median_milliseconds, color = expression2)) +
   geom_point() +
   geom_line() +
-  bench::scale_y_bench_time(NULL) +
-  scale_x_log10(
-    breaks = scales::trans_breaks("log10", function(x) 10^x),
-    labels = scales::trans_format("log10", scales::math_format(10^.x))
-  ) +
-  # coord_fixed() +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank(),
-        legend.title = element_blank()) +
-  labs(title = "Observations vs Fitting Time",
-       x = "Number of Observations",
-       y = "Fitting Time") +
-  scale_color_manual(values = wes_palette("Zissou1")[c(1,4)])
-
-g2 <- ggplot(benchmark, aes(x = dimensions, y = mem_alloc, color = expression2)) +
-  geom_point() +
-  geom_line() +
-  bench::scale_y_bench_bytes(NULL) +
   scale_x_log10(
     breaks = scales::trans_breaks("log10", function(x) 10^x),
     labels = scales::trans_format("log10", scales::math_format(10^.x))
@@ -163,19 +150,34 @@ g2 <- ggplot(benchmark, aes(x = dimensions, y = mem_alloc, color = expression2))
   theme_minimal() +
   theme(panel.grid.minor = element_blank(),
         legend.title = element_blank()) +
-  labs(title = "Observations vs Memory Allocation",
-       x = "Number of Observations",
-       y = "Memory Allocation") +
-  scale_color_manual(values = wes_palette("Zissou1")[c(1,4)])
+  labs(title = "ELM vs LM: Fitting time benchmark",
+       x = "Number of entries in the design matrix",
+       y = "Fitting time (Milliseconds)") +
+  scale_color_manual(values = c("#3B9AB2", "#E1AF00"))
 
-g1 / g2
+g2 <- ggplot(benchmark, aes(x = dimensions, y = mem_alloc_mb, color = expression2)) +
+  geom_point() +
+  geom_line() +
+  scale_x_log10(
+    breaks = scales::trans_breaks("log10", function(x) 10^x),
+    labels = scales::trans_format("log10", scales::math_format(10^.x))
+  ) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(),
+        legend.title = element_blank()) +
+  labs(title = "ELM vs LM: Memory allocation benchmark",
+       x = "Number of entries in the design matrix",
+       y = "Memory allocation (MB)") +
+  scale_color_manual(values = c("#3B9AB2", "#E1AF00"))
+
+g1;g2
 ```
-
-The general equation for this model is: 
 
 ### PPML estimation controlling for multilateral resistance terms with fixed effects:
 
 *This test was conducted on a 2 dedicated CPUs and 4GB of RAM DigitalOcean droplet.*
+
+The general equation for this model is: 
 
 \begin{align}
 X_{ij,t} =& \:\exp\left[\pi_{i,t} + \chi_{i,t} + \beta_1 \log(DIST)_{i,j} + \beta_2 CNTG_{i,j} +\right.\\
@@ -185,31 +187,11 @@ X_{ij,t} =& \:\exp\left[\pi_{i,t} + \chi_{i,t} + \beta_1 \log(DIST)_{i,j} + \bet
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times depending on the design matrix dimensions:
 
 ```{r echo=FALSE}
-benchmark2 <- do.call("rbind", trade_data_yotov_benchmark$ppml)
-benchmark2$dimensions <- benchmark$mm_rows * benchmark$mm_cols
-benchmark2$expression2 <- ifelse(grepl("eglm", benchmark$expression), "EGLM", "GLM")
+benchmark <- read.csv(system.file("extdata", "eglm-benchmarks.csv", package = "eflm"))
 
-g1 <- ggplot(benchmark, aes(x = dimensions, y = median, color = expression2)) +
+g1 <- ggplot(benchmark, aes(x = dimensions, y = median_milliseconds, color = expression2)) +
   geom_point() +
   geom_line() +
-  bench::scale_y_bench_time(NULL) +
-  scale_x_log10(
-    breaks = scales::trans_breaks("log10", function(x) 10^x),
-    labels = scales::trans_format("log10", scales::math_format(10^.x))
-  ) +
-  # coord_fixed() +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank(),
-        legend.title = element_blank()) +
-  labs(title = "Observations vs Fitting Time",
-       x = "Number of Observations",
-       y = "Fitting Time") +
-  scale_color_manual(values = wes_palette("Zissou1")[c(1,4)]) 
-
-g2 <- ggplot(benchmark, aes(x = dimensions, y = mem_alloc, color = expression2)) +
-  geom_point() +
-  geom_line() +
-  bench::scale_y_bench_bytes(NULL) +
   scale_x_log10(
     breaks = scales::trans_breaks("log10", function(x) 10^x),
     labels = scales::trans_format("log10", scales::math_format(10^.x))
@@ -217,74 +199,62 @@ g2 <- ggplot(benchmark, aes(x = dimensions, y = mem_alloc, color = expression2))
   theme_minimal() +
   theme(panel.grid.minor = element_blank(),
         legend.title = element_blank()) +
-  labs(title = "Observations vs Memory Allocation",
-       x = "Number of Observations",
-       y = "Memory Allocation") +
-  scale_color_manual(values = wes_palette("Zissou1")[c(1,4)])
+  labs(title = "EGLM vs GLM: Fitting time benchmark",
+       x = "Number of entries in the design matrix",
+       y = "Fitting time (Milliseconds)") +
+  scale_color_manual(values = c("#3B9AB2", "#E1AF00"))
 
-g1 / g2
+g2 <- ggplot(benchmark, aes(x = dimensions, y = mem_alloc_mb, color = expression2)) +
+  geom_point() +
+  geom_line() +
+  scale_x_log10(
+    breaks = scales::trans_breaks("log10", function(x) 10^x),
+    labels = scales::trans_format("log10", scales::math_format(10^.x))
+  ) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(),
+        legend.title = element_blank()) +
+  labs(title = "EGLM vs GLM: Memory allocation benchmark",
+       x = "Number of entries in the design matrix",
+       y = "Memory allocation (MB)") +
+  scale_color_manual(values = c("#3B9AB2", "#E1AF00"))
+
+g1;g2
 ```
 
-### Performance on scaled hardware
+<!-- ## Progress list -->
 
-*This test was conducted on different dedicated CPUs DigitalOcean droplets.*
+<!-- ### Sandwich compatibility -->
 
-We can repeatedly run the Quasi-Poisson regression with the full dataset and compare the results on different hardware. 
+<!-- - [x] estfun -->
+<!-- - [x] bread -->
+<!-- - [x] vcovCL -->
+<!-- - [x] meatCL -->
+<!-- - [x] vcovCL -->
+<!-- - [x] vcovBS -->
+<!-- - [ ] vcovHC -->
+<!-- - [ ] meatHC -->
+<!-- - [ ] vcovPC -->
+<!-- - [ ] meatPC -->
+<!-- - [ ] vcovPL -->
+<!-- - [ ] meatPL -->
 
-The results which are very consistent across different hardware (this is surprising, more CPUs don't reduce the median fitting time). The next plot summarises 4,000 repetitions of the tests, with 500 repetions for both `glm()` and `eglm()` on different hardware:
+<!-- ### Broom compatibility -->
 
-```{r echo=FALSE, fig.height=7, fig.width=10, dpi = 150}
-tidy_benchmarks <- read_excel("dev/tidy benchmarks.xlsx")
+<!-- - [x] augment -->
+<!-- - [x] tidy -->
 
-tidy_benchmarks %>%
-  select(-expr, -neval) %>%
-  gather(Statistic, `Time (Seconds)`, -Hardware, -Function) %>%
-  mutate(
-    Statistic = as_factor(Statistic),
-    Statistic = fct_relevel(Statistic, "Min", "LQ", "Median",
-                            "Mean", "UQ", "Max")
-  ) %>%
-  ggplot() +
-  geom_col(aes(x = Function, y = `Time (Seconds)`, fill = Hardware), position = "dodge2") +
-  facet_wrap(~Statistic) +
-  scale_fill_manual(values = wes_palette("Zissou1")) +
-  labs(title = "Benchmarking Time on DigitalOcean Droplets") +
-  theme_minimal(base_size = 14)
-```
+<!-- ### CAR  -->
 
-## Progress list
+<!-- RESIDUALPLOTS -->
+<!-- cooks.distance? -->
+<!-- hatvalues? -->
+<!-- influenceIndexPlot -->
+<!-- influencePlot -->
+<!-- QQpLOT -->
+<!-- compareCoefs -->
 
-### Sandwich compatibility
-
-- [x] estfun
-- [x] bread
-- [x] vcovCL
-- [x] meatCL
-- [x] vcovCL
-- [x] vcovBS
-- [ ] vcovHC
-- [ ] meatHC
-- [ ] vcovPC
-- [ ] meatPC
-- [ ] vcovPL
-- [ ] meatPL
-
-### Broom compatibility
-
-- [x] augment
-- [x] tidy
-
-### CAR 
-
-RESIDUALPLOTS
-cooks.distance?
-hatvalues?
-influenceIndexPlot
-influencePlot
-QQpLOT
-compareCoefs
-
-ver fit4 <- update(fit, subset=!(rownames(datos2) %in% c("NY","SD","TX","NV","CT"))  )
+<!-- ver fit4 <- update(fit, subset=!(rownames(datos2) %in% c("NY","SD","TX","NV","CT"))  ) -->
 
 ## Acknowledgements 
 
@@ -301,3 +271,4 @@ This work got very well received feedback from:
 * Constanza Prado
 * Alexey Kravchenko
 * Yoto Yotov
+* Joshua Kunst

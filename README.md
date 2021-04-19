@@ -36,7 +36,7 @@ outputs as closely as possible to the stats package, therefore making
 the functions provided here compatible with packages such as sandwich
 for robust estimation, even if that means to attenuate the speed gains.
 
-The greatest strength of this package is testing. With more than 750
+The greatest strength of this package is testing. With more than 1300
 (and counting) tests, we try to do exactly the same as lm/glm, even in
 edge cases, but faster.
 
@@ -58,59 +58,20 @@ The ultimate aim of the project is to produce a package that:
 
 ``` r
 formula <- "mpg ~ I(wt^2)"
-summary(glm(formula, data = mtcars))
-#> 
-#> Call:
-#> glm(formula = formula, data = mtcars)
-#> 
-#> Deviance Residuals: 
-#>     Min       1Q   Median       3Q      Max  
-#> -5.1583  -2.3882  -0.9648   1.8254   8.2256  
-#> 
-#> Coefficients:
-#>             Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept) 28.05106    1.26324   22.21  < 2e-16 ***
-#> I(wt^2)     -0.70583    0.09616   -7.34 3.56e-08 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
-#> (Dispersion parameter for gaussian family taken to be 13.42544)
-#> 
-#>     Null deviance: 1126.05  on 31  degrees of freedom
-#> Residual deviance:  402.76  on 30  degrees of freedom
-#> AIC: 177.86
-#> 
-#> Number of Fisher Scoring iterations: 2
+lm(formula, data = mtcars)$coefficients
+#> (Intercept)     I(wt^2) 
+#>  28.0510597  -0.7058275
 ```
 
 ### Eflm package
 
 ``` r
-library(eflm)
-summary(eglm(formula, data = mtcars))
-#> 
-#> Call:
-#> eglm(formula = formula, data = mtcars)
-#> 
-#> Deviance residuals:
-#>     Min       1Q   Median       3Q      Max  
-#> -5.1583  -2.3882  -0.9648   1.8254   8.2256  
-#> 
-#> Coefficients:
-#>             Estimate Std. Error t value  Pr(>|t|)    
-#> (Intercept)  28.0511    1.26324   22.21 3.548e-20 ***
-#> I(wt^2)      -0.7058    0.09616   -7.34 3.556e-08 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-#> 
-#> (Dispersion parameter for gaussian family taken to be 13.42544)
-#> 
-#>     Null deviance: 1126.05  on 31  degrees of freedom
-#> Residual deviance:  402.76  on 30  degrees of freedom
-#> AIC: 177.86
-#> 
-#> Number of Fisher Scoring iterations: 1
+elm(formula, data = mtcars)$coefficients
+#> (Intercept)     I(wt^2) 
+#>  28.0510597  -0.7058275
 ```
+
+Please read the documentation for the full details.
 
 ## Installation
 
@@ -135,23 +96,20 @@ The dataset for the benchmark was also taken from Yotov, et al. and
 consists in a 28,152 x 8 data frame with 6 numeric and 2 categorical
 columns:
 
-``` r
-trade_data_yotov
-#> # A tibble: 28,152 x 8
-#>     year  trade   dist  cntg  lang  clny exp_year imp_year
-#>    <int>  <dbl>  <dbl> <int> <int> <int> <chr>    <chr>   
-#>  1  1986  27.8  12045.     0     0     0 ARG1986  AUS1986 
-#>  2  1986   3.56 11751.     0     0     0 ARG1986  AUT1986 
-#>  3  1986  96.1  11305.     0     0     0 ARG1986  BEL1986 
-#>  4  1986   3.13 12116.     0     0     0 ARG1986  BGR1986 
-#>  5  1986  52.7   1866.     1     1     0 ARG1986  BOL1986 
-#>  6  1986 405.    2392.     1     0     0 ARG1986  BRA1986 
-#>  7  1986  48.3   9391.     0     0     0 ARG1986  CAN1986 
-#>  8  1986  23.6  11233.     0     0     0 ARG1986  CHE1986 
-#>  9  1986 109.    1157.     1     1     0 ARG1986  CHL1986 
-#> 10  1986 161.   19110.     0     0     0 ARG1986  CHN1986 
-#> # … with 28,142 more rows
-```
+    # A tibble: 28,152 x 8
+        year  trade   dist  cntg  lang  clny exp_year imp_year
+       <int>  <dbl>  <dbl> <int> <int> <int> <chr>    <chr>   
+     1  1986  27.8  12045.     0     0     0 ARG1986  AUS1986 
+     2  1986   3.56 11751.     0     0     0 ARG1986  AUT1986 
+     3  1986  96.1  11305.     0     0     0 ARG1986  BEL1986 
+     4  1986   3.13 12116.     0     0     0 ARG1986  BGR1986 
+     5  1986  52.7   1866.     1     1     0 ARG1986  BOL1986 
+     6  1986 405.    2392.     1     0     0 ARG1986  BRA1986 
+     7  1986  48.3   9391.     0     0     0 ARG1986  CAN1986 
+     8  1986  23.6  11233.     0     0     0 ARG1986  CHE1986 
+     9  1986 109.    1157.     1     1     0 ARG1986  CHL1986 
+    10  1986 161.   19110.     0     0     0 ARG1986  CHN1986 
+    # … with 28,142 more rows
 
 The variables are:
 
@@ -172,66 +130,65 @@ The general equation for this model is:
 
 By running regressions with cumulative subset of the data for 1986, …,
 2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),
-we obtain the next fitting times depending on the design matrix
-dimensions:
+we obtain the next fitting times and memory allocation depending on the
+design matrix dimensions:
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
-
-The general equation for this model is:
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
 
 ### PPML estimation controlling for multilateral resistance terms with fixed effects:
 
 *This test was conducted on a 2 dedicated CPUs and 4GB of RAM
 DigitalOcean droplet.*
 
+The general equation for this model is:
+
 By running regressions with cumulative subset of the data for 1986, …,
 2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),
 we obtain the next fitting times depending on the design matrix
 dimensions:
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-4-2.png" width="100%" />
 
-### Performance on scaled hardware
+<!-- ## Progress list -->
+<!-- ### Sandwich compatibility -->
+<!-- - [x] estfun -->
+<!-- - [x] bread -->
+<!-- - [x] vcovCL -->
+<!-- - [x] meatCL -->
+<!-- - [x] vcovCL -->
+<!-- - [x] vcovBS -->
+<!-- - [ ] vcovHC -->
+<!-- - [ ] meatHC -->
+<!-- - [ ] vcovPC -->
+<!-- - [ ] meatPC -->
+<!-- - [ ] vcovPL -->
+<!-- - [ ] meatPL -->
+<!-- ### Broom compatibility -->
+<!-- - [x] augment -->
+<!-- - [x] tidy -->
+<!-- ### CAR  -->
+<!-- RESIDUALPLOTS -->
+<!-- cooks.distance? -->
+<!-- hatvalues? -->
+<!-- influenceIndexPlot -->
+<!-- influencePlot -->
+<!-- QQpLOT -->
+<!-- compareCoefs -->
+<!-- ver fit4 <- update(fit, subset=!(rownames(datos2) %in% c("NY","SD","TX","NV","CT"))  ) -->
 
-*This test was conducted on different dedicated CPUs DigitalOcean
-droplets.*
+## Acknowledgements
 
-We can repeatedly run the Quasi-Poisson regression with the full dataset
-and compare the results on different hardware.
+*“If I have seen further it is by standing on the shoulders of Giants.”*
 
-The results which are very consistent across different hardware (this is
-surprising, more CPUs don’t reduce the median fitting time). The next
-plot summarises 4,000 repetitions of the tests, with 500 repetions for
-both `glm()` and `eglm()` on different hardware:
+The original generalized linear model implementation via iteratively
+reweighted least squares for any family was written in R by Simon Davies
+in Dec, 1995. This implementation was later improved by Thomas Lumley
+back in Apr, 1997, and then other developers. In 2021, their work was
+adapted by me, Mauricio ‘Pachá’ Vargas Sepúlveda for large datasets.
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+This work got very well received feedback from:
 
-## Progress list
-
-### Sandwich compatibility
-
--   [x] estfun
--   [x] bread
--   [x] vcovCL
--   [x] meatCL
--   [x] vcovCL
--   [x] vcovBS
--   [ ] vcovHC
--   [ ] meatHC
--   [ ] vcovPC
--   [ ] meatPC
--   [ ] vcovPL
--   [ ] meatPL
-
-### Broom compatibility
-
--   [x] augment
--   [x] tidy
-
-### CAR
-
-RESIDUALPLOTS cooks.distance? hatvalues? influenceIndexPlot
-influencePlot QQpLOT compareCoefs
-
-ver fit4 &lt;- update(fit, subset=!(rownames(datos2) %in%
-c(“NY”,“SD”,“TX”,“NV”,“CT”)) )
+-   Constanza Prado
+-   Alexey Kravchenko
+-   Yoto Yotov
+-   Joshua Kunst
