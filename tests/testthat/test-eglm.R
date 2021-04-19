@@ -2,79 +2,71 @@
 
 test_that("eglm (gaussian) == glm", {
   m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, reduce = F)
+  m3 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
-  expect_equal(m1$qr$tol, m2$qr$tol)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+  expect_equal(m2$qr$tol, m1$qr$tol)
 
-  expect_equal(m1$qr$qr, m2$qr$qr)
-  expect_equal(m1$qr$rank, m2$qr$rank)
-  expect_equal(m1$qr$qraux, m2$qr$qraux)
-  expect_equal(m1$qr$pivot, m2$qr$pivot)
-})
+  expect_equal(m2$qr$qr, m1$qr$qr)
+  expect_equal(m2$qr$rank, m1$qr$rank)
+  expect_equal(m2$qr$qraux, m1$qr$qraux)
+  expect_equal(m2$qr$pivot, m1$qr$pivot)
 
-test_that("eglm (gaussian) + qr singularity.method == glm", {
-  m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, singularity.method = "qr")
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
+  expect_equal(m3$qr$tol, m1$qr$tol)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
-})
-
-test_that("eglm (gaussian) + cholesky singularity.method == glm", {
-  m1 <- glm(mpg ~ wt + am, family = gaussian, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = gaussian, data = mtcars, singularity.method = "Cholesky")
-
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  # the QR decomposition is different by definition
+  # expect_equal(m3$qr$qr, m1$qr$qr)
+  # expect_equal(m3$qr$qraux, m1$qr$qraux)
+  expect_equal(m3$qr$rank, m1$qr$rank)
+  expect_equal(m3$qr$pivot, m1$qr$pivot)
+  expect_lte(prod(dim(m3)), prod(dim(m1)))
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
@@ -82,31 +74,57 @@ test_that("eglm (gaussian) + cholesky singularity.method == glm", {
 
 test_that("eglm (inverse.gaussian) == glm", {
   m1 <- glm(mpg ~ wt + am, family = inverse.gaussian, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = inverse.gaussian, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = inverse.gaussian, data = mtcars, reduce = F)
+  m3 <- eglm(mpg ~ wt + am, family = inverse.gaussian, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
@@ -114,31 +132,57 @@ test_that("eglm (inverse.gaussian) == glm", {
 
 test_that("eglm (gamma) == glm", {
   m1 <- glm(mpg ~ wt + am, family = Gamma, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = Gamma, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = Gamma, data = mtcars, reduce = F)
+  m3 <- eglm(mpg ~ wt + am, family = Gamma, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
@@ -146,31 +190,57 @@ test_that("eglm (gamma) == glm", {
 
 test_that("eglm (binomial) == glm", {
   m1 <- glm(am ~ wt + mpg, family = binomial, data = mtcars)
-  m2 <- eglm(am ~ wt + mpg, family = binomial, data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = binomial, data = mtcars, reduce = F)
+  m3 <- eglm(am ~ wt + mpg, family = binomial, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
@@ -178,31 +248,57 @@ test_that("eglm (binomial) == glm", {
 
 test_that("eglm (quasibinomial) == glm", {
   m1 <- glm(am ~ wt + mpg, family = quasibinomial, data = mtcars)
-  m2 <- eglm(am ~ wt + mpg, family = quasibinomial, data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = quasibinomial, data = mtcars, reduce = F)
+  m3 <- eglm(am ~ wt + mpg, family = quasibinomial, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
@@ -210,31 +306,57 @@ test_that("eglm (quasibinomial) == glm", {
 
 test_that("eglm (poisson) == glm", {
   m1 <- glm(am ~ wt + mpg, family = poisson, data = mtcars)
-  m2 <- eglm(am ~ wt + mpg, family = poisson, data = mtcars)
+  m2 <- eglm(am ~ wt + mpg, family = poisson, data = mtcars, reduce = F)
+  m3 <- eglm(am ~ wt + mpg, family = poisson, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
@@ -242,31 +364,57 @@ test_that("eglm (poisson) == glm", {
 
 test_that("eglm (quasipoisson) == glm", {
   m1 <- glm(mpg ~ wt + am, family = quasipoisson, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = quasipoisson, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = quasipoisson, data = mtcars, reduce = F)
+  m3 <- eglm(mpg ~ wt + am, family = quasipoisson, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
@@ -274,41 +422,72 @@ test_that("eglm (quasipoisson) == glm", {
 
 test_that("eglm (quasi) == glm", {
   m1 <- glm(mpg ~ wt + am, family = quasi, data = mtcars)
-  m2 <- eglm(mpg ~ wt + am, family = quasi, data = mtcars)
+  m2 <- eglm(mpg ~ wt + am, family = quasi, data = mtcars, reduce = F)
+  m3 <- eglm(mpg ~ wt + am, family = quasi, data = mtcars, reduce = T)
 
-  expect_equal(m1$coefficients, m2$coefficients)
-  expect_equal(m1$residuals, m2$residuals)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(m1$family$family, m2$family$family)
-  expect_equal(m1$family$link, m2$family$link)
-  expect_equal(m1$linear.predictors, m2$linear.predictors)
-  expect_equal(m1$deviance, m2$deviance)
-  expect_equal(m1$aic, m2$aic)
-  expect_equal(m1$null.deviance, m2$null.deviance)
-  expect_equal(m1$df.residual, m2$df.residual)
-  expect_equal(m1$df.null, m2$df.null)
-  expect_equal(m1$y, m2$y)
-  expect_equal(m1$call$formula, m2$call$formula)
-  expect_equal(m1$call$family, m2$call$family)
-  expect_equal(m1$call$data, m2$call$data)
+  expect_equal(m2$coefficients, m1$coefficients)
+  expect_equal(m2$residuals, m1$residuals)
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(m2$family$family, m1$family$family)
+  expect_equal(m2$family$link, m1$family$link)
+  expect_equal(m2$linear.predictors, m1$linear.predictors)
+  expect_equal(m2$deviance, m1$deviance)
+  expect_equal(m2$aic, m1$aic)
+  expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$df.residual, m1$df.residual)
+  expect_equal(m2$df.null, m1$df.null)
+  expect_equal(m2$y, m1$y)
+  expect_equal(m2$call$formula, m1$call$formula)
+  expect_equal(m2$call$family, m1$call$family)
+  expect_equal(m2$call$data, m1$call$data)
+
+  expect_equal(m3$coefficients, m1$coefficients)
+  expect_equal(m3$residuals, m1$residuals)
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(m3$family$family, m1$family$family)
+  expect_equal(m3$family$link, m1$family$link)
+  expect_equal(m3$linear.predictors, m1$linear.predictors)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$y, m1$y)
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
 
   expect_equal(
-    predict(m1, newdata = mtcars, type = "link"),
-    predict(m2, newdata = mtcars, type = "link")
+    predict(m2, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
   )
   expect_equal(
-    predict(m1, newdata = mtcars, type = "response"),
-    predict(m2, newdata = mtcars, type = "response")
+    predict(m2, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
+  )
+
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "link"),
+    predict(m1, newdata = mtcars, type = "link")
+  )
+  expect_equal(
+    predict(m3, newdata = mtcars, type = "response"),
+    predict(m1, newdata = mtcars, type = "response")
   )
 })
 
 # Convergence ----
 
 test_that("eglm converges the same as glm with a regular model", {
-  m1 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
-  m2 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
+  m1 <- glm(am ~ mpg + wt, family = binomial, data = mtcars)
+  m2 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars, reduce = F)
+  m3 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars, reduce = T)
+
   expect_equal(m2$iter, m1$iter)
   expect_equal(m2$convergence, m1$convergence)
+
+  expect_equal(m3$iter, m1$iter)
+  expect_equal(m3$convergence, m1$convergence)
 })
 
 test_that("eglm logit fails to converge with a large number of variables", {
@@ -319,25 +498,39 @@ test_that("eglm logit fails to converge with a large number of variables", {
     expect_warning(glm(am ~ ., family = binomial, data = mtcars))
   )
 
-  # Warning message:
-  #  In eglm(am ~ ., family = binomial, data = mtcars) :
-  #  Maximum number of iterations reached without convergence
-  expect_warning(eglm(am ~ ., family = binomial, data = mtcars))
+  # Warning messages:
+  #  1: eglm.wfit: algorithm did not converge
+  #  2: eglm.wfit: fitted probabilities numerically 0 or 1 occurred
+  expect_warning(
+    expect_warning(eglm(am ~ ., family = binomial, data = mtcars, reduce = F))
+  )
+
+  expect_warning(
+    expect_warning(eglm(am ~ ., family = binomial, data = mtcars, reduce = T))
+  )
 })
 
 # Fitting ----
 
 test_that("eglm returns the same fitted values as glm", {
-  m1 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
-  m2 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars)
-  expect_equal(m1$fitted.values, m2$fitted.values)
-  expect_equal(fitted(m1), fitted(m2))
+  m1 <- glm(am ~ mpg + wt, family = binomial, data = mtcars)
+  m2 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars, reduce = F)
+  m3 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars, reduce = T)
+
+  expect_equal(m2$fitted.values, m1$fitted.values)
+  expect_equal(fitted(m2), fitted(m1))
+
+  expect_equal(m3$fitted.values, m1$fitted.values)
+  expect_equal(fitted(m3), fitted(m1))
 })
 
 # Design matrix ----
 
 test_that("eglm returns the design matrix the same as glm", {
-  m1 <- eglm(mpg ~ wt, data = mtcars, x = TRUE)
-  m2 <- glm(mpg ~ wt, data = mtcars, x = TRUE)
-  expect_equal(m1$x, m2$x)
+  m1 <- glm(mpg ~ wt, data = mtcars, x = TRUE)
+  m2 <- eglm(mpg ~ wt, data = mtcars, x = TRUE, reduce = FALSE)
+  m3 <- eglm(mpg ~ wt, data = mtcars, x = TRUE, reduce = TRUE)
+
+  expect_equal(m2$x, m1$x)
+  expect_equal(m3$x, m1$x)
 })

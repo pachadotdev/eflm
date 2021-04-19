@@ -5,6 +5,6 @@
 ^README\.md$
 ^cran-comments\.md$
 ^\.github$
-dev
 ^\.httr-oauth$
 docs
+dev
