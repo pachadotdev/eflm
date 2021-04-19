@@ -292,34 +292,19 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
   ## calculate AIC
   aic.model <- aic(y, n, mu, weights, dev) + 2 * rank
   ##     ^^ is only initialize()d for "binomial" [yuck!]
-  if (isTRUE(reduce)) {
-    fit$original.dimensions <- dim(x[good, , drop = FALSE])
-
-    list(
-      coefficients = coef, residuals = residuals, fitted.values = mu,
-      effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
-      qr = if (!EMPTY) structure(
-        fit[c("qr", "rank", "qraux", "pivot", "tol", "original.dimensions")],
-        class = "qr"),
-      family = family,
-      linear.predictors = eta, deviance = dev, aic = aic.model,
-      null.deviance = nulldev, iter = iter, weights = wt,
-      prior.weights = weights, df.residual = resdf, df.null = nulldf,
-      y = y, converged = conv, boundary = boundary, reduce = reduce,
-      xtx = crossprod(x[good, , drop = FALSE])
-    )
-  } else {
-    list(
-      coefficients = coef, residuals = residuals, fitted.values = mu,
-      effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
-      qr = if (!EMPTY) structure(
+  list(
+    coefficients = coef, residuals = residuals, fitted.values = mu,
+    effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
+    qr = if (!EMPTY) {
+      structure(
         fit[c("qr", "rank", "qraux", "pivot", "tol")],
-        class = "qr"),
-      family = family,
-      linear.predictors = eta, deviance = dev, aic = aic.model,
-      null.deviance = nulldev, iter = iter, weights = wt,
-      prior.weights = weights, df.residual = resdf, df.null = nulldf,
-      y = y, converged = conv, boundary = boundary, reduce = reduce
-    )
-  }
+        class = "qr"
+      )
+    },
+    family = family,
+    linear.predictors = eta, deviance = dev, aic = aic.model,
+    null.deviance = nulldev, iter = iter, weights = wt,
+    prior.weights = weights, df.residual = resdf, df.null = nulldf,
+    y = y, converged = conv, boundary = boundary, good = good
+  )
 }

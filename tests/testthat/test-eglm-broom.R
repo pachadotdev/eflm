@@ -34,10 +34,9 @@ test_that("eglm returns the same broom output as glm", {
   expect_equal(bm2$statistic, bm1$statistic)
   expect_equal(bm2$p.value, bm1$p.value)
 
-  # FIX DEGREES OF FREEDOM !!!!
   expect_equal(log(bm3$estimate), log(bm1$estimate))
-  # expect_equal(bm3$std.error, bm1$std.error)
-  # expect_equal(bm3$statistic, bm1$statistic)
+  expect_equal(bm3$std.error, bm1$std.error)
+  expect_equal(bm3$statistic, bm1$statistic)
   expect_equal(bm3$p.value, bm1$p.value)
 })
 

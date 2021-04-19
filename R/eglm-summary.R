@@ -30,10 +30,10 @@ summary.eglm <- function(object, dispersion = NULL,
     ## WATCHIT! doesn't this rely on pivoting not permuting 1L:p? -- that's quaranteed
     coef.p <- object$coefficients[Qr$pivot[p1]]
     covmat.unscaled <- if (isTRUE(object$reduce)) {
-        unname(solve.qr(qr(object$xtx, LAPACK = T)))
-      } else {
-        chol2inv(Qr$qr[p1, p1, drop = FALSE])
-      }
+      unname(solve(object$xtx, LAPACK = T))
+    } else {
+      chol2inv(Qr$qr[p1, p1, drop = FALSE])
+    }
     dimnames(covmat.unscaled) <- list(names(coef.p), names(coef.p))
     covmat <- dispersion * covmat.unscaled
     var.cf <- diag(covmat)
@@ -68,8 +68,10 @@ summary.eglm <- function(object, dispersion = NULL,
     df.f <- NCOL(Qr$qr)
   } else {
     coef.table <- matrix(, 0L, 4L)
-    dimnames(coef.table) <- list(NULL,
-      c("Estimate", "Std. Error", "t value", "Pr(>|t|)"))
+    dimnames(coef.table) <- list(
+      NULL,
+      c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
+    )
     covmat.unscaled <- covmat <- matrix(, 0L, 0L)
     df.f <- length(aliased)
   }

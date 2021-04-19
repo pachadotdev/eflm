@@ -1,3 +1,5 @@
+# Gaussian ----
+
 test_that("gaussian summary is equivalent to glm", {
   m1 <- summary(glm(mpg ~ wt, family = gaussian, data = mtcars))
   m2 <- summary(eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = F))
@@ -48,6 +50,8 @@ test_that("gaussian summary is equivalent to glm", {
   expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })
 
+# Inverse-Gaussian ----
+
 test_that("inverse.gaussian summary is equivalent to glm", {
   m1 <- summary(glm(mpg ~ wt, family = inverse.gaussian, data = mtcars))
   m2 <- summary(eglm(mpg ~ wt, family = inverse.gaussian, data = mtcars, reduce = F))
@@ -71,10 +75,11 @@ test_that("inverse.gaussian summary is equivalent to glm", {
   expect_equal(m2$dispersion, m1$dispersion)
   expect_equal(m2$cov.unscaled, m1$cov.unscaled)
   expect_equal(m2$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em2$Estimate)
-  expect_equal(em1$`Std. Error`, em2$`Std. Error`)
-  expect_equal(em1$`t value`, em2$`t value`)
-  expect_equal(em1$`Pr(>|t|)`, em2$`Pr(>|t|)`)
+
+  expect_equal(em2$Estimate, em1$Estimate)
+  expect_equal(em2$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em2$`t value`, em1$`t value`)
+  expect_equal(em2$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 
   expect_equal(m3$call$formula, m1$call$formula)
   expect_equal(m3$call$family, m1$call$family)
@@ -88,13 +93,16 @@ test_that("inverse.gaussian summary is equivalent to glm", {
   expect_gte(m3$iter, m1$iter)
   expect_equal(m3$deviance.resid, m1$deviance.resid)
   expect_equal(m3$dispersion, m1$dispersion)
-  # expect_equal(m3$cov.unscaled, m1$cov.unscaled)
-  # expect_equal(m3$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em3$Estimate)
-  # expect_equal(em1$`Std. Error`, em3$`Std. Error`)
-  # expect_equal(em1$`t value`, em3$`t value`)
-  # expect_equal(em1$`Pr(>|t|)`, em3$`Pr(>|t|)`)
+  expect_equal(m3$cov.unscaled, m1$cov.unscaled)
+  expect_equal(m3$cov.scaled, m1$cov.scaled)
+
+  expect_equal(em3$Estimate, em1$Estimate)
+  expect_equal(em3$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em3$`t value`, em1$`t value`)
+  expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })
+
+# Binomial ----
 
 test_that("binomial summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = binomial, data = mtcars))
@@ -113,16 +121,17 @@ test_that("binomial summary is equivalent to glm", {
   expect_equal(m2$aic, m1$aic)
   expect_equal(m2$df.residual, m1$df.residual)
   expect_equal(m2$df.null, m1$df.null)
-  # expect_equal(m2$null.deviance, m1$null.deviance)
+  expect_equal(m2$null.deviance, m1$null.deviance)
   expect_gte(m2$iter, m1$iter)
   expect_equal(m2$deviance.resid, m1$deviance.resid)
   expect_equal(m2$dispersion, m1$dispersion)
   expect_equal(m2$cov.unscaled, m1$cov.unscaled)
   expect_equal(m2$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em2$Estimate)
-  expect_equal(em1$`Std. Error`, em2$`Std. Error`)
-  expect_equal(em1$`z value`, em2$`z value`)
-  expect_equal(em1$`Pr(>|z|)`, em2$`Pr(>|z|)`)
+
+  expect_equal(em2$Estimate, em1$Estimate)
+  expect_equal(em2$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em2$`t value`, em1$`t value`)
+  expect_equal(em2$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 
   expect_equal(m3$call$formula, m1$call$formula)
   expect_equal(m3$call$family, m1$call$family)
@@ -136,19 +145,26 @@ test_that("binomial summary is equivalent to glm", {
   expect_gte(m3$iter, m1$iter)
   expect_equal(m3$deviance.resid, m1$deviance.resid)
   expect_equal(m3$dispersion, m1$dispersion)
-  # expect_equal(m3$cov.unscaled, m1$cov.unscaled)
-  # expect_equal(m3$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em3$Estimate)
-  # expect_equal(em1$`Std. Error`, em3$`Std. Error`)
-  # expect_equal(em1$`z value`, em3$`z value`)
-  # expect_equal(em1$`Pr(>|z|)`, em3$`Pr(>|z|)`)
+  expect_equal(m3$cov.unscaled, m1$cov.unscaled)
+  expect_equal(m3$cov.scaled, m1$cov.scaled)
+
+  expect_equal(em3$Estimate, em1$Estimate)
+  expect_equal(em3$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em3$`t value`, em1$`t value`)
+  expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })
+
+# Quasi-Binomial ----
 
 test_that("quasi-binomial summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = quasibinomial, data = mtcars))
-  m2 <- summary(eglm(am ~ mpg, family = quasibinomial, data = mtcars))
-  em1 <- round(as.data.frame(m2$coefficients), 4)
-  em2 <- round(as.data.frame(m2$coefficients), 4)
+  m2 <- summary(eglm(am ~ mpg, family = quasibinomial, data = mtcars, reduce = F))
+  m3 <- summary(eglm(am ~ mpg, family = quasibinomial, data = mtcars, reduce = T))
+
+  em1 <- as.data.frame(m2$coefficients)
+  em2 <- as.data.frame(m2$coefficients)
+  em3 <- as.data.frame(m3$coefficients)
+
   expect_equal(m2$call$formula, m1$call$formula)
   expect_equal(m2$call$family, m1$call$family)
   expect_equal(m2$call$data, m1$call$data)
@@ -163,17 +179,44 @@ test_that("quasi-binomial summary is equivalent to glm", {
   expect_equal(m2$dispersion, m1$dispersion)
   expect_equal(m2$cov.unscaled, m1$cov.unscaled)
   expect_equal(m2$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em2$Estimate)
-  expect_equal(em1$`Std. Error`, em2$`Std. Error`)
-  expect_equal(em1$`z value`, em2$`z value`)
-  expect_equal(em1$`Pr(>|z|)`, em2$`Pr(>|z|)`)
+
+  expect_equal(em2$Estimate, em1$Estimate)
+  expect_equal(em2$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em2$`t value`, em1$`t value`)
+  expect_equal(em2$`Pr(>|t|)`, em1$`Pr(>|t|)`)
+
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
+  expect_equal(m3$terms, m1$terms)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_gte(m3$iter, m1$iter)
+  expect_equal(m3$deviance.resid, m1$deviance.resid)
+  expect_equal(m3$dispersion, m1$dispersion)
+  expect_equal(m3$cov.unscaled, m1$cov.unscaled)
+  expect_equal(m3$cov.scaled, m1$cov.scaled)
+
+  expect_equal(em3$Estimate, em1$Estimate)
+  expect_equal(em3$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em3$`t value`, em1$`t value`)
+  expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })
+
+# Poisson ----
 
 test_that("poisson summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = poisson, data = mtcars))
-  m2 <- summary(eglm(am ~ mpg, family = poisson, data = mtcars))
-  em1 <- round(as.data.frame(m2$coefficients), 4)
-  em2 <- round(as.data.frame(m2$coefficients), 4)
+  m2 <- summary(eglm(am ~ mpg, family = poisson, data = mtcars, reduce = F))
+  m3 <- summary(eglm(am ~ mpg, family = poisson, data = mtcars, reduce = T))
+
+  em1 <- as.data.frame(m2$coefficients)
+  em2 <- as.data.frame(m2$coefficients)
+  em3 <- as.data.frame(m3$coefficients)
+
   expect_equal(m2$call$formula, m1$call$formula)
   expect_equal(m2$call$family, m1$call$family)
   expect_equal(m2$call$data, m1$call$data)
@@ -188,17 +231,44 @@ test_that("poisson summary is equivalent to glm", {
   expect_equal(m2$dispersion, m1$dispersion)
   expect_equal(m2$cov.unscaled, m1$cov.unscaled)
   expect_equal(m2$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em2$Estimate)
-  expect_equal(em1$`Std. Error`, em2$`Std. Error`)
-  expect_equal(em1$`z value`, em2$`z value`)
-  expect_equal(em1$`Pr(>|z|)`, em2$`Pr(>|z|)`)
+
+  expect_equal(em2$Estimate, em1$Estimate)
+  expect_equal(em2$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em2$`t value`, em1$`t value`)
+  expect_equal(em2$`Pr(>|t|)`, em1$`Pr(>|t|)`)
+
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
+  expect_equal(m3$terms, m1$terms)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_gte(m3$iter, m1$iter)
+  expect_equal(m3$deviance.resid, m1$deviance.resid)
+  expect_equal(m3$dispersion, m1$dispersion)
+  expect_equal(m3$cov.unscaled, m1$cov.unscaled)
+  expect_equal(m3$cov.scaled, m1$cov.scaled)
+
+  expect_equal(em3$Estimate, em1$Estimate)
+  expect_equal(em3$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em3$`t value`, em1$`t value`)
+  expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })
+
+# Quasi-Poisson ----
 
 test_that("quasi-poisson summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = quasipoisson, data = mtcars))
-  m2 <- summary(eglm(am ~ mpg, family = quasipoisson, data = mtcars))
-  em1 <- round(as.data.frame(m2$coefficients), 4)
-  em2 <- round(as.data.frame(m2$coefficients), 4)
+  m2 <- summary(eglm(am ~ mpg, family = quasipoisson, data = mtcars, reduce = F))
+  m3 <- summary(eglm(am ~ mpg, family = quasipoisson, data = mtcars, reduce = T))
+
+  em1 <- as.data.frame(m2$coefficients)
+  em2 <- as.data.frame(m2$coefficients)
+  em3 <- as.data.frame(m3$coefficients)
+
   expect_equal(m2$call$formula, m1$call$formula)
   expect_equal(m2$call$family, m1$call$family)
   expect_equal(m2$call$data, m1$call$data)
@@ -213,17 +283,44 @@ test_that("quasi-poisson summary is equivalent to glm", {
   expect_equal(m2$dispersion, m1$dispersion)
   expect_equal(m2$cov.unscaled, m1$cov.unscaled)
   expect_equal(m2$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em2$Estimate)
-  expect_equal(em1$`Std. Error`, em2$`Std. Error`)
-  expect_equal(em1$`z value`, em2$`z value`)
-  expect_equal(em1$`Pr(>|z|)`, em2$`Pr(>|z|)`)
+
+  expect_equal(em2$Estimate, em1$Estimate)
+  expect_equal(em2$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em2$`t value`, em1$`t value`)
+  expect_equal(em2$`Pr(>|t|)`, em1$`Pr(>|t|)`)
+
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
+  expect_equal(m3$terms, m1$terms)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_gte(m3$iter, m1$iter)
+  expect_equal(m3$deviance.resid, m1$deviance.resid)
+  expect_equal(m3$dispersion, m1$dispersion)
+  expect_equal(m3$cov.unscaled, m1$cov.unscaled)
+  expect_equal(m3$cov.scaled, m1$cov.scaled)
+
+  expect_equal(em3$Estimate, em1$Estimate)
+  expect_equal(em3$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em3$`t value`, em1$`t value`)
+  expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })
+
+# Quasi ----
 
 test_that("quasi summary is equivalent to glm", {
   m1 <- summary(glm(am ~ mpg, family = quasi, data = mtcars))
-  m2 <- summary(eglm(am ~ mpg, family = quasi, data = mtcars))
-  em1 <- round(as.data.frame(m2$coefficients), 4)
-  em2 <- round(as.data.frame(m2$coefficients), 4)
+  m2 <- summary(eglm(am ~ mpg, family = quasi, data = mtcars, reduce = F))
+  m3 <- summary(eglm(am ~ mpg, family = quasi, data = mtcars, reduce = T))
+
+  em1 <- as.data.frame(m2$coefficients)
+  em2 <- as.data.frame(m2$coefficients)
+  em3 <- as.data.frame(m3$coefficients)
+
   expect_equal(m2$call$formula, m1$call$formula)
   expect_equal(m2$call$family, m1$call$family)
   expect_equal(m2$call$data, m1$call$data)
@@ -238,8 +335,29 @@ test_that("quasi summary is equivalent to glm", {
   expect_equal(m2$dispersion, m1$dispersion)
   expect_equal(m2$cov.unscaled, m1$cov.unscaled)
   expect_equal(m2$cov.scaled, m1$cov.scaled)
-  expect_equal(em1$Estimate, em2$Estimate)
-  expect_equal(em1$`Std. Error`, em2$`Std. Error`)
-  expect_equal(em1$`z value`, em2$`z value`)
-  expect_equal(em1$`Pr(>|z|)`, em2$`Pr(>|z|)`)
+
+  expect_equal(em2$Estimate, em1$Estimate)
+  expect_equal(em2$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em2$`t value`, em1$`t value`)
+  expect_equal(em2$`Pr(>|t|)`, em1$`Pr(>|t|)`)
+
+  expect_equal(m3$call$formula, m1$call$formula)
+  expect_equal(m3$call$family, m1$call$family)
+  expect_equal(m3$call$data, m1$call$data)
+  expect_equal(m3$terms, m1$terms)
+  expect_equal(m3$deviance, m1$deviance)
+  expect_equal(m3$aic, m1$aic)
+  expect_equal(m3$df.residual, m1$df.residual)
+  expect_equal(m3$df.null, m1$df.null)
+  expect_equal(m3$null.deviance, m1$null.deviance)
+  expect_gte(m3$iter, m1$iter)
+  expect_equal(m3$deviance.resid, m1$deviance.resid)
+  expect_equal(m3$dispersion, m1$dispersion)
+  expect_equal(m3$cov.unscaled, m1$cov.unscaled)
+  expect_equal(m3$cov.scaled, m1$cov.scaled)
+
+  expect_equal(em3$Estimate, em1$Estimate)
+  expect_equal(em3$`Std. Error`, em1$`Std. Error`)
+  expect_equal(em3$`t value`, em1$`t value`)
+  expect_equal(em3$`Pr(>|t|)`, em1$`Pr(>|t|)`)
 })

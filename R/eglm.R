@@ -185,10 +185,10 @@ eglm <- function(formula, family = gaussian, data, weights,
   ## Prior to 2.4.0 this was only done for non-zero offsets.
   if (length(offset) && attr(mt, "intercept") > 0L) {
     fit2 <- eval(call(if (is.function(method)) "method" else method,
-        x = X[, "(Intercept)", drop = FALSE], y = Y,
-        weights = weights, offset = offset, family = family,
-        control = control, intercept = TRUE
-      ))
+      x = X[, "(Intercept)", drop = FALSE], y = Y,
+      weights = weights, offset = offset, family = family,
+      control = control, intercept = TRUE
+    ))
     ## That fit might not have converged ....
     if (!fit2$converged) {
       warning("fitting to calculate the null deviance did not converge -- increase 'maxit'?")
@@ -200,11 +200,10 @@ eglm <- function(formula, family = gaussian, data, weights,
   if (x) fit$x <- X
   if (!y) fit$y <- NULL
   fit$reduce <- reduce
-  # moved to eglm-wfit to have additional information in list-type objects
-  # if (isTRUE(reduce)) {
-  #   fit$xtx <- crossprod(X)
-  #   fit$qr$original.dimensions <- dim(X)
-  # }
+  if (isTRUE(reduce)) {
+    fit$xtx <- crossprod(sqrt(fit$weights) * X[fit$good, ])
+    fit$qr$original.dimensions <- dim(X[fit$good, ])
+  }
   structure(c(
     fit,
     list(
