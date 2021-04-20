@@ -8,7 +8,7 @@ trade_data_yotov_benchmark <- readRDS("dev/trade_data_yotov_benchmark.rds")
 
 benchmark1 <- do.call("rbind", trade_data_yotov_benchmark$ols)
 benchmark1$dimensions <- benchmark1$mm_rows * benchmark1$mm_cols
-benchmark1$expression2 <- ifelse(grepl("elm", benchmark1$expression), "ELM", "LM")
+benchmark1$expression2 <- ifelse(grepl("elm", benchmark1$expression), "elm", "lm")
 
 benchmark1 %>%
   select(expression2, dimensions, median, mem_alloc) %>%
@@ -33,7 +33,7 @@ benchmark1 %>%
 
 benchmark2 <- do.call("rbind", trade_data_yotov_benchmark$ppml)
 benchmark2$dimensions <- benchmark2$mm_rows * benchmark2$mm_cols
-benchmark2$expression2 <- ifelse(grepl("eglm", benchmark2$expression), "EGLM", "GLM")
+benchmark2$expression2 <- ifelse(grepl("eglm", benchmark2$expression), "eglm", "glm")
 
 benchmark2 %>%
   select(expression2, dimensions, median, mem_alloc) %>%

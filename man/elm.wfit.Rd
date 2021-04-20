@@ -7,7 +7,7 @@
 elm.wfit(
   x,
   y,
-  weights,
+  weights = rep.int(1, n),
   offset = NULL,
   method = "qr",
   tol = 1e-07,

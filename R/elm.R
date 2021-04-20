@@ -93,11 +93,11 @@ elm <- function(formula, data, subset, weights, na.action,
       z$fitted.values <- offset
       z$residuals <- y - offset
     }
-  }
-  else {
+  } else {
     x <- model.matrix(mt, mf, contrasts)
     ## unlike stats::, here w is always passed to elm.wfit
-    z <- elm.wfit(x, y, w,
+    z <- elm.wfit(
+      x = x, y = y, weights = w,
       offset = offset, singular.ok = singular.ok,
       reduce = reduce, ...
     )

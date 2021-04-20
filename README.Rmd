@@ -49,7 +49,7 @@ possible to the stats package, therefore making the functions provided here
 compatible with packages such as sandwich for robust estimation, even if that
 means to attenuate the speed gains.
 
-The greatest strength of this package is testing. With more than 1300 
+The greatest strength of this package is testing. With more than 1600 
 (and counting) tests, we try to do exactly the same as lm/glm, even in edge 
 cases, but faster.
 

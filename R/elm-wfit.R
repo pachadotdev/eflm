@@ -21,7 +21,7 @@
 #' y <- mtcars$mpg
 #' elm.wfit(x, y)
 #' @export
-elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
+elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = "qr", tol = 1e-7,
                      singular.ok = TRUE, reduce = TRUE, ...) {
   if (is.null(n <- nrow(x))) stop("'x' must be a matrix")
   if (n == 0) stop("0 (non-NA) cases")
@@ -78,7 +78,8 @@ elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
   }
   C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
   if (isTRUE(reduce)) {
-    z <- .Call(C_Cdqrls, crossprod(x * weights), crossprod(x, y * weights), tol, FALSE)
+    # here I pass weights on the right side to avoid duplicating operations, because here (sqrt(w) * x , sqrt(w) * y) = (x , w * y)
+    z <- .Call(C_Cdqrls, crossprod(x * sqrt(weights)), crossprod(x, y * weights), tol, FALSE)
   } else {
     z <- .Call(C_Cdqrls, x * sqrt(weights), y * sqrt(weights), tol, FALSE)
   }
@@ -108,7 +109,9 @@ elm.wfit <- function(x, y, weights, offset = NULL, method = "qr", tol = 1e-7,
   z$coefficients <- coef
   if (isTRUE(reduce)) {
     z$fitted.values <- as.numeric(x %*% matrix(z$coefficients, ncol = 1))
-    z$residuals <- as.numeric((y - z$fitted.values) / sqrt(weights))
+    # the division by weights is not included for the residuals, as this
+    # part of the ifelse statement starts from fitted values
+    z$residuals <- as.numeric(y - z$fitted.values)
     names(z$fitted.values) <- rownames(x)
     names(z$residuals) <- rownames(x)
   } else {
