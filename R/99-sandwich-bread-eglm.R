@@ -4,8 +4,7 @@ bread.eglm <- function(x, ...) {
   if (!is.null(x$na.action)) class(x$na.action) <- "omit"
   sx <- summary(x)
   wres <- as.vector(residuals(x, "working")) * weights(x, "working")
-  dispersion <- if (substr(x$family$family, 1L, 17L) %in%
-    c("poisson", "binomial")) {
+  dispersion <- if (x$family$family %in% c("poisson", "binomial")) {
     1
   } else {
     sum(wres^2) / sum(weights(x, "working"))

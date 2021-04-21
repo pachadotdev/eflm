@@ -1,8 +1,7 @@
 # Dynamically exported, see zzz.R
 
 #' @importFrom stats expand.model.frame weights hatvalues
-meatCL.eglm <- function(x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 = FALSE,
-                        ...) {
+meatCL.eglm <- function(x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 = FALSE, ...) {
   if (is.list(x) && !is.null(x$na.action)) {
     class(x$na.action) <- "omit"
   }
@@ -22,19 +21,18 @@ meatCL.eglm <- function(x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 =
   if (inherits(cluster, "formula")) {
     cluster_tmp <- if ("Formula" %in% loadedNamespaces()) {
       suppressWarnings(expand.model.frame(x, cluster,
-        na.expand = FALSE
+                                          na.expand = FALSE
       ))
     }
     else {
       expand.model.frame(x, cluster, na.expand = FALSE)
     }
     cluster <- model.frame(cluster, cluster_tmp, na.action = na.pass)
-  }
-  else {
+  } else {
     cluster <- as.data.frame(cluster)
   }
   if ((n != NROW(cluster)) && !is.null(x$na.action) && (class(x$na.action) %in%
-    c("exclude", "omit"))) {
+                                                        c("exclude", "omit"))) {
     cluster <- cluster[-x$na.action, , drop = FALSE]
   }
   if (NROW(cluster) != n) {
@@ -69,7 +67,7 @@ meatCL.eglm <- function(x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 =
     }
   })
   if (is.null(type)) {
-    type <- if (class(x)[1L] == "lm") {
+    type <- if (class(x)[1L] == "elm") {
       "HC1"
     } else {
       "HC0"
@@ -85,7 +83,7 @@ meatCL.eglm <- function(x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 =
     }
     if (!all(g == n)) {
       if (!(class(x)[1L] %in% "eglm")) {
-        warning("clustered HC2/HC3 are only applicable to (fast generalized) linear regression models")
+        warning("clustered HC2/HC3 are only applicable to efficient (generalized) linear regression models")
       }
       X <- model.matrix(x)
       if (any(alias <- is.na(coef(x)))) {
@@ -131,17 +129,15 @@ meatCL.eglm <- function(x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 =
         for (j in unique(cluster[[i]])) {
           ij <- which(cluster[[i]] == j)
           Hij <- if (is.null(w)) {
-            X[ij, , drop = FALSE] %*% XX1 %*% t(X[ij, ,
-              drop = FALSE
-            ])
+            X[ij, , drop = FALSE] %*% XX1 %*% t(X[ij, , drop = FALSE])
           }
           else {
-            X[ij, , drop = FALSE] %*% XX1 %*% t(X[ij, ,
-              drop = FALSE
-            ]) %*% diag(w[ij],
-              nrow = length(ij),
-              ncol = length(ij)
-            )
+            X[ij, , drop = FALSE] %*% XX1 %*%
+              t(X[ij, , drop = FALSE]) %*%
+              diag(w[ij],
+                   nrow = length(ij),
+                   ncol = length(ij)
+              )
           }
           Hij <- if (type == "HC2") {
             matpower(diag(length(ij)) - Hij, -0.5)
@@ -149,9 +145,7 @@ meatCL.eglm <- function(x, cluster = NULL, type = NULL, cadjust = TRUE, multi0 =
           else {
             solve(diag(length(ij)) - Hij)
           }
-          efi[ij, ] <- drop(Hij %*% res[ij]) * X[ij, ,
-            drop = FALSE
-          ]
+          efi[ij, ] <- drop(Hij %*% res[ij]) * X[ij, , drop = FALSE]
         }
       }
       efi <- sqrt((g[i] - 1L) / g[i]) * efi

@@ -102,7 +102,7 @@ elm <- function(formula, data, subset, weights, na.action,
       reduce = reduce, ...
     )
   }
-  class(z) <- c("elm", if (mlm) "melm", "lm")
+  class(z) <- c("elm", "lm", if (mlm) "melm")
   z$na.action <- attr(mf, "na.action")
   z$offset <- offset
   z$contrasts <- attr(x, "contrasts")
