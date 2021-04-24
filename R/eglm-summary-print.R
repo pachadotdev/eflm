@@ -1,4 +1,3 @@
-#' @importFrom stats naprint printCoefmat symnum quantile
 #' @export
 #' @noRd
 print.summary.eglm <- function(x, digits = max(3L, getOption("digits") - 3L),

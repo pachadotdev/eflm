@@ -1,7 +1,6 @@
 # Dynamically exported, see zzz.R
 
 # taken from broom::: (makes tidy.eglm work)
-#' @importFrom stats confint
 confint_terms <- function(x, ...) {
   ci <- suppressMessages(confint(x, ...))
   if (is.null(dim(ci))) {

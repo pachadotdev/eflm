@@ -40,7 +40,7 @@ utils::globalVariables("n", add = TRUE)
 #'  formula instead or as well, and if more than one are specified their sum is
 #'  used. See \code{\link{model.offset}}.
 #' @param control a list of parameters for controlling the fitting process. For
-#'  \code{eglm.wfit} this is passed to \code{eglm.control}.
+#'  \code{eglm.wfit} this is passed to \code{glm.control}.
 #' @param model a logical value indicating whether \emph{model frame} should be
 #'  included as a component of the returned value.
 #' @param method the method to be used in fitting the model. The default method
@@ -84,8 +84,6 @@ utils::globalVariables("n", add = TRUE)
 #'
 #' @examples
 #' eglm(mpg ~ wt, family = gaussian, data = mtcars)
-#' @importFrom stats gaussian na.pass model.response is.empty.model
-#'  model.matrix model.weights model.offset model.extract .getXlevels
 #'
 #' @export
 eglm <- function(formula, family = gaussian, data, weights,
@@ -129,7 +127,7 @@ eglm <- function(formula, family = gaussian, data, weights,
   ## for back-compatibility in return result
   ## unlike stats::, this package just has wfit
   if (identical(method, "eglm.wfit")) {
-    control <- do.call("eglm.control", control)
+    control <- do.call("glm.control", control)
   }
 
   mt <- attr(mf, "terms") # allow model.frame to have updated it

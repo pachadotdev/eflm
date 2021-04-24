@@ -1,4 +1,3 @@
-#' @importFrom stats pnorm
 #' @export
 #' @noRd
 summary.eglm <- function(object, dispersion = NULL,
@@ -27,7 +26,7 @@ summary.eglm <- function(object, dispersion = NULL,
   p <- object$rank
   if (p > 0) {
     p1 <- 1L:p
-    Qr <- qr.elm(object)
+    Qr <- qr(object)
     ## WATCHIT! doesn't this rely on pivoting not permuting 1L:p? -- that's quaranteed
     coef.p <- object$coefficients[Qr$pivot[p1]]
     covmat.unscaled <- if (isTRUE(object$reduce)) {

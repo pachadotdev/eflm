@@ -1,7 +1,6 @@
 # Dynamically exported, see zzz.R
 
 # taken from broom::: (makes augment.elm work) but using base when possible
-#' @importFrom stats terms
 augment_newdata <- function(x, data, newdata, .se_fit, interval = NULL, ...) {
   passed_newdata <- !is.null(newdata)
   df <- if (passed_newdata) newdata else data

@@ -30,7 +30,7 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
                       etastart = NULL, mustart = NULL, offset = rep.int(0, nobs),
                       family = gaussian(), control = list(), intercept = TRUE,
                       singular.ok = TRUE, reduce = FALSE) {
-  control <- do.call("eglm.control", control)
+  control <- do.call("glm.control", control)
   x <- as.matrix(x)
   xnames <- dimnames(x)[[2L]]
   ynames <- if (is.matrix(y)) rownames(y) else names(y)

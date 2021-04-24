@@ -1,7 +1,6 @@
 # Dynamically exported, see zzz.R
 
 # taken from stats::, defined to use broom::augment
-#' @importFrom stats lm.influence na.omit residuals naresid
 influence.eglm <- function(model, do.coef = TRUE, ...) {
   res <- lm.influence(model, do.coef = do.coef, ...)
   pRes <- na.omit(residuals(model, type = "pearson"))[model$prior.weights !=

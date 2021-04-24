@@ -1,4 +1,3 @@
-#' @importFrom stats coef pt var
 #' @export
 #' @noRd
 summary.elm <- function(object, correlation = FALSE, symbolic.cor = FALSE, ...) {
@@ -37,7 +36,7 @@ summary.elm <- function(object, correlation = FALSE, symbolic.cor = FALSE, ...) 
   if (!inherits(object, "elm")) {
     warning("calling summary.elm(<fake-elm-object>) ...")
   }
-  Qr <- qr.elm(object)
+  Qr <- qr(object)
   n <- if (isTRUE(object$reduce)) {
     Qr$original.dimensions[1]
   } else {

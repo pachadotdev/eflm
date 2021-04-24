@@ -1,7 +1,6 @@
 # Dynamically exported, see zzz.R
 
 # taken from broom::: but using base when possible
-#' @importFrom stats rstandard cooks.distance predict model.frame influence
 augment.eglm <- function(x, data = NULL, newdata = NULL,
                          type.predict = c("link", "response", "terms"),
                          type.residuals = c("deviance", "pearson"),
