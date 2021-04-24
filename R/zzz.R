@@ -8,10 +8,10 @@
   # vctrs::s3_register("sandwich::meatCL", "eglm")
   # vctrs::s3_register("sandwich::meatCL", "elm")
 
-  vctrs::s3_register("broom::tidy", "eglm")
-  vctrs::s3_register("broom::tidy", "elm")
-  vctrs::s3_register("broom::augment", "eglm")
-  vctrs::s3_register("broom::augment", "elm")
+  # vctrs::s3_register("broom::tidy", "eglm")
+  # vctrs::s3_register("broom::tidy", "elm")
+  # vctrs::s3_register("broom::augment", "eglm")
+  # vctrs::s3_register("broom::augment", "elm")
 
   invisible()
 }

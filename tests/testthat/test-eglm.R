@@ -16,7 +16,7 @@ for (f in fmly) {
     m2 <- eglm(m, family = f, data = mtcars, reduce = F)
     m3 <- eglm(m, family = f, data = mtcars, reduce = T)
 
-    expect_model_equal(m1,m1)
+    expect_model_equal(m2,m1)
     expect_model_equal(m3,m1)
   })
 }

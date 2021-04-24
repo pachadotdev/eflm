@@ -1,36 +1,160 @@
-expect_model_equal <- function(model2,model1) {
-  expect_equal(model2$coefficients, model1$coefficients)
-  expect_equal(model2$residuals, model1$residuals)
-  expect_equal(model2$fitted.values, model1$fitted.values)
-  expect_equal(model2$family$family, model1$family$family)
-  expect_equal(model2$family$link, model1$family$link)
-  expect_equal(model2$linear.predictors, model1$linear.predictors)
-  expect_equal(model2$deviance, model1$deviance)
-  expect_equal(model2$aic, model1$aic)
-  expect_equal(model2$null.deviance, model1$null.deviance)
-  expect_equal(model2$df.residual, model1$df.residual)
-  expect_equal(model2$df.null, model1$df.null)
-  expect_equal(model2$y, model1$y)
-  expect_equal(model2$call$formula, model1$call$formula)
-  expect_equal(model2$call$family, model1$call$family)
-  expect_equal(model2$call$data, model1$call$data)
-  expect_equal(model2$qr$tol, model1$qr$tol)
+expect_model_equal <- function(object, model_reference) {
+  model <- quasi_label(rlang::enquo(object), arg = "object")
 
-  expect_equal(model2$iter, model1$iter)
-  expect_equal(model2$convergence, model1$convergence)
-
-  # QR is different with reduction
-  if (isFALSE(model2$reduce)) {
-    expect_equal(model2$qr$qr, model1$qr$qr)
-    expect_equal(model2$qr$rank, model1$qr$rank)
-    expect_equal(model2$qr$qraux, model1$qr$qraux)
-    expect_equal(model2$qr$pivot, model1$qr$pivot)
-  }
-
-  expect_equal(
-    predict(model2, newdata = mtcars, type = "response"),
-    predict(model1, newdata = mtcars, type = "response")
+  expect(
+    all.equal(model$val$coefficients, model_reference$coefficients),
+    "the coefficients are not all equal"
+  )
+  expect(
+    all.equal(coef(model$val), coef(model_reference)),
+    "the coefficients are not all equal"
   )
 
-  expect_equal(fitted(model2), fitted(model1))
+  expect(
+    all.equal(model$val$residuals, model_reference$residuals),
+    "the residuals are not all equal"
+  )
+
+  expect(
+    all.equal(model$val$fitted.values, model_reference$fitted.values),
+    "the fitted.values are not all equal"
+  )
+
+  expect(
+    all.equal(model$val$family$family, model_reference$family$family),
+    "the family is not equal"
+  )
+  expect(
+    all.equal(model$val$call$family, model_reference$call$family),
+    "the family is not equal"
+  )
+  expect(
+    all.equal(family(model$val), family(model_reference)),
+    "the family is not equal"
+  )
+
+  expect(
+    all.equal(model$val$family$link, model_reference$family$link),
+    "the link is not equal"
+  )
+
+  expect(
+    all.equal(model$val$linear.predictors, model_reference$linear.predictors),
+    "the linear.predictors are not equal"
+  )
+
+  expect(
+    all.equal(model$val$deviance, model_reference$deviance),
+    "the deviance is not equal"
+  )
+
+  expect(
+    all.equal(model$val$deviance, model_reference$deviance),
+    "the deviance is not equal"
+  )
+
+  expect(
+    all.equal(model$val$aic, model_reference$aic),
+    "the aic is not equal"
+  )
+
+  expect(
+    all.equal(model$val$null.deviance, model_reference$null.deviance),
+    "the aic is not equal"
+  )
+
+  expect(
+    all.equal(model$val$df.residual, model_reference$df.residual),
+    "the df.residual is not equal"
+  )
+
+  expect(
+    all.equal(model$val$df.null, model_reference$df.null),
+    "the df.null is not equal"
+  )
+
+  expect(
+    all.equal(model$val$y, model_reference$y),
+    "the y's are not all equal"
+  )
+
+  expect(
+    all.equal(model$val$call$formula, model_reference$call$formula),
+    "the formula is not equal"
+  )
+
+  expect(
+    all.equal(model$val$call$data, model_reference$call$data),
+    "the data is not equal"
+  )
+
+  expect(
+    all.equal(model$val$qr$tol, model_reference$qr$tol),
+    "the qr tolerance is not equal"
+  )
+
+  expect(
+    all.equal(model$val$iter, model_reference$iter),
+    "the number of iterations is not equal"
+  )
+
+  expect(
+    all.equal(model$val$converged, model_reference$converged),
+    "the converged logical is not equal"
+  )
+
+  expect(
+    all.equal(model$val$converged, model_reference$converged),
+    "the converged logical is not equal"
+  )
+
+  # QR is different with reduction
+  if (isFALSE(model$val$reduce)) {
+    expect(
+      all.equal(model$val$qr$qr, model_reference$qr$qr),
+      "the qr matrix is not equal"
+    )
+    expect(
+      all.equal(model$val$qr$rank, model_reference$qr$rank),
+      "the qr rank is not equal"
+    )
+    expect(
+      all.equal(model$val$qr$qraux, model_reference$qr$qraux),
+      "the qraux vector is not equal"
+    )
+    expect(
+      all.equal(model$val$qr$pivot, model_reference$qr$pivot),
+      "the pivot vector is not equal"
+    )
+  }
+
+  expect(
+    all.equal(model$val$qr$pivot, model_reference$qr$pivot),
+    "the pivot vector is not equal"
+  )
+
+  types <- if (!any(class(model$val) %in% "elm")) {
+    c("link", "response", "terms")
+  } else {
+    c("response", "terms")
+  }
+
+  for (ty in types) {
+    expect(
+      all.equal(
+        predict(model$val, newdata = mtcars, type = ty),
+        predict(model_reference, newdata = mtcars, type = ty)
+      ),
+      "the model prediction is not equal"
+    )
+  }
+  expect(
+    all.equal(
+      fitted(model$val),
+      fitted(model_reference)
+    ),
+    "the model prediction is not equal"
+  )
+
+  invisible(model$val)
 }
