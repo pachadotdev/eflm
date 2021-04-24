@@ -139,17 +139,17 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
       z <- (eta - offset)[good] + (y - mu)[good] / mu.eta.val[good]
       w <- sqrt((weights[good] * mu.eta.val[good]^2) / variance(mu)[good])
       ## call Fortran code via C wrapper
-      if (isTRUE(reduce)) {
-        fit <- .Call(C_Cdqrls,
-          crossprod(x[good, , drop = FALSE] * w),
-          crossprod(x[good, , drop = FALSE], z * w^2),
-          min(1e-7, control$epsilon / 1000),
-          check = FALSE
+      fit <- if (isTRUE(reduce)) {
+        .Call(C_Cdqrls,
+              crossprod(x[good, , drop = FALSE] * w),
+              crossprod(x[good, , drop = FALSE], z * w^2),
+              min(1e-7, control$epsilon / 1000),
+              check = FALSE
         )
       } else {
-        fit <- .Call(C_Cdqrls, x[good, , drop = FALSE] * w, z * w,
-          min(1e-7, control$epsilon / 1000),
-          check = FALSE
+        .Call(C_Cdqrls, x[good, , drop = FALSE] * w, z * w,
+              min(1e-7, control$epsilon / 1000),
+              check = FALSE
         )
       }
       if (any(!is.finite(fit$coefficients))) {

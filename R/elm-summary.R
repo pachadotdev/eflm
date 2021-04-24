@@ -111,6 +111,6 @@ summary.elm <- function(object, correlation = FALSE, symbolic.cor = FALSE, ...) 
     ans$symbolic.cor <- symbolic.cor
   }
   if (!is.null(z$na.action)) ans$na.action <- z$na.action
-  class(ans) <- "summary.elm"
+  class(ans) <- c("summary.elm", "summary.lm")
   ans
 }

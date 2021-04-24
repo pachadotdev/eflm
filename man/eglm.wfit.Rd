@@ -48,7 +48,7 @@ family function, a family function or the result of a call to a family
 function. See \code{\link{family}} for details of family functions.}
 
 \item{control}{a list of parameters for controlling the fitting process. For
-\code{eglm.wfit} this is passed to \code{eglm.control}.}
+\code{eglm.wfit} this is passed to \code{glm.control}.}
 
 \item{intercept}{logical value indicating whether \emph{intercept} should be
 included in the \emph{null} model. Defaults to \code{TRUE}.}

@@ -104,6 +104,6 @@ summary.eglm <- function(object, dispersion = NULL,
       covmat.unscaled / outer(dd, dd)
     ans$symbolic.cor <- symbolic.cor
   }
-  class(ans) <- "summary.eglm"
+  class(ans) <- c("summary.eglm", "summary.glm")
   return(ans)
 }

@@ -77,11 +77,11 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = "qr"
     ))
   }
   C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
-  if (isTRUE(reduce)) {
+  z <- if (isTRUE(reduce)) {
     # here I pass weights on the right side to avoid duplicating operations, because here (sqrt(w) * x , sqrt(w) * y) = (x , w * y)
-    z <- .Call(C_Cdqrls, crossprod(x * sqrt(weights)), crossprod(x, y * weights), tol, FALSE)
+    .Call(C_Cdqrls, crossprod(x * sqrt(weights)), crossprod(x, y * weights), tol, FALSE)
   } else {
-    z <- .Call(C_Cdqrls, x * sqrt(weights), y * sqrt(weights), tol, FALSE)
+    .Call(C_Cdqrls, x * sqrt(weights), y * sqrt(weights), tol, FALSE)
   }
   if (!singular.ok && z$rank < p) stop("singular fit encountered")
   coef <- z$coefficients

@@ -71,7 +71,7 @@ formula instead or as well, and if more than one are specified their sum is
 used. See \code{\link{model.offset}}.}
 
 \item{control}{a list of parameters for controlling the fitting process. For
-\code{eglm.wfit} this is passed to \code{eglm.control}.}
+\code{eglm.wfit} this is passed to \code{glm.control}.}
 
 \item{model}{a logical value indicating whether \emph{model frame} should be
 included as a component of the returned value.}
@@ -129,4 +129,5 @@ the same as \code{first + second + first:second}, and exactly the same as
 }
 \examples{
 eglm(mpg ~ wt, family = gaussian, data = mtcars)
+
 }
