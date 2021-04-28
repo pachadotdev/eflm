@@ -31,11 +31,11 @@ test_that("eglm returns the same broom output as glm", {
   expect_equal(bm3$conf.high, bm1$conf.high)
 })
 
-test_that("broom outputs not explicitly defined are the same as glm", {
-  m1 <- lm(mpg ~ wt, data = mtcars)
-  m2 <- eflm::elm(mpg ~ wt, data = mtcars, reduce = F)
-  m3 <- eflm::elm(mpg ~ wt, data = mtcars, reduce = T)
-
-  expect_equal(broom::augment(m2, newdata = mtcars), broom::augment(m1, newdata = mtcars))
-  expect_equal(broom::augment(m3, newdata = mtcars), broom::augment(m1, newdata = mtcars))
-})
+# test_that("broom outputs not explicitly defined are the same as glm", {
+#   m1 <- lm(mpg ~ wt, data = mtcars)
+#   m2 <- eflm::elm(mpg ~ wt, data = mtcars, reduce = F)
+#   m3 <- eflm::elm(mpg ~ wt, data = mtcars, reduce = T)
+#
+#   expect_equal(broom::augment(m2, newdata = mtcars), broom::augment(m1, newdata = mtcars))
+#   expect_equal(broom::augment(m3, newdata = mtcars), broom::augment(m1, newdata = mtcars))
+# })

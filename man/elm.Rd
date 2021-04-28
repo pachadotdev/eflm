@@ -94,28 +94,28 @@ passed to or from other methods.}
 }
 \value{
 An object of class "elm" that behaves the same way as the "lm"
- class, see the function \code{"\link{lm}"}. This output also includes the
- logical "reduce" and, depending on it, the reduced design matrix "xtx"
- when the reduce argument is set to TRUE.
+class, see the function \code{"\link{lm}"}. This output also includes the
+logical "reduce" and, depending on it, the reduced design matrix "xtx"
+when the reduce argument is set to TRUE.
 }
 \description{
 Efficient Linear Model (\code{"elm"}) is used to fit linear
- models in an equivalent way to \code{"\link{lm}"} but in a reduced time
- depending on the design matrix.
+models in an equivalent way to \code{"\link{lm}"} but in a reduced time
+depending on the design matrix.
 }
 \details{
 Models for \code{elm} are specified symbolically.
- A typical model has the form \code{response ~ terms} where \code{response}
- is the (numeric) response vector and \code{terms} is a series of terms which
- specifies a linear predictor for \code{response}. A terms specification of
- the form \code{first + second} indicates all the terms in \code{first}
- together with all the terms in \code{second} with duplicates removed. A
- specification of the form \code{first:second} indicates the set of
- terms obtained by taking the interactions of all terms in \code{first}
- with all terms in \code{second}. The specification \code{first*second}
- indicates the \emph{cross} of \code{first} and \code{second}. This is
- the same as \code{first + second + first:second}, and exactly the same as
- \code{"\link{lm}"} from the \link{stats} package.
+A typical model has the form \code{response ~ terms} where \code{response}
+is the (numeric) response vector and \code{terms} is a series of terms which
+specifies a linear predictor for \code{response}. A terms specification of
+the form \code{first + second} indicates all the terms in \code{first}
+together with all the terms in \code{second} with duplicates removed. A
+specification of the form \code{first:second} indicates the set of
+terms obtained by taking the interactions of all terms in \code{first}
+with all terms in \code{second}. The specification \code{first*second}
+indicates the \emph{cross} of \code{first} and \code{second}. This is
+the same as \code{first + second + first:second}, and exactly the same as
+\code{"\link{lm}"} from the \link{stats} package.
 }
 \examples{
 elm(mpg ~ wt, data = mtcars)
