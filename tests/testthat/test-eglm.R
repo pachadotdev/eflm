@@ -9,7 +9,7 @@ mdl <- function() {
 }
 
 for (f in fmly) {
-  test_that(sprintf("fitting: eglm == glm, %s link, unweighted", f), {
+  test_that(sprintf("fitting: eglm == glm, %s link, unweighted, no subset", f), {
     m <- mdl()
 
     m1 <- glm(m, family = f, data = mtcars)
@@ -22,12 +22,38 @@ for (f in fmly) {
 }
 
 for (f in fmly) {
-  test_that(sprintf("fitting: eglm == glm, %s link, weighted", f), {
+  test_that(sprintf("fitting: eglm == glm, %s link, weighted, no subset", f), {
     m <- mdl()
 
     m1 <- glm(m, family = f, data = mtcars, weights = mtcars$cyl)
     m2 <- eglm(m, family = f, data = mtcars, weights = mtcars$cyl, reduce = F)
     m3 <- eglm(m, family = f, data = mtcars, weights = mtcars$cyl, reduce = T)
+
+    expect_model_equal(m2,m1)
+    expect_model_equal(m3,m1)
+  })
+}
+
+for (f in fmly) {
+  test_that(sprintf("fitting: eglm == glm, %s link, unweighted, subset", f), {
+    m <- mdl()
+
+    m1 <- glm(m, family = f, data = mtcars, subset = (cyl < 8))
+    m2 <- eglm(m, family = f, data = mtcars, subset = (cyl < 8), reduce = F)
+    m3 <- eglm(m, family = f, data = mtcars, subset = (cyl < 8), reduce = T)
+
+    expect_model_equal(m2,m1)
+    expect_model_equal(m3,m1)
+  })
+}
+
+for (f in fmly) {
+  test_that(sprintf("fitting: eglm == glm, %s link, weighted, subset", f), {
+    m <- mdl()
+
+    m1 <- glm(m, family = f, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8))
+    m2 <- eglm(m, family = f, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8), reduce = F)
+    m3 <- eglm(m, family = f, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8), reduce = T)
 
     expect_model_equal(m2,m1)
     expect_model_equal(m3,m1)

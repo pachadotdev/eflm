@@ -11,6 +11,11 @@ expect_model_equal <- function(object, model_reference) {
   )
 
   expect(
+    all.equal(vcov(model$val), vcov(model_reference)),
+    "the variance-covariance matrix is not equal"
+  )
+
+  expect(
     all.equal(model$val$residuals, model_reference$residuals),
     "the residuals are not all equal"
   )
@@ -47,9 +52,8 @@ expect_model_equal <- function(object, model_reference) {
     all.equal(model$val$deviance, model_reference$deviance),
     "the deviance is not equal"
   )
-
   expect(
-    all.equal(model$val$deviance, model_reference$deviance),
+    all.equal(deviance(model$val), deviance(model_reference)),
     "the deviance is not equal"
   )
 
@@ -106,6 +110,16 @@ expect_model_equal <- function(object, model_reference) {
   expect(
     all.equal(model$val$converged, model_reference$converged),
     "the converged logical is not equal"
+  )
+
+  expect(
+    all.equal(nobs(model$val), nobs(model_reference)),
+    "the number of observations is not equal"
+  )
+
+  expect(
+    all.equal(model.matrix(model$val), model.matrix(model_reference)),
+    "the model matrix is not equal"
   )
 
   # QR is different with reduction
@@ -191,6 +205,10 @@ expect_summary_equal <- function(object, model_summary_reference) {
     all.equal(model_summary$val$deviance, model_summary_reference$deviance),
     "the deviance is not equal"
   )
+  expect(
+    all.equal(deviance(model_summary$val), deviance(model_summary_reference)),
+    "the deviance is not equal"
+  )
 
   expect(
     all.equal(model_summary$val$aic, model_summary_reference$aic),
@@ -270,3 +288,40 @@ expect_summary_equal <- function(object, model_summary_reference) {
   invisible(model_summary$val)
 }
 
+expect_add_equal <- function(object, add_reference) {
+  add <- quasi_label(rlang::enquo(object), arg = "object")
+
+  expect(
+    all.equal(add$val$Df, add_reference$Df),
+    "the add degrees of freedom are not equal"
+  )
+  expect(
+    all.equal(add$val$Deviance, add_reference$Deviance),
+    "the add deviance is not equal"
+  )
+  expect(
+    all.equal(add$val$AIC, add_reference$AIC),
+    "the add AIC is not equal"
+  )
+
+  invisible(add$val)
+}
+
+expect_drop_equal <- function(object, drop_reference) {
+  drop <- quasi_label(rlang::enquo(object), arg = "object")
+
+  expect(
+    all.equal(drop$val$Df, drop_reference$Df),
+    "the drop degrees of freedom are not equal"
+  )
+  expect(
+    all.equal(drop$val$Deviance, drop_reference$Deviance),
+    "the drop deviance is not equal"
+  )
+  expect(
+    all.equal(drop$val$AIC, drop_reference$AIC),
+    "the drop AIC is not equal"
+  )
+
+  invisible(drop$val)
+}

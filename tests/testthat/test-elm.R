@@ -1,6 +1,6 @@
 # Fitting ----
 
-test_that(sprintf("fitting: elm == lm, unweighted"), {
+test_that(sprintf("fitting: elm == lm, unweighted, no subset"), {
   m <- "am ~ wt + mpg"
 
   m1 <- lm(m, data = mtcars)
@@ -11,12 +11,34 @@ test_that(sprintf("fitting: elm == lm, unweighted"), {
   expect_model_equal(m3,m1)
 })
 
-test_that(sprintf("fitting: elm == lm, weighted"), {
+test_that(sprintf("fitting: elm == lm, weighted, no subset"), {
   m <- "am ~ wt + mpg"
 
   m1 <- lm(m, data = mtcars, weights = mtcars$cyl)
   m2 <- elm(m, data = mtcars, weights = mtcars$cyl, reduce = F)
   m3 <- elm(m, data = mtcars, weights = mtcars$cyl, reduce = T)
+
+  expect_model_equal(m2,m1)
+  expect_model_equal(m3,m1)
+})
+
+test_that(sprintf("fitting: elm == lm, unweighted, subset"), {
+  m <- "am ~ wt + mpg"
+
+  m1 <- lm(m, data = mtcars, subset = (cyl < 8))
+  m2 <- elm(m, data = mtcars, subset = (cyl < 8), reduce = F)
+  m3 <- elm(m, data = mtcars, subset = (cyl < 8), reduce = T)
+
+  expect_model_equal(m2,m1)
+  expect_model_equal(m3,m1)
+})
+
+test_that(sprintf("fitting: elm == lm, weighted, no subset"), {
+  m <- "am ~ wt + mpg"
+
+  m1 <- lm(m, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8))
+  m2 <- elm(m, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8), reduce = F)
+  m3 <- elm(m, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8), reduce = T)
 
   expect_model_equal(m2,m1)
   expect_model_equal(m3,m1)

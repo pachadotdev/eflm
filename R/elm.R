@@ -120,7 +120,7 @@ elm <- function(formula, data, subset, weights, na.action,
   if (!qr) z$qr <- NULL
   z$reduce <- reduce
   if (isTRUE(reduce)) {
-    z$xtx <- crossprod(x)
+    z$xtx <- crossprod(sqrt(z$weights) * x)
     z$qr$original.dimensions <- dim(x)
   }
   z
