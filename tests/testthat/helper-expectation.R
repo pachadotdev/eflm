@@ -304,6 +304,39 @@ expect_add_equal <- function(object, add_reference) {
     "the add AIC is not equal"
   )
 
+  if (any("F value" %in% add$val)) {
+    expect(
+      all.equal(add$val$`F value`, add_reference$`F value`),
+      "the add F value is not equal"
+    )
+    expect(
+      all.equal(add$val$`Pr(>F)`, add_reference$`Pr(>F)`),
+      "the add F value is not equal"
+    )
+  }
+
+  if (any("scaled dev." %in% add$val)) {
+    expect(
+      all.equal(add$val$`scaled dev.`, add_reference$`scaled dev.`),
+      "the add F value is not equal"
+    )
+    expect(
+      all.equal(add$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+      "the add F value is not equal"
+    )
+  }
+
+  if (any("scaled Rao dev." %in% add$val)) {
+    expect(
+      all.equal(add$val$`scaled Rao dev.`, add_reference$`scaled Rao dev.`),
+      "the add F value is not equal"
+    )
+    expect(
+      all.equal(add$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+      "the add F value is not equal"
+    )
+  }
+
   invisible(add$val)
 }
 
@@ -322,6 +355,39 @@ expect_drop_equal <- function(object, drop_reference) {
     all.equal(drop$val$AIC, drop_reference$AIC),
     "the drop AIC is not equal"
   )
+
+  if (any("F value" %in% drop$val)) {
+    expect(
+      all.equal(drop$val$`F value`, add_reference$`F value`),
+      "the drop F value is not equal"
+    )
+    expect(
+      all.equal(drop$val$`Pr(>F)`, add_reference$`Pr(>F)`),
+      "the drop F value is not equal"
+    )
+  }
+
+  if (any("scaled dev." %in% drop$val)) {
+    expect(
+      all.equal(drop$val$`scaled dev.`, add_reference$`scaled dev.`),
+      "the drop F value is not equal"
+    )
+    expect(
+      all.equal(drop$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+      "the drop F value is not equal"
+    )
+  }
+
+  if (any("scaled Rao dev." %in% drop$val)) {
+    expect(
+      all.equal(drop$val$`scaled Rao dev.`, add_reference$`scaled Rao dev.`),
+      "the drop F value is not equal"
+    )
+    expect(
+      all.equal(drop$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+      "the drop F value is not equal"
+    )
+  }
 
   invisible(drop$val)
 }

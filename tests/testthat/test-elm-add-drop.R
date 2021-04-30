@@ -1,4 +1,4 @@
-test_that(sprintf("add/drop: elm == lm, unweighted, no subset"), {
+test_that("add/drop: elm == lm, unweighted, no subset", {
   m <- "am ~ wt + mpg"
 
   m1 <- lm(m, data = mtcars)
@@ -24,14 +24,14 @@ test_that(sprintf("add/drop: elm == lm, unweighted, no subset"), {
   expect_drop_equal(drop1(m3, test = test), drop1(m1, test = test))
 
   # test <- "LRT"
-  # expect_add_equal(add1(m2, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
-  # expect_add_equal(add1(m3, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
-  # expect_drop_equal(drop1(m2, test = test), drop1(m1, test = test))
-  # expect_drop_equal(drop1(m3, test = test), drop1(m1, test = test))
+  expect_add_equal(add1(m2, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
+  expect_add_equal(add1(m3, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
+  expect_drop_equal(drop1(m2, test = test), drop1(m1, test = test))
+  expect_drop_equal(drop1(m3, test = test), drop1(m1, test = test))
 
   # test <- "Rao"
-  # expect_add_equal(add1(m2, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
-  # expect_add_equal(add1(m3, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
-  # expect_drop_equal(drop1(m2, test = test), drop1(m1, test = test))
-  # expect_drop_equal(drop1(m3, test = test), drop1(m1, test = test))
+  expect_add_equal(add1(m2, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
+  expect_add_equal(add1(m3, ~ . + cyl, test = test), add1(m1, ~ . + cyl, test = test))
+  expect_drop_equal(drop1(m2, test = test), drop1(m1, test = test))
+  expect_drop_equal(drop1(m3, test = test), drop1(m1, test = test))
 })

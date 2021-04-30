@@ -1,16 +1,8 @@
 # Fitting ----
 
-mdl <- function() {
-  if (!any(f %in% c("poisson", "binomial", "quasibinomial"))) {
-    "mpg ~ wt + am"
-  } else {
-    "am ~ wt + mpg"
-  }
-}
-
 for (f in fmly) {
   test_that(sprintf("fitting: eglm == glm, %s link, unweighted, no subset", f), {
-    m <- mdl()
+    m <- mdl(f)
 
     m1 <- glm(m, family = f, data = mtcars)
     m2 <- eglm(m, family = f, data = mtcars, reduce = F)
@@ -23,7 +15,7 @@ for (f in fmly) {
 
 for (f in fmly) {
   test_that(sprintf("fitting: eglm == glm, %s link, weighted, no subset", f), {
-    m <- mdl()
+    m <- mdl(f)
 
     m1 <- glm(m, family = f, data = mtcars, weights = mtcars$cyl)
     m2 <- eglm(m, family = f, data = mtcars, weights = mtcars$cyl, reduce = F)
@@ -36,7 +28,7 @@ for (f in fmly) {
 
 for (f in fmly) {
   test_that(sprintf("fitting: eglm == glm, %s link, unweighted, subset", f), {
-    m <- mdl()
+    m <- mdl(f)
 
     m1 <- glm(m, family = f, data = mtcars, subset = (cyl < 8))
     m2 <- eglm(m, family = f, data = mtcars, subset = (cyl < 8), reduce = F)
@@ -49,7 +41,7 @@ for (f in fmly) {
 
 for (f in fmly) {
   test_that(sprintf("fitting: eglm == glm, %s link, weighted, subset", f), {
-    m <- mdl()
+    m <- mdl(f)
 
     m1 <- glm(m, family = f, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8))
     m2 <- eglm(m, family = f, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8), reduce = F)
@@ -64,7 +56,8 @@ for (f in fmly) {
 
 for (f in fmly) {
   test_that(sprintf("convergence: eglm == glm, %s link", f), {
-    m <- mdl()
+    m <- mdl(f)
+
     m1 <- glm(am ~ mpg + wt, family = binomial, data = mtcars, weights = mtcars$cyl)
     m2 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars, weights = mtcars$cyl, reduce = F)
     m3 <- eglm(am ~ mpg + wt, family = binomial, data = mtcars, weights = mtcars$cyl, reduce = T)

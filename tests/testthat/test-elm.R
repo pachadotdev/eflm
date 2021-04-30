@@ -47,9 +47,11 @@ test_that(sprintf("fitting: elm == lm, weighted, no subset"), {
 # Design matrix ----
 
 test_that("design matrix: elm == lm", {
-  m1 <- lm(mpg ~ wt, data = mtcars, x = TRUE)
-  m2 <- elm(mpg ~ wt, data = mtcars, x = TRUE, reduce = FALSE)
-  m3 <- elm(mpg ~ wt, data = mtcars, x = TRUE, reduce = TRUE)
+  m <- "am ~ wt + mpg"
+
+  m1 <- lm(m, data = mtcars, x = TRUE)
+  m2 <- elm(m, data = mtcars, x = TRUE, reduce = FALSE)
+  m3 <- elm(m, data = mtcars, x = TRUE, reduce = TRUE)
 
   expect_equal(m2$x, m1$x)
   expect_equal(m3$x, m1$x)
