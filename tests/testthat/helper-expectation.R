@@ -1,149 +1,157 @@
-expect_model_equal <- function(object, model_reference) {
-  model <- quasi_label(rlang::enquo(object), arg = "object")
+expect_model_equal <- function(object, reference) {
+  model <- testthat::quasi_label(rlang::enquo(object), arg = "object")
+  reference <- testthat::quasi_label(rlang::enquo(reference), arg = "expected")
 
-  expect(
-    all.equal(model$val$coefficients, model_reference$coefficients),
+  testthat::expect(
+    all.equal(model$val$coefficients, reference$val$coefficients),
     "the coefficients are not all equal"
   )
-  expect(
-    all.equal(coef(model$val), coef(model_reference)),
+  testthat::expect(
+    all.equal(coef(model$val), coef(reference$val)),
     "the coefficients are not all equal"
   )
 
-  expect(
-    all.equal(vcov(model$val), vcov(model_reference)),
+  testthat::expect(
+    all.equal(vcov(model$val), vcov(reference$val)),
     "the variance-covariance matrix is not equal"
   )
 
-  expect(
-    all.equal(model$val$residuals, model_reference$residuals),
+  testthat::expect(
+    all.equal(model$val$residuals, reference$val$residuals),
     "the residuals are not all equal"
   )
 
-  expect(
-    all.equal(model$val$fitted.values, model_reference$fitted.values),
+  testthat::expect(
+    all.equal(model$val$fitted.values, reference$val$fitted.values),
     "the fitted values are not all equal"
   )
 
-  expect(
-    all.equal(model$val$family$family, model_reference$family$family),
+  testthat::expect(
+    all.equal(model$val$family$family, reference$val$family$family),
     "the family is not equal"
   )
-  expect(
-    all.equal(model$val$call$family, model_reference$call$family),
+  testthat::expect(
+    all.equal(model$val$call$family, reference$val$call$family),
     "the family is not equal"
   )
-  expect(
-    all.equal(family(model$val), family(model_reference)),
+  testthat::expect(
+    all.equal(family(model$val), family(reference$val)),
     "the family is not equal"
   )
 
-  expect(
-    all.equal(model$val$family$link, model_reference$family$link),
+  testthat::expect(
+    all.equal(model$val$family$link, reference$val$family$link),
     "the link is not equal"
   )
 
-  expect(
-    all.equal(model$val$linear.predictors, model_reference$linear.predictors),
+  testthat::expect(
+    all.equal(model$val$linear.predictors, reference$val$linear.predictors),
     "the linear predictors are not equal"
   )
 
-  expect(
-    all.equal(model$val$deviance, model_reference$deviance),
+  testthat::expect(
+    all.equal(model$val$deviance, reference$val$deviance),
     "the deviance is not equal"
   )
-  expect(
-    all.equal(deviance(model$val), deviance(model_reference)),
+  testthat::expect(
+    all.equal(deviance(model$val), deviance(reference$val)),
     "the deviance is not equal"
   )
 
-  expect(
-    all.equal(model$val$aic, model_reference$aic),
+  testthat::expect(
+    all.equal(model$val$aic, reference$val$aic),
     "the aic is not equal"
   )
 
-  expect(
-    all.equal(model$val$null.deviance, model_reference$null.deviance),
+  testthat::expect(
+    all.equal(model$val$null.deviance, reference$val$null.deviance),
     "the null deviance is not equal"
   )
 
-  expect(
-    all.equal(model$val$df.residual, model_reference$df.residual),
+  testthat::expect(
+    all.equal(model$val$df.residual, reference$val$df.residual),
     "the residual degrees of freedom are not equal"
   )
 
-  expect(
-    all.equal(model$val$df.null, model_reference$df.null),
+  testthat::expect(
+    all.equal(model$val$df.null, reference$val$df.null),
     "the null degrees of freedom are not equal"
   )
 
-  expect(
-    all.equal(model$val$y, model_reference$y),
+  if (!is.null(model$val$x)) {
+    testthat::expect(
+      all.equal(model$val$x, reference$val$x),
+      "the design matrix is not equal"
+    )
+  }
+
+  testthat::expect(
+    all.equal(model$val$y, reference$val$y),
     "the y's are not all equal"
   )
 
-  expect(
-    all.equal(model$val$call$formula, model_reference$call$formula),
+  testthat::expect(
+    all.equal(model$val$call$formula, reference$val$call$formula),
     "the formula is not equal"
   )
 
-  expect(
-    all.equal(model$val$call$data, model_reference$call$data),
+  testthat::expect(
+    all.equal(model$val$call$data, reference$val$call$data),
     "the data is not equal"
   )
 
-  expect(
-    all.equal(model$val$qr$tol, model_reference$qr$tol),
+  testthat::expect(
+    all.equal(model$val$qr$tol, reference$val$qr$tol),
     "the qr tolerance is not equal"
   )
 
-  expect(
-    all.equal(model$val$iter, model_reference$iter),
+  testthat::expect(
+    all.equal(model$val$iter, reference$val$iter),
     "the number of iterations is not equal"
   )
 
-  expect(
-    all.equal(model$val$converged, model_reference$converged),
+  testthat::expect(
+    all.equal(model$val$converged, reference$val$converged),
     "the converged logical is not equal"
   )
 
-  expect(
-    all.equal(model$val$converged, model_reference$converged),
+  testthat::expect(
+    all.equal(model$val$converged, reference$val$converged),
     "the converged logical is not equal"
   )
 
-  expect(
-    all.equal(nobs(model$val), nobs(model_reference)),
+  testthat::expect(
+    all.equal(nobs(model$val), nobs(reference$val)),
     "the number of observations is not equal"
   )
 
-  expect(
-    all.equal(model.matrix(model$val), model.matrix(model_reference)),
+  testthat::expect(
+    all.equal(model.matrix(model$val), model.matrix(reference$val)),
     "the model matrix is not equal"
   )
 
   # QR is different with reduction
   if (isFALSE(model$val$reduce)) {
-    expect(
-      all.equal(model$val$qr$qr, model_reference$qr$qr),
+    testthat::expect(
+      all.equal(model$val$qr$qr, reference$val$qr$qr),
       "the qr matrix is not equal"
     )
-    expect(
-      all.equal(model$val$qr$rank, model_reference$qr$rank),
+    testthat::expect(
+      all.equal(model$val$qr$rank, reference$val$qr$rank),
       "the qr rank is not equal"
     )
-    expect(
-      all.equal(model$val$qr$qraux, model_reference$qr$qraux),
+    testthat::expect(
+      all.equal(model$val$qr$qraux, reference$val$qr$qraux),
       "the qraux is not equal"
     )
-    expect(
-      all.equal(model$val$qr$pivot, model_reference$qr$pivot),
+    testthat::expect(
+      all.equal(model$val$qr$pivot, reference$val$qr$pivot),
       "the pivot is not equal"
     )
   }
 
-  expect(
-    all.equal(model$val$qr$pivot, model_reference$qr$pivot),
+  testthat::expect(
+    all.equal(model$val$qr$pivot, reference$val$qr$pivot),
     "the pivot is not equal"
   )
 
@@ -154,18 +162,18 @@ expect_model_equal <- function(object, model_reference) {
   }
 
   for (ty in types) {
-    expect(
+    testthat::expect(
       all.equal(
         predict(model$val, newdata = mtcars, type = ty),
-        predict(model_reference, newdata = mtcars, type = ty)
+        predict(reference$val, newdata = mtcars, type = ty)
       ),
       "the prediction is not equal"
     )
   }
-  expect(
+  testthat::expect(
     all.equal(
       fitted(model$val),
-      fitted(model_reference)
+      fitted(reference$val)
     ),
     "the prediction is not equal"
   )
@@ -173,115 +181,116 @@ expect_model_equal <- function(object, model_reference) {
   invisible(model$val)
 }
 
-expect_summary_equal <- function(object, model_summary_reference) {
-  model_summary <- quasi_label(rlang::enquo(object), arg = "object")
+expect_summary_equal <- function(object, reference) {
+  model_summary <- testthat::quasi_label(rlang::enquo(object), arg = "object")
+  reference <- testthat::quasi_label(rlang::enquo(reference), arg = "expected")
 
-  expect(
-    all.equal(model_summary$val$coefficients, model_summary_reference$coefficients),
+  testthat::expect(
+    all.equal(model_summary$val$coefficients, reference$val$coefficients),
     "the coefficients, std errors, t values and p values are not all equal"
   )
 
-  expect(
-    all.equal(model_summary$val$call$formula, model_summary_reference$call$formula),
+  testthat::expect(
+    all.equal(model_summary$val$call$formula, reference$val$call$formula),
     "the formula is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$call$family, model_summary_reference$call$family),
+  testthat::expect(
+    all.equal(model_summary$val$call$family, reference$val$call$family),
     "the family is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$call$data, model_summary_reference$call$data),
+  testthat::expect(
+    all.equal(model_summary$val$call$data, reference$val$call$data),
     "the data is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$terms, model_summary_reference$terms),
+  testthat::expect(
+    all.equal(model_summary$val$terms, reference$val$terms),
     "the terms are not all equal"
   )
 
-  expect(
-    all.equal(model_summary$val$deviance, model_summary_reference$deviance),
+  testthat::expect(
+    all.equal(model_summary$val$deviance, reference$val$deviance),
     "the deviance is not equal"
   )
-  expect(
-    all.equal(deviance(model_summary$val), deviance(model_summary_reference)),
+  testthat::expect(
+    all.equal(deviance(model_summary$val), deviance(reference$val)),
     "the deviance is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$aic, model_summary_reference$aic),
+  testthat::expect(
+    all.equal(model_summary$val$aic, reference$val$aic),
     "the AIC is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$df.residual, model_summary_reference$df.residual),
+  testthat::expect(
+    all.equal(model_summary$val$df.residual, reference$val$df.residual),
     "the residual degrees of freedom are not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$df.null, model_summary_reference$df.null),
+  testthat::expect(
+    all.equal(model_summary$val$df.null, reference$val$df.null),
     "the null degrees of freedom are not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$null.deviance, model_summary_reference$null.deviance),
+  testthat::expect(
+    all.equal(model_summary$val$null.deviance, reference$val$null.deviance),
     "the null deviance is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$iter, model_summary_reference$iter),
+  testthat::expect(
+    all.equal(model_summary$val$iter, reference$val$iter),
     "the number of iterations is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$deviance.resid, model_summary_reference$deviance.resid),
+  testthat::expect(
+    all.equal(model_summary$val$deviance.resid, reference$val$deviance.resid),
     "the residual deviance is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$dispersion, model_summary_reference$dispersion),
+  testthat::expect(
+    all.equal(model_summary$val$dispersion, reference$val$dispersion),
     "the dispersion parameter is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$cov.unscaled, model_summary_reference$cov.unscaled),
+  testthat::expect(
+    all.equal(model_summary$val$cov.unscaled, reference$val$cov.unscaled),
     "the unscaled covariance is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$cov.scaled, model_summary_reference$cov.scaled),
+  testthat::expect(
+    all.equal(model_summary$val$cov.scaled, reference$val$cov.scaled),
     "the scaled covariance is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$aliased, model_summary_reference$aliased),
+  testthat::expect(
+    all.equal(model_summary$val$aliased, reference$val$aliased),
     "the alised logicals are not all equal"
   )
 
-  expect(
-    all.equal(model_summary$val$sigma, model_summary_reference$sigma),
+  testthat::expect(
+    all.equal(model_summary$val$sigma, reference$val$sigma),
     "the sigma is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$df, model_summary_reference$df),
+  testthat::expect(
+    all.equal(model_summary$val$df, reference$val$df),
     "the degrees of freedom are not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$r.squared, model_summary_reference$r.squared),
+  testthat::expect(
+    all.equal(model_summary$val$r.squared, reference$val$r.squared),
     "the R squared is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$adj.r.squared, model_summary_reference$adj.r.squared),
+  testthat::expect(
+    all.equal(model_summary$val$adj.r.squared, reference$val$adj.r.squared),
     "the adjusted R squared is not equal"
   )
 
-  expect(
-    all.equal(model_summary$val$fstatistic, model_summary_reference$fstatistic),
+  testthat::expect(
+    all.equal(model_summary$val$fstatistic, reference$val$fstatistic),
     "the F statistic is not equal"
   )
 
@@ -291,48 +300,48 @@ expect_summary_equal <- function(object, model_summary_reference) {
 expect_add_equal <- function(object, add_reference) {
   add <- quasi_label(rlang::enquo(object), arg = "object")
 
-  expect(
-    all.equal(add$val$Df, add_reference$Df),
+  testthat::expect(
+    all.equal(add$val$Df, add_reference$val$Df),
     "the add degrees of freedom are not equal"
   )
-  expect(
-    all.equal(add$val$Deviance, add_reference$Deviance),
+  testthat::expect(
+    all.equal(add$val$Deviance, add_reference$val$Deviance),
     "the add deviance is not equal"
   )
-  expect(
-    all.equal(add$val$AIC, add_reference$AIC),
+  testthat::expect(
+    all.equal(add$val$AIC, add_reference$val$AIC),
     "the add AIC is not equal"
   )
 
   if (any("F value" %in% add$val)) {
-    expect(
-      all.equal(add$val$`F value`, add_reference$`F value`),
+    testthat::expect(
+      all.equal(add$val$`F value`, add_reference$val$`F value`),
       "the add F value is not equal"
     )
-    expect(
-      all.equal(add$val$`Pr(>F)`, add_reference$`Pr(>F)`),
+    testthat::expect(
+      all.equal(add$val$`Pr(>F)`, add_reference$val$`Pr(>F)`),
       "the add F value is not equal"
     )
   }
 
   if (any("scaled dev." %in% add$val)) {
-    expect(
-      all.equal(add$val$`scaled dev.`, add_reference$`scaled dev.`),
+    testthat::expect(
+      all.equal(add$val$`scaled dev.`, add_reference$val$`scaled dev.`),
       "the add F value is not equal"
     )
-    expect(
-      all.equal(add$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+    testthat::expect(
+      all.equal(add$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
       "the add F value is not equal"
     )
   }
 
   if (any("scaled Rao dev." %in% add$val)) {
-    expect(
-      all.equal(add$val$`scaled Rao dev.`, add_reference$`scaled Rao dev.`),
+    testthat::expect(
+      all.equal(add$val$`scaled Rao dev.`, add_reference$val$`scaled Rao dev.`),
       "the add F value is not equal"
     )
-    expect(
-      all.equal(add$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+    testthat::expect(
+      all.equal(add$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
       "the add F value is not equal"
     )
   }
@@ -343,48 +352,48 @@ expect_add_equal <- function(object, add_reference) {
 expect_drop_equal <- function(object, drop_reference) {
   drop <- quasi_label(rlang::enquo(object), arg = "object")
 
-  expect(
-    all.equal(drop$val$Df, drop_reference$Df),
+  testthat::expect(
+    all.equal(drop$val$Df, drop_reference$val$Df),
     "the drop degrees of freedom are not equal"
   )
-  expect(
-    all.equal(drop$val$Deviance, drop_reference$Deviance),
+  testthat::expect(
+    all.equal(drop$val$Deviance, drop_reference$val$Deviance),
     "the drop deviance is not equal"
   )
-  expect(
-    all.equal(drop$val$AIC, drop_reference$AIC),
+  testthat::expect(
+    all.equal(drop$val$AIC, drop_reference$val$AIC),
     "the drop AIC is not equal"
   )
 
   if (any("F value" %in% drop$val)) {
-    expect(
-      all.equal(drop$val$`F value`, add_reference$`F value`),
+    testthat::expect(
+      all.equal(drop$val$`F value`, add_reference$val$`F value`),
       "the drop F value is not equal"
     )
-    expect(
-      all.equal(drop$val$`Pr(>F)`, add_reference$`Pr(>F)`),
+    testthat::expect(
+      all.equal(drop$val$`Pr(>F)`, add_reference$val$`Pr(>F)`),
       "the drop F value is not equal"
     )
   }
 
   if (any("scaled dev." %in% drop$val)) {
-    expect(
-      all.equal(drop$val$`scaled dev.`, add_reference$`scaled dev.`),
+    testthat::expect(
+      all.equal(drop$val$`scaled dev.`, add_reference$val$`scaled dev.`),
       "the drop F value is not equal"
     )
-    expect(
-      all.equal(drop$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+    testthat::expect(
+      all.equal(drop$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
       "the drop F value is not equal"
     )
   }
 
   if (any("scaled Rao dev." %in% drop$val)) {
-    expect(
-      all.equal(drop$val$`scaled Rao dev.`, add_reference$`scaled Rao dev.`),
+    testthat::expect(
+      all.equal(drop$val$`scaled Rao dev.`, add_reference$val$`scaled Rao dev.`),
       "the drop F value is not equal"
     )
-    expect(
-      all.equal(drop$val$`Pr(>Chi)`, add_reference$`Pr(>Chi)`),
+    testthat::expect(
+      all.equal(drop$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
       "the drop F value is not equal"
     )
   }

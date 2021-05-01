@@ -1,58 +1,7 @@
-# Fitting ----
-
-test_that(sprintf("fitting: elm == lm, unweighted, no subset"), {
-  m <- "am ~ wt + mpg"
-
-  m1 <- lm(m, data = mtcars)
-  m2 <- elm(m, data = mtcars, reduce = F)
-  m3 <- elm(m, data = mtcars, reduce = T)
-
-  expect_model_equal(m2,m1)
-  expect_model_equal(m3,m1)
-})
-
-test_that(sprintf("fitting: elm == lm, weighted, no subset"), {
-  m <- "am ~ wt + mpg"
-
-  m1 <- lm(m, data = mtcars, weights = mtcars$cyl)
-  m2 <- elm(m, data = mtcars, weights = mtcars$cyl, reduce = F)
-  m3 <- elm(m, data = mtcars, weights = mtcars$cyl, reduce = T)
-
-  expect_model_equal(m2,m1)
-  expect_model_equal(m3,m1)
-})
-
-test_that(sprintf("fitting: elm == lm, unweighted, subset"), {
-  m <- "am ~ wt + mpg"
-
-  m1 <- lm(m, data = mtcars, subset = (cyl < 8))
-  m2 <- elm(m, data = mtcars, subset = (cyl < 8), reduce = F)
-  m3 <- elm(m, data = mtcars, subset = (cyl < 8), reduce = T)
-
-  expect_model_equal(m2,m1)
-  expect_model_equal(m3,m1)
-})
-
-test_that(sprintf("fitting: elm == lm, weighted, no subset"), {
-  m <- "am ~ wt + mpg"
-
-  m1 <- lm(m, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8))
-  m2 <- elm(m, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8), reduce = F)
-  m3 <- elm(m, data = mtcars, weights = mtcars$cyl, subset = (cyl < 8), reduce = T)
-
-  expect_model_equal(m2,m1)
-  expect_model_equal(m3,m1)
-})
-
-# Design matrix ----
-
-test_that("design matrix: elm == lm", {
-  m <- "am ~ wt + mpg"
-
-  m1 <- lm(m, data = mtcars, x = TRUE)
-  m2 <- elm(m, data = mtcars, x = TRUE, reduce = FALSE)
-  m3 <- elm(m, data = mtcars, x = TRUE, reduce = TRUE)
-
-  expect_equal(m2$x, m1$x)
-  expect_equal(m3$x, m1$x)
-})
+patrick::with_parameters_test_that("eglm fitting is the same as glm:", {
+  m1 <- lm(model, data = mtcars, x = TRUE)
+  m2 <- elm(model, data = mtcars, x = TRUE, reduce = reduce)
+  expect_model_equal(m2, m1)
+},
+.cases = make_elm_cases()
+)
