@@ -11,7 +11,7 @@ mdl <- function(f) {
   }
 }
 
-make_eglm_cases <- function() {
+eglm_cases <- function() {
   d <- data.frame(
     test_name = fmly,
     family = fmly,
@@ -25,12 +25,39 @@ make_eglm_cases <- function() {
   return(rbind(d, d2))
 }
 
-make_elm_cases <- function() {
+elm_cases <- function() {
   d <- data.frame(
     test_name = "gaussian",
     model = rep("am ~ wt + mpg", 2),
     reduce = c(T,F)
   )
+
+  return(d)
+}
+
+elm_add1_cases <- function() {
+  d <- elm_cases()
+
+  d2 <- data.frame(
+    model = rep(unique(d$model), 3),
+    test = c("none", "Chisq", "F")
+  )
+
+  return(merge(d, d2))
+}
+
+eglm_add1_cases <- function() {
+  d <- eglm_cases()
+
+  d2 <- data.frame(
+    model = rep(unique(d$model), 5),
+    test = c("none", "Rao", "LRT", "Chisq", "F")
+  )
+
+  d <- merge(d, d2)
+
+  d <- d[!(d$family == "binomial" & d$test == "F"), ]
+  d <- d[!(d$family == "poisson" & d$test == "F"), ]
 
   return(d)
 }

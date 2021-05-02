@@ -297,106 +297,55 @@ expect_summary_equal <- function(object, reference) {
   invisible(model_summary$val)
 }
 
-expect_add_equal <- function(object, add_reference) {
-  add <- quasi_label(rlang::enquo(object), arg = "object")
+expect_add1_drop1_equal <- function(object, reference) {
+  add <- testthat::quasi_label(rlang::enquo(object), arg = "object")
+  reference <- testthat::quasi_label(rlang::enquo(reference), arg = "expected")
 
   testthat::expect(
-    all.equal(add$val$Df, add_reference$val$Df),
+    all.equal(add$val$Df, reference$val$Df),
     "the add degrees of freedom are not equal"
   )
   testthat::expect(
-    all.equal(add$val$Deviance, add_reference$val$Deviance),
+    all.equal(add$val$Deviance, reference$val$Deviance),
     "the add deviance is not equal"
   )
   testthat::expect(
-    all.equal(add$val$AIC, add_reference$val$AIC),
+    all.equal(add$val$AIC, reference$val$AIC),
     "the add AIC is not equal"
   )
 
   if (any("F value" %in% add$val)) {
     testthat::expect(
-      all.equal(add$val$`F value`, add_reference$val$`F value`),
+      all.equal(add$val$`F value`, reference$val$`F value`),
       "the add F value is not equal"
     )
     testthat::expect(
-      all.equal(add$val$`Pr(>F)`, add_reference$val$`Pr(>F)`),
+      all.equal(add$val$`Pr(>F)`, reference$val$`Pr(>F)`),
       "the add F value is not equal"
     )
   }
 
   if (any("scaled dev." %in% add$val)) {
     testthat::expect(
-      all.equal(add$val$`scaled dev.`, add_reference$val$`scaled dev.`),
+      all.equal(add$val$`scaled dev.`, reference$val$`scaled dev.`),
       "the add F value is not equal"
     )
     testthat::expect(
-      all.equal(add$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
+      all.equal(add$val$`Pr(>Chi)`, reference$val$`Pr(>Chi)`),
       "the add F value is not equal"
     )
   }
 
   if (any("scaled Rao dev." %in% add$val)) {
     testthat::expect(
-      all.equal(add$val$`scaled Rao dev.`, add_reference$val$`scaled Rao dev.`),
+      all.equal(add$val$`scaled Rao dev.`, reference$val$`scaled Rao dev.`),
       "the add F value is not equal"
     )
     testthat::expect(
-      all.equal(add$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
+      all.equal(add$val$`Pr(>Chi)`, reference$val$`Pr(>Chi)`),
       "the add F value is not equal"
     )
   }
 
   invisible(add$val)
-}
-
-expect_drop_equal <- function(object, drop_reference) {
-  drop <- quasi_label(rlang::enquo(object), arg = "object")
-
-  testthat::expect(
-    all.equal(drop$val$Df, drop_reference$val$Df),
-    "the drop degrees of freedom are not equal"
-  )
-  testthat::expect(
-    all.equal(drop$val$Deviance, drop_reference$val$Deviance),
-    "the drop deviance is not equal"
-  )
-  testthat::expect(
-    all.equal(drop$val$AIC, drop_reference$val$AIC),
-    "the drop AIC is not equal"
-  )
-
-  if (any("F value" %in% drop$val)) {
-    testthat::expect(
-      all.equal(drop$val$`F value`, add_reference$val$`F value`),
-      "the drop F value is not equal"
-    )
-    testthat::expect(
-      all.equal(drop$val$`Pr(>F)`, add_reference$val$`Pr(>F)`),
-      "the drop F value is not equal"
-    )
-  }
-
-  if (any("scaled dev." %in% drop$val)) {
-    testthat::expect(
-      all.equal(drop$val$`scaled dev.`, add_reference$val$`scaled dev.`),
-      "the drop F value is not equal"
-    )
-    testthat::expect(
-      all.equal(drop$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
-      "the drop F value is not equal"
-    )
-  }
-
-  if (any("scaled Rao dev." %in% drop$val)) {
-    testthat::expect(
-      all.equal(drop$val$`scaled Rao dev.`, add_reference$val$`scaled Rao dev.`),
-      "the drop F value is not equal"
-    )
-    testthat::expect(
-      all.equal(drop$val$`Pr(>Chi)`, add_reference$val$`Pr(>Chi)`),
-      "the drop F value is not equal"
-    )
-  }
-
-  invisible(drop$val)
 }

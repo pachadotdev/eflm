@@ -38,15 +38,11 @@ License: Apache License (>= 2)
 Imports:
     stats,
     utils
-Suggests: 
-    rlang,
-    testthat,
-    patrick,
-    covr,
-    sandwich
+Suggests:
+    sandwich,
+    broom
 Encoding: UTF-8
 Depends: 
     R (>= 3.5)
-VignetteBuilder: knitr
-RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

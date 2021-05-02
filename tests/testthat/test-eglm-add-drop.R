@@ -1,14 +1,15 @@
-# test_that("add/drop: eglm == glm, unweighted, no subset", {
-#   m <- "am ~ wt + mpg"
+# patrick::with_parameters_test_that("eglm + add is the same as glm:", {
+#   m1 <- glm(model, data = mtcars, family = family)
+#   m2 <- eglm(model, data = mtcars, family = family, reduce = reduce)
 #
-#   m1 <- glm(m, data = mtcars)
-#   m2 <- eglm(m, data = mtcars, reduce = F)
-#   m3 <- eglm(m, data = mtcars, reduce = T)
+#   am1 <- add1(m1, ~ . + cyl, test = test)
+#   am2 <- add1(m2, ~ . + cyl, test = test)
 #
-#   for (t in tst) {
-#     expect_add_equal(add1(m2, ~ . + cyl, test = t), add1(m1, ~ . + cyl, test = t))
-#     expect_add_equal(add1(m3, ~ . + cyl, test = t), add1(m1, ~ . + cyl, test = t))
-#     expect_drop_equal(drop1(m2, test = t), drop1(m1, test = t))
-#     expect_drop_equal(drop1(m3, test = t), drop1(m1, test = t))
-#   }
-# })
+#   dm1 <- drop1(m1, test = test)
+#   dm2 <- drop1(m2, test = test)
+#
+#   expect_add1_drop1_equal(am2, am1)
+#   # expect_drop1_equal(dm2, dm1)
+# },
+# .cases = eglm_add1_cases()
+# )
