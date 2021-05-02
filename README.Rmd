@@ -26,7 +26,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![CRAN
 status](https://www.r-pkg.org/badges/version/gravity)](https://cran.r-project.org/package=eflm)
 [![codecov](https://codecov.io/gh/pachamaltese/eflm/branch/main/graph/badge.svg?token=XI59cmGd15)](https://codecov.io/gh/pachamaltese/eflm)
-[![R-CMD-check](https://github.com/pachamaltese/yotover-testing/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/yotover-testing/actions)
+[![R-CMD-check](https://github.com/pachamaltese/eflm/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/eflm/actions)
 <!-- badges: end -->
 
 ## Description
@@ -66,6 +66,7 @@ The ultimate aim of the project is to produce a package that:
 ## Minimal working example
 
 ### Stats (base) package
+
 ```{r message=FALSE, warning=FALSE}
 formula <- "mpg ~ I(wt^2)"
 lm(formula, data = mtcars)$coefficients
@@ -138,7 +139,7 @@ The general equation for this model is:
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times and memory allocation depending on the design matrix dimensions:
 
 ```{r elm-benchmark, echo=FALSE}
-benchmark <- read.csv(system.file("extdata", "elm-benchmarks.csv", package = "eflm"))
+benchmark <- read.csv("dev/elm-benchmarks.csv")
 
 g1 <- ggplot(benchmark, aes(x = dimensions, y = median_milliseconds, color = expression2)) +
   geom_point() +
@@ -187,7 +188,7 @@ X_{ij,t} =& \:\exp\left[\pi_{i,t} + \chi_{i,t} + \beta_1 \log(DIST)_{i,j} + \bet
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times depending on the design matrix dimensions:
 
 ```{r eglm-benchmark, echo=FALSE}
-benchmark <- read.csv(system.file("extdata", "eglm-benchmarks.csv", package = "eflm"))
+benchmark <- read.csv("dev/eglm-benchmarks.csv")
 
 g1 <- ggplot(benchmark, aes(x = dimensions, y = median_milliseconds, color = expression2)) +
   geom_point() +
@@ -264,7 +265,7 @@ The original generalized linear model implementation via iteratively reweighted
 least squares for any family was written in R by Simon Davies in Dec, 1995. This
 implementation was later improved by Thomas Lumley back in Apr, 1997, and then
 other developers. In 2021, their work was adapted by me, Mauricio 'Pachá' Vargas
-Sepúlveda for large datasets.
+Sepúlveda, for large datasets.
 
 This work got very well received feedback from:
 

@@ -13,7 +13,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 [![CRAN
 status](https://www.r-pkg.org/badges/version/gravity)](https://cran.r-project.org/package=eflm)
 [![codecov](https://codecov.io/gh/pachamaltese/eflm/branch/main/graph/badge.svg?token=XI59cmGd15)](https://codecov.io/gh/pachamaltese/eflm)
-[![R-CMD-check](https://github.com/pachamaltese/yotover-testing/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/yotover-testing/actions)
+[![R-CMD-check](https://github.com/pachamaltese/eflm/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/eflm/actions)
 <!-- badges: end -->
 
 ## Description
@@ -184,7 +184,7 @@ The original generalized linear model implementation via iteratively
 reweighted least squares for any family was written in R by Simon Davies
 in Dec, 1995. This implementation was later improved by Thomas Lumley
 back in Apr, 1997, and then other developers. In 2021, their work was
-adapted by me, Mauricio ‘Pachá’ Vargas Sepúlveda for large datasets.
+adapted by me, Mauricio ‘Pachá’ Vargas Sepúlveda, for large datasets.
 
 This work got very well received feedback from:
 

@@ -1,19 +1,18 @@
 fmly <- c("gaussian", "inverse.gaussian", "Gamma", "binomial", "quasibinomial",
           "poisson", "quasipoisson", "quasi")
+
 wgts <- list(NULL)
-tst <- c("none", "F", "Chisq", "LRT", "Rao")
 
 mdl <- function(f) {
   if (!any(f %in% c("poisson", "binomial", "quasibinomial"))) {
-    "mpg ~ wt + am"
+    "mpg ~ wt"
   } else {
-    "am ~ wt + mpg"
+    "am ~ mpg"
   }
 }
 
 eglm_cases <- function() {
   d <- data.frame(
-    test_name = fmly,
     family = fmly,
     model = sapply(fmly, mdl),
     reduce = T
@@ -22,15 +21,22 @@ eglm_cases <- function() {
   d2 <- d
   d2$reduce <- F
 
-  return(rbind(d, d2))
+  d <- rbind(d, d2)
+
+  d$test_name <- sprintf("model = %s - family = %s - reduce = %s",
+                         d$model, d$family, d$reduce)
+
+  return(d)
 }
 
 elm_cases <- function() {
   d <- data.frame(
-    test_name = "gaussian",
-    model = rep("am ~ wt + mpg", 2),
+    model = rep("am ~ mpg", 2),
     reduce = c(T,F)
   )
+
+  d$test_name <- sprintf("model = %s - family = %s - reduce = %s",
+                         d$model, "gaussian", d$reduce)
 
   return(d)
 }
@@ -43,21 +49,10 @@ elm_add1_cases <- function() {
     test = c("none", "Chisq", "F")
   )
 
-  return(merge(d, d2))
-}
-
-eglm_add1_cases <- function() {
-  d <- eglm_cases()
-
-  d2 <- data.frame(
-    model = rep(unique(d$model), 5),
-    test = c("none", "Rao", "LRT", "Chisq", "F")
-  )
-
   d <- merge(d, d2)
 
-  d <- d[!(d$family == "binomial" & d$test == "F"), ]
-  d <- d[!(d$family == "poisson" & d$test == "F"), ]
+  d$test_name <- sprintf("model = %s - family = %s - reduce = %s - test = %s",
+                         d$model, "gaussian", d$reduce, d$test)
 
   return(d)
 }

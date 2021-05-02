@@ -40,7 +40,11 @@ Imports:
     utils
 Suggests:
     sandwich,
-    broom
+    broom,
+    testthat,
+    patrick,
+    rlang,
+    covr
 Encoding: UTF-8
 Depends: 
     R (>= 3.5)

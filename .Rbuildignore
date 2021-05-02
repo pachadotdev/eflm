@@ -8,6 +8,4 @@
 ^\.httr-oauth$
 ^docs
 ^dev
-^extra-tests
-^tests
 ^tests-extra
