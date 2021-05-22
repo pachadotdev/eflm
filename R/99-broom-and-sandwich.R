@@ -123,3 +123,125 @@ tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
 
   ret
 }
+
+##################################################################################################################################
+#### augment.elm
+##################################################################################################################################
+augment.elm <- function(x, data = model.frame(x), newdata = NULL,
+                        se_fit = FALSE, interval = c("none", "confidence", "prediction"), ...) {
+  stopifnot(any(class(x) %in% c("elm","lm")))
+
+  interval <- match.arg(interval)
+  df <- augment_newdata(x, data, newdata, se_fit, interval)
+
+  if (is.null(newdata)) {
+    tryCatch({
+      infl <- influence(x, do.coef = FALSE)
+      df <- add_hat_sigma_cols(df, x, infl)
+    },
+    error = data_error
+    )
+  }
+  df
+}
+
+##################################################################################################################################
+#### glance.elm
+##################################################################################################################################
+
+glance.elm <- function(x, ...) {
+  stopifnot(any(class(x) %in% c("elm","lm")))
+
+  # Check whether the model was fitted with only an intercept, in which
+  # case drop the fstatistic related column
+  int_only <- nrow(summary(x)$coefficients) == 1
+
+  with(
+    summary(x),
+    data.frame(
+      r.squared = r.squared,
+      adj.r.squared = adj.r.squared,
+      sigma = sigma,
+      statistic = if(!int_only) {fstatistic["value"]} else {NA_real_},
+      p.value = if(!int_only) {
+        pf(
+          fstatistic["value"],
+          fstatistic["numdf"],
+          fstatistic["dendf"],
+          lower.tail = FALSE
+        )
+      } else {NA_real_},
+      df = if(!int_only) {fstatistic["numdf"]} else {NA_real_},
+      logLik = as.numeric(stats::logLik(x)),
+      AIC = stats::AIC(x),
+      BIC = stats::BIC(x),
+      deviance = stats::deviance(x),
+      df.residual = df.residual(x),
+      nobs = stats::nobs(x)
+    )
+  )
+}
+
+##################################################################################################################################
+#### augment.glm
+##################################################################################################################################
+augment.glm <- function(x,
+                        data = model.frame(x),
+                        newdata = NULL,
+                        type.predict = c("link", "response", "terms"),
+                        type.residuals = c("deviance", "pearson"),
+                        se_fit = FALSE, ...) {
+  warn_on_appropriated_glm_class(x)
+  stopifnot(any(class(x) %in% c("elm","lm")))
+
+  type.predict <- match.arg(type.predict)
+  type.residuals <- match.arg(type.residuals)
+
+  df <- if (is.null(newdata)) data else newdata
+  df <- as_augment_data_frame(df)
+
+  # don't use augment_newdata here; don't want raw/response residuals in .resid
+  if (se_fit) {
+    pred_obj <- predict(x, newdata, type = type.predict, se.fit = TRUE)
+    df$.fitted <- unname(pred_obj$fit)
+    df$.se.fit <- unname(pred_obj$se.fit)
+  } else {
+    df$.fitted <- unname(predict(x, newdata, type = type.predict))
+  }
+
+  if (is.null(newdata)) {
+    tryCatch({
+      infl <- influence(x, do.coef = FALSE)
+      df$.resid <- unname(residuals(x, type = type.residuals))
+      df$.std.resid <- unname(rstandard(x, infl = infl, type = type.residuals))
+      df <- add_hat_sigma_cols(df, x, infl)
+      df$.cooksd <- unname(stats::cooks.distance(x, infl = infl))
+    },
+    error = data_error
+    )
+  }
+
+  df
+
+}
+
+##################################################################################################################################
+#### glance.glm
+##################################################################################################################################
+
+glance.glm <- function (x, ...) {
+  warn_on_appropriated_glm_class(x)
+  stopifnot(any(class(x) %in% c("elm","lm")))
+
+  as_glance_data_frame(
+    null.deviance = x$null.deviance,
+    df.null = x$df.null,
+    logLik = as.numeric(stats::logLik(x)),
+    AIC = stats::AIC(x),
+    BIC = stats::BIC(x),
+    deviance = stats::deviance(x),
+    df.residual = stats::df.residual(x),
+    nobs = stats::nobs(x),
+    na_types = "rirrrrii"
+  )
+}
