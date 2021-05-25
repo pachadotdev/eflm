@@ -1,14 +1,6 @@
-###################################################################################################################################
-#### has_rownames ####
-###################################################################################################################################
-
 has_rownames <- function(df) {
   any(row.names(df) != as.character(1:nrow(df)))
 }
-
-###################################################################################################################################
-#### add_column ####
-###################################################################################################################################
 
 add_column <- function(df) {
   df <- as.data.frame(df)
@@ -18,10 +10,6 @@ add_column <- function(df) {
   names(df)[names(df) == "col_to_add"] <- ".rownames"
   df
 }
-
-###################################################################################################################################
-#### as_augment_data_frame ####
-###################################################################################################################################
 
 as_augment_data_frame <- function(data) {
   if(inherits(data, "matrix") & is.null(colnames(data))) {
@@ -46,17 +34,9 @@ as_augment_data_frame <- function(data) {
   df
 }
 
-#################################################################################################################################
-#### response ####
-#################################################################################################################################
-
 response <- function(object, newdata = NULL) {
   model.response(model.frame(terms(object), data = newdata, na.action = na.pass))
 }
-
-###################################################################################################################################
-#### augment_newdata ####
-###################################################################################################################################
 
 augment_newdata <- function(x, data, newdata, .se_fit, interval = NULL, ...) {
   passed_newdata <- !is.null(newdata)
@@ -131,10 +111,6 @@ augment_newdata <- function(x, data, newdata, .se_fit, interval = NULL, ...) {
   df
 }
 
-#################################################################################################################################
-#### add_hat_sigma_cols ####
-#################################################################################################################################
-
 # in weighted regressions, influence measures should be zero for
 # data points with zero weight
 # helper for augment.lm and augment.glm
@@ -154,38 +130,23 @@ add_hat_sigma_cols <- function(df, x, infl) {
   df
 }
 
-#################################################################################################################################
-#### data_error ####
-#################################################################################################################################
-
 data_error <- function(cnd) {
   stop(
     "Must specify either `data` or `newdata` argument.",
     call. = FALSE
   )
 }
-#################################################################################################################################
-#### na_types_dict ####
-#################################################################################################################################
 
 na_types_dict <- list("r" = NA_real_,
                       "i" = NA_integer_,
                       "c" = NA_character_,
                       "l" = NA)
 
-#################################################################################################################################
-#### parse_na_types ####
-#################################################################################################################################
-
 parse_na_types <- function(s) {
   positions <- unlist(lapply(strsplit(s, split = ""), match, table = names(na_types_dict)))
 
   unname(unlist(na_types_dict[positions]))
 }
-
-#################################################################################################################################
-#### as_glance_data_frame ####
-#################################################################################################################################
 
 as_glance_data_frame <- function(..., na_types) {
   cols <- list(...)
@@ -209,38 +170,36 @@ as_glance_data_frame <- function(..., na_types) {
   colnames(data_frame_single_row) <- names_of_cols
   data_frame_single_row
 }
-#####################################################################################################################################################
-#### Warnings for appropriated glm classes
-################################################################################################################################################3##
-warn_on_appropriated_glm_class <- function(x) {
-  warn_on_glm2(x)
-  warn_on_stanreg(x)
 
-  invisible(TRUE)
-}
-
-# the output of glm2::glm2 has the same class as objects outputted
-# by stats::glm2. glm2 outputs are currently not supported (intentionally)
-# so warn that output is not maintained.
-warn_on_glm2 <- function(x) {
-  if (!is.null(x$method)) {
-    if (x$method == "glm.fit2") {
-      warning("The supplied model object seems to be outputted from the glm2 ",
-              "package. Tidiers for glm2 output are currently not ",
-              "maintained; please use caution in interpreting broom output.")
-    }
-  }
-
-  invisible(TRUE)
-}
-
-# stanreg objects subclass glm, glm tidiers error out (uninformatively),
-# and the maintained stanreg tidiers live in broom.mixed.
-warn_on_stanreg <- function(x) {
-  if (!is.null(x$stan_function)) {
-    stop("The supplied model object seems to be outputted from the rstanarm ",
-         "package. Tidiers for mixed model output now live in the broom.mixed package.")
-  }
-
-  invisible(TRUE)
-}
+# warn_on_appropriated_glm_class <- function(x) {
+#   warn_on_glm2(x)
+#   warn_on_stanreg(x)
+#
+#   invisible(TRUE)
+# }
+#
+# # the output of glm2::glm2 has the same class as objects outputted
+# # by stats::glm2. glm2 outputs are currently not supported (intentionally)
+# # so warn that output is not maintained.
+# warn_on_glm2 <- function(x) {
+#   if (!is.null(x$method)) {
+#     if (x$method == "glm.fit2") {
+#       warning("The supplied model object seems to be outputted from the glm2 ",
+#               "package. Tidiers for glm2 output are currently not ",
+#               "maintained; please use caution in interpreting broom output.")
+#     }
+#   }
+#
+#   invisible(TRUE)
+# }
+#
+# # stanreg objects subclass glm, glm tidiers error out (uninformatively),
+# # and the maintained stanreg tidiers live in broom.mixed.
+# warn_on_stanreg <- function(x) {
+#   if (!is.null(x$stan_function)) {
+#     stop("The supplied model object seems to be outputted from the rstanarm ",
+#          "package. Tidiers for mixed model output now live in the broom.mixed package.")
+#   }
+#
+#   invisible(TRUE)
+# }
