@@ -1,5 +1,28 @@
 # broom GLM ----
-
+#' Tidy a(n) eglm object
+#'
+#' @param x A `eglm` object.
+#' @param conf.int Logical indicating whether or not to include
+#'   a confidence interval in the tidied output. Defaults to FALSE.
+#' @param conf.level The confidence level to use for the confidence
+#'   interval if conf.int = TRUE. Must be strictly greater than 0
+#'   and less than 1. Defaults to 0.95, which corresponds to a
+#'   95 percent confidence interval.
+#' @param exponentiate A logical indicating whether or not model terms should be presented on an exponential scale
+#' @return A data.frame summarizing component-level
+#'   information about the model
+#'
+#' @examples
+#' # load the mtcars dataset
+#' data(mtcars)
+#'
+#' # fit a generalized linear model
+#' mtcars_model <- eflm::eglm(am ~ wt, mtcars, family = "binomial")
+#'
+#' # summarize model coefficients in a tidy tibble!
+#' tidy(mtcars_model)
+#'
+#' @export
 tidy.eglm <- function(x, conf.int = FALSE, conf.level = .95,
                      exponentiate = FALSE) {
   # very similar to broom:::tidy.lm but using just tibble
@@ -38,13 +61,37 @@ tidy.eglm <- function(x, conf.int = FALSE, conf.level = .95,
   return(ret)
 }
 
-augment.glm <- function(x,
+#' Augment a(n) eglm object
+#'
+#' @param x A `eglm` object.
+#' @param data A data.frame/tibble to add observation-level information to,
+#'   returning a data.frame object with the same number of rows as data.
+#' @param newdata Following the same conventions as the data argument, except
+#'   with the underlying assumption that the model has not “seen” the data yet.
+#' @param type.predict offers choice between link, response and terms
+#' @param type.residuals Offers choice between deviance and pearson
+#' @param se_fit Boolean logic to add standard error of fitted values
+#' @param ... Unused, included for generic consistency only.
+#' @return A data.frame giving summary statistics on the residuals
+#'
+#' @examples
+#' # load the mtcars dataset
+#' data(mtcars)
+#'
+#' # fit a generalised linear model
+#' mtcars_model <- eflm::eglm(am ~ wt, mtcars, family = "binomial")
+#'
+#' # data.frame returning summary statistics on the residuals
+#' augment(mtcars_model)
+#'
+#' @export
+augment.eglm <- function(x,
                         data = model.frame(x),
                         newdata = NULL,
                         type.predict = c("link", "response", "terms"),
                         type.residuals = c("deviance", "pearson"),
                         se_fit = FALSE, ...) {
-  warn_on_appropriated_glm_class(x)
+  #warn_on_appropriated_glm_class(x)
   stopifnot(any(class(x) %in% c("elm","lm")))
 
   type.predict <- match.arg(type.predict)
@@ -78,8 +125,27 @@ augment.glm <- function(x,
 
 }
 
-glance.glm <- function (x, ...) {
-  warn_on_appropriated_glm_class(x)
+#' Glance a(n) eglm object
+#'
+#' @param x A `eglm` object.
+#' @param ... Unused, included for generic consistency only.
+#' @return A one row data.frame providing model-level
+#' summarizations (e.g. goodness of fit measures and related statistics)
+#'
+#' @examples
+#'
+#' # load the mtcars dataset
+#' data(mtcars)
+#'
+#' # fit a linear model
+#' mtcars_model <- eflm::eglm(am ~ wt, mtcars, family = "binomial")
+#'
+#' # One row data.frame with model-level summarizatons
+#' glance(mtcars_model)
+#'
+#' @export
+glance.eglm <- function (x, ...) {
+  #warn_on_appropriated_glm_class(x)
   stopifnot(any(class(x) %in% c("elm","lm")))
 
   as_glance_data_frame(
@@ -96,7 +162,30 @@ glance.glm <- function (x, ...) {
 }
 
 # broom LM ----
-
+#' Tidy a(n) elm object
+#'
+#' @param x A `elm` object.
+#' @param conf.int Logical indicating whether or not to include
+#'   a confidence interval in the tidied output. Defaults to FALSE.
+#' @param conf.level The confidence level to use for the confidence
+#'   interval if conf.int = TRUE. Must be strictly greater than 0
+#'   and less than 1. Defaults to 0.95, which corresponds to a
+#'   95 percent confidence interval.
+#' @param ... Unused, included for generic consistency only.
+#' @return A data.frame summarizing component-level
+#'   information about the model
+#'
+#' @examples
+#' # load the trees dataset
+#' data(trees)
+#'
+#' # fit a linear model on timber volume
+#' trees_model <- eflm::elm(Volume ~ Girth + Height, data = trees)
+#'
+#' # summarize model coefficients in a tidy tibble!
+#' tidy(trees_model)
+#'
+#' @export
 tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
   # very similar to broom:::tidy.lm but using base
   stopifnot(any(class(x) %in% c("elm","lm")))
@@ -126,6 +215,29 @@ tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
   ret
 }
 
+#' Augment a(n) elm object
+#'
+#' @param x A `elm` object.
+#' @param data A data.frame/tibble to add observation-level information to,
+#'   returning a data.frame object with the same number of rows as data.
+#' @param newdata Following the same conventions as the data argument, except
+#'   with the underlying assumption that the model has not “seen” the data yet.
+#' @param se_fit Boolean logic to add standard error of fitted values
+#' @param interval Interval options in a linear model
+#' @param ... Unused, included for generic consistency only.
+#' @return A data.frame giving summary statistics on the residuals
+#'
+#' @examples
+#' # load the trees dataset
+#' data(trees)
+#'
+#' # fit a linear model on timber volume
+#' trees_model <- eflm::elm(Volume ~ Girth + Height, data = trees)
+#'
+#' # data.frame returning summary statistics on the residuals
+#' augment(trees_model)
+#'
+#' @export
 augment.elm <- function(x, data = model.frame(x), newdata = NULL,
                         se_fit = FALSE, interval = c("none", "confidence", "prediction"), ...) {
   stopifnot(any(class(x) %in% c("elm","lm")))
@@ -144,6 +256,24 @@ augment.elm <- function(x, data = model.frame(x), newdata = NULL,
   df
 }
 
+#' Glance a(n) elm object
+#'
+#' @param x A `elm` object.
+#' @param ... Unused, included for generic consistency only.
+#' @return A one row data.frame providing model-level
+#' summarizations (e.g. goodness of fit measures and related statistics)
+#'
+#' @examples
+#' # load the trees dataset
+#' data(trees)
+#'
+#' # fit a linear model on timber volume
+#' trees_model <- eflm::elm(Volume ~ Girth + Height, data = trees)
+#'
+#' # One row data.frame with model-level summarizatons
+#' glance(trees_model)
+#'
+#' @export
 glance.elm <- function(x, ...) {
   stopifnot(any(class(x) %in% c("elm","lm")))
 
