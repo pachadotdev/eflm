@@ -1,39 +1,7 @@
+# This mimics some of broom methods, but using base in all possible cases
+# to keep the dependencies reduced
+
 # GLM ----
-
-tidy.eglm <- function(x, conf.int = FALSE, conf.level = .95,
-                      exponentiate = FALSE) {
-  stopifnot(any(class(x) %in% "eglm"))
-
-  ret <- as.data.frame(summary(x)$coefficients)
-  rownames(ret) <- NULL
-  ret <- cbind(rownames(summary(x)$coefficients), ret)
-  colnames(ret) <- c("term", "estimate", "std.error", "statistic", "p.value")
-
-  coefs <- as.data.frame(coef(x))
-  rownames(coefs) <- NULL
-  coefs <- cbind(names(coef(x)), coefs)
-  colnames(coefs) <- c("term", "estimate")
-
-  if (exponentiate) {
-    ret$estimate <- exp(ret$estimate)
-  }
-
-  if (conf.int) {
-    ci <- suppressMessages(as.data.frame(confint(x, level = conf.level)))
-    rownames(ci) <- NULL
-    ci <- cbind(names(coef(x)), ci)
-    colnames(ci) <- c("term", "conf.low", "conf.high")
-
-    ret <- merge(ret, ci, by = "term")
-
-    if (exponentiate) {
-      ret$conf.low <- exp(ret$conf.low)
-      ret$conf.high <- exp(ret$conf.high)
-    }
-  }
-
-  return(tibble::as_tibble(ret))
-}
 
 augment.eglm <- function(x,
                          data = model.frame(x),
@@ -71,7 +39,7 @@ augment.eglm <- function(x,
     )
   }
 
-  return(tibble::as_tibble(df))
+  return(as_tibble(df))
 }
 
 glance.eglm <- function(x, ...) {
@@ -89,13 +57,12 @@ glance.eglm <- function(x, ...) {
     na_types = "rirrrrii"
   )
 
-  return(tibble::as_tibble(df))
+  return(as_tibble(df))
 }
 
-# ELM ----
-
-tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
-  stopifnot(any(class(x) %in% "elm"))
+tidy.eglm <- function(x, conf.int = FALSE, conf.level = .95,
+                      exponentiate = FALSE) {
+  stopifnot(any(class(x) %in% "eglm"))
 
   ret <- as.data.frame(summary(x)$coefficients)
   rownames(ret) <- NULL
@@ -107,7 +74,9 @@ tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
   coefs <- cbind(names(coef(x)), coefs)
   colnames(coefs) <- c("term", "estimate")
 
-  ret <- merge(coefs, ret, by = c("term", "estimate"))
+  if (exponentiate) {
+    ret$estimate <- exp(ret$estimate)
+  }
 
   if (conf.int) {
     ci <- suppressMessages(as.data.frame(confint(x, level = conf.level)))
@@ -116,10 +85,17 @@ tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
     colnames(ci) <- c("term", "conf.low", "conf.high")
 
     ret <- merge(ret, ci, by = "term")
+
+    if (exponentiate) {
+      ret$conf.low <- exp(ret$conf.low)
+      ret$conf.high <- exp(ret$conf.high)
+    }
   }
 
-  return(tibble::as_tibble(ret))
+  return(as_tibble(ret))
 }
+
+# ELM ----
 
 augment.elm <- function(x, data = model.frame(x), newdata = NULL,
                         se_fit = FALSE, interval = c("none", "confidence", "prediction"), ...) {
@@ -138,7 +114,7 @@ augment.elm <- function(x, data = model.frame(x), newdata = NULL,
     )
   }
 
-  return(tibble::as_tibble(df))
+  return(as_tibble(df))
 }
 
 glance.elm <- function(x, ...) {
@@ -183,7 +159,34 @@ glance.elm <- function(x, ...) {
     )
   )
 
-  return(tibble::as_tibble(df))
+  return(as_tibble(df))
+}
+
+tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
+  stopifnot(any(class(x) %in% "elm"))
+
+  ret <- as.data.frame(summary(x)$coefficients)
+  rownames(ret) <- NULL
+  ret <- cbind(rownames(summary(x)$coefficients), ret)
+  colnames(ret) <- c("term", "estimate", "std.error", "statistic", "p.value")
+
+  coefs <- as.data.frame(coef(x))
+  rownames(coefs) <- NULL
+  coefs <- cbind(names(coef(x)), coefs)
+  colnames(coefs) <- c("term", "estimate")
+
+  ret <- merge(coefs, ret, by = c("term", "estimate"))
+
+  if (conf.int) {
+    ci <- suppressMessages(as.data.frame(confint(x, level = conf.level)))
+    rownames(ci) <- NULL
+    ci <- cbind(names(coef(x)), ci)
+    colnames(ci) <- c("term", "conf.low", "conf.high")
+
+    ret <- merge(ret, ci, by = "term")
+  }
+
+  return(as_tibble(ret))
 }
 
 # utilities ----

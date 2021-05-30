@@ -22,7 +22,7 @@ Authors@R: c(
                comment = "independent code auditing"),
         person(given = "Rahul",
                family = "Saxena",
-               role = c("rev"),
+               role = c("ctb"),
                comment = "improved broom integration"),
         person(family = "The United Nations",
                role = c("dtc", "cph", "fnd")
@@ -42,9 +42,9 @@ BugReports: https://github.com/pachamaltese/eflm/issues/
 License: Apache License (>= 2)
 Imports:
     stats,
-    utils
+    utils,
+    tibble
 Suggests:
-    tibble,
     broom,
     sandwich,
     testthat,

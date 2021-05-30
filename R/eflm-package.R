@@ -1,5 +1,12 @@
+#' @keywords internal
+"_PACKAGE"
+
 #' @import stats
 NULL
+
+#' @importFrom tibble as_tibble
+#' @export
+tibble::as_tibble()
 
 # taken from vctrs
 #' @noRd

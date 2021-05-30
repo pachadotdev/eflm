@@ -181,7 +181,6 @@ eglm <- function(formula, family = gaussian, data, weights,
   ## The eglm.wfit calculation could be wrong if the link depends on the
   ## observations, so we allow the null deviance to be forced to be
   ## re-calculated by setting an offset (provided there is an intercept).
-  ## Prior to 2.4.0 this was only done for non-zero offsets.
   if (length(offset) && attr(mt, "intercept") > 0L) {
     fit2 <- eval(call(if (is.function(method)) "method" else method,
       x = X[, "(Intercept)", drop = FALSE], y = Y,
