@@ -28,7 +28,6 @@
 #'
 #' @examples
 #' elm(mpg ~ wt, data = mtcars)
-#'
 #' @export
 elm <- function(formula, data, subset, weights, na.action,
                 method = "qr", model = TRUE, x = FALSE, y = FALSE,
@@ -123,5 +122,5 @@ elm <- function(formula, data, subset, weights, na.action,
     z$xtx <- crossprod(sqrt(z$weights) * x)
     z$qr$original.dimensions <- dim(x)
   }
-  z
+  return(z)
 }

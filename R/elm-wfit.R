@@ -143,15 +143,17 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = "qr"
   }
   if (z$pivoted) colnames(z$qr) <- colnames(x)[z$pivot]
   qr <- z[c("qr", "qraux", "pivot", "tol", "rank")]
-  c(
-    z[c(
-      "coefficients", "residuals", "fitted.values", "effects",
-      "weights", "rank"
-    )],
-    list(
-      assign = x.asgn,
-      qr = structure(qr, class = "qr"),
-      df.residual = n - z$rank
+  return(
+    c(
+      z[c(
+        "coefficients", "residuals", "fitted.values", "effects",
+        "weights", "rank"
+      )],
+      list(
+        assign = x.asgn,
+        qr = structure(qr, class = "qr"),
+        df.residual = n - z$rank
+      )
     )
   )
 }

@@ -84,7 +84,6 @@ utils::globalVariables("n", add = TRUE)
 #'
 #' @examples
 #' eglm(mpg ~ wt, family = gaussian, data = mtcars)
-#'
 #' @export
 eglm <- function(formula, family = gaussian, data, weights,
                  subset, na.action, start = NULL,
@@ -204,16 +203,19 @@ eglm <- function(formula, family = gaussian, data, weights,
     fit$xtx <- crossprod(sqrt(fit$weights) * X[fit$good, ])
     fit$qr$original.dimensions <- dim(X[fit$good, ])
   }
-  structure(c(
-    fit,
-    list(
-      call = cal, formula = formula,
-      terms = mt, data = data,
-      offset = offset, control = control, method = method,
-      contrasts = attr(X, "contrasts"),
-      xlevels = .getXlevels(mt, mf)
+  return(
+    structure(
+      c(
+        fit,
+        list(
+          call = cal, formula = formula,
+          terms = mt, data = data,
+          offset = offset, control = control, method = method,
+          contrasts = attr(X, "contrasts"),
+          xlevels = .getXlevels(mt, mf)
+        )
+      ),
+      class = c(fit$class, c("eglm", "glm", "lm"))
     )
-  ),
-  class = c(fit$class, c("eglm", "glm", "lm"))
   )
 }

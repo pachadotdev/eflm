@@ -108,7 +108,7 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
     devold <- sum(dev.resids(y, mu, weights))
     boundary <- conv <- FALSE
 
-    # The Iteratively Reweighting L.S. iteration ----
+    # begin Iteratively Reweighting Least Squares iteration ----
 
     C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
 
@@ -141,15 +141,15 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
       ## call Fortran code via C wrapper
       fit <- if (isTRUE(reduce)) {
         .Call(C_Cdqrls,
-              crossprod(x[good, , drop = FALSE] * w),
-              crossprod(x[good, , drop = FALSE], z * w^2),
-              min(1e-7, control$epsilon / 1000),
-              check = FALSE
+          crossprod(x[good, , drop = FALSE] * w),
+          crossprod(x[good, , drop = FALSE], z * w^2),
+          min(1e-7, control$epsilon / 1000),
+          check = FALSE
         )
       } else {
         .Call(C_Cdqrls, x[good, , drop = FALSE] * w, z * w,
-              min(1e-7, control$epsilon / 1000),
-              check = FALSE
+          min(1e-7, control$epsilon / 1000),
+          check = FALSE
         )
       }
       if (any(!is.finite(fit$coefficients))) {
@@ -306,20 +306,21 @@ eglm.wfit <- function(x, y, weights = rep.int(1, nobs), start = NULL,
   resdf <- n.ok - rank
   ## calculate AIC
   aic.model <- aic(y, n, mu, weights, dev) + 2 * rank
-  ##     ^^ is only initialize()d for "binomial" [yuck!]
-  list(
-    coefficients = coef, residuals = residuals, fitted.values = mu,
-    effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
-    qr = if (!EMPTY) {
-      structure(
-        fit[c("qr", "rank", "qraux", "pivot", "tol")],
-        class = "qr"
-      )
-    },
-    family = family,
-    linear.predictors = eta, deviance = dev, aic = aic.model,
-    null.deviance = nulldev, iter = iter, weights = wt,
-    prior.weights = weights, df.residual = resdf, df.null = nulldf,
-    y = y, converged = conv, boundary = boundary, good = good
+  return(
+    list(
+      coefficients = coef, residuals = residuals, fitted.values = mu,
+      effects = if (!EMPTY) fit$effects, R = if (!EMPTY) Rmat, rank = rank,
+      qr = if (!EMPTY) {
+        structure(
+          fit[c("qr", "rank", "qraux", "pivot", "tol")],
+          class = "qr"
+        )
+      },
+      family = family,
+      linear.predictors = eta, deviance = dev, aic = aic.model,
+      null.deviance = nulldev, iter = iter, weights = wt,
+      prior.weights = weights, df.residual = resdf, df.null = nulldf,
+      y = y, converged = conv, boundary = boundary, good = good
+    )
   )
 }

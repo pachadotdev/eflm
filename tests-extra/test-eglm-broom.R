@@ -1,4 +1,4 @@
-test_that("eglm returns the same broom output as glm", {
+test_that("eglm + tidy + conf.int / exponentiate is the same as glm", {
   m1 <- glm(mpg ~ wt, family = gaussian, data = mtcars)
   m2 <- eflm::eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = F)
   m3 <- eflm::eglm(mpg ~ wt, family = gaussian, data = mtcars, reduce = T)

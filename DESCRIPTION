@@ -16,6 +16,14 @@ Authors@R: c(
         person(given = "Yoto",
                family = "Yotov",
                role = c("ths")),
+        person(given = "Neal",
+               family = "Fulz",
+               role = c("rev"),
+               comment = "independent code auditing"),
+        person(given = "Rahul",
+               family = "Saxena",
+               role = c("rev"),
+               comment = "improved broom integration"),
         person(family = "The United Nations",
                role = c("dtc", "cph", "fnd")
         )
@@ -33,12 +41,12 @@ URL: https://github.com/pachamaltese/eflm/
 BugReports: https://github.com/pachamaltese/eflm/issues/
 License: Apache License (>= 2)
 Imports:
-    generics,
     stats,
     utils
 Suggests:
-    sandwich,
+    tibble,
     broom,
+    sandwich,
     testthat,
     patrick,
     rlang,
