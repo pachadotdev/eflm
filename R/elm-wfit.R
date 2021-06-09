@@ -41,7 +41,7 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = c("q
   }
   if (method != "qr") {
     warning(gettextf("method = '%s' is not supported. Using 'qr'", method),
-      domain = NA
+            domain = NA
     )
   }
   chkDots(...)
@@ -85,77 +85,65 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = c("q
     } else {
       .Call(C_Cdqrls, x * sqrt(weights), y * sqrt(weights), tol, FALSE)
     }
-  }
 
-  if (method == "chol") {
-    z <- list()
-    z$xtx <- chol(crossprod(x * sqrt(weights)), pivot = TRUE)
-    z$pivot <- attributes(z$xtx)$"pivot"
-    z$pivoted <- TRUE
-    z$rank <- attributes(z$xtx)$"rank"
-    z$coefficients <- as(solve(z$xtx, crossprod(x, y * weights)), "numeric")
-  }
-
-  if (!singular.ok && z$rank < p) stop("singular fit encountered")
-  coef <- z$coefficients
-  pivot <- z$pivot
-  r1 <- seq_len(z$rank)
-  dn <- colnames(x)
-  if (is.null(dn)) dn <- paste0("x", 1L:p)
-  # for nmeffects I used ncol(x) when reduce = T, because nrow((wXw)t(wXw)) = ncol(X)
-  nmeffects <- c(dn[pivot[r1]], rep.int(
-    "",
-    if (isTRUE(reduce)) ncol(x) - z$rank else n - z$rank
-  ))
-  r2 <- if (z$rank < p) (z$rank + 1L):p else integer()
-  if (is.matrix(y)) {
-    coef[r2, ] <- NA
-    if (z$pivoted) coef[pivot, ] <- coef
-    dimnames(coef) <- list(dn, colnames(y))
-    dimnames(z$effects) <- list(nmeffects, colnames(y))
-  } else {
-    coef[r2] <- NA
-    if (z$pivoted) coef[pivot] <- coef
-    names(coef) <- dn
-    names(z$effects) <- nmeffects
-  }
-  z$coefficients <- coef
-  if (isTRUE(reduce)) {
-    z$fitted.values <- as.numeric(x %*% matrix(z$coefficients, ncol = 1))
-    # the division by weights is not included for the residuals, as this
-    # part of the ifelse statement starts from fitted values
-    z$residuals <- as.numeric(y - z$fitted.values)
-    names(z$fitted.values) <- rownames(x)
-    names(z$residuals) <- rownames(x)
-  } else {
-    z$residuals <- z$residuals / sqrt(weights)
-    z$fitted.values <- y - z$residuals
-  }
-  z$weights <- weights
-  if (zero.weights) {
-    coef[is.na(coef)] <- 0
-    f0 <- x0 %*% coef
-    if (ny > 1) {
-      save.r[ok, ] <- z$residuals
-      save.r[nok, ] <- y0 - f0
-      save.f[ok, ] <- z$fitted.values
-      save.f[nok, ] <- f0
+    if (!singular.ok && z$rank < p) stop("singular fit encountered")
+    coef <- z$coefficients
+    pivot <- z$pivot
+    r1 <- seq_len(z$rank)
+    dn <- colnames(x)
+    if (is.null(dn)) dn <- paste0("x", 1L:p)
+    # for nmeffects I used ncol(x) when reduce = T, because nrow((wXw)t(wXw)) = ncol(X)
+    nmeffects <- c(dn[pivot[r1]], rep.int(
+      "",
+      if (isTRUE(reduce)) ncol(x) - z$rank else n - z$rank
+    ))
+    r2 <- if (z$rank < p) (z$rank + 1L):p else integer()
+    if (is.matrix(y)) {
+      coef[r2, ] <- NA
+      if (z$pivoted) coef[pivot, ] <- coef
+      dimnames(coef) <- list(dn, colnames(y))
+      dimnames(z$effects) <- list(nmeffects, colnames(y))
+    } else {
+      coef[r2] <- NA
+      if (z$pivoted) coef[pivot] <- coef
+      names(coef) <- dn
+      names(z$effects) <- nmeffects
     }
-    else {
-      save.r[ok] <- z$residuals
-      save.r[nok] <- y0 - f0
-      save.f[ok] <- z$fitted.values
-      save.f[nok] <- f0
+    z$coefficients <- coef
+    if (isTRUE(reduce)) {
+      z$fitted.values <- as.numeric(x %*% matrix(z$coefficients, ncol = 1))
+      # the division by weights is not included for the residuals, as this
+      # part of the ifelse statement starts from fitted values
+      z$residuals <- as.numeric(y - z$fitted.values)
+      names(z$fitted.values) <- rownames(x)
+      names(z$residuals) <- rownames(x)
+    } else {
+      z$residuals <- z$residuals / sqrt(weights)
+      z$fitted.values <- y - z$residuals
     }
-    z$residuals <- save.r
-    z$fitted.values <- save.f
-    z$weights <- save.weights
-  }
-  if (!is.null(offset)) {
-    z$fitted.values <- z$fitted.values + offset
-  }
+    z$weights <- weights
+    if (zero.weights) {
+      coef[is.na(coef)] <- 0
+      f0 <- x0 %*% coef
+      if (ny > 1) {
+        save.r[ok, ] <- z$residuals
+        save.r[nok, ] <- y0 - f0
+        save.f[ok, ] <- z$fitted.values
+        save.f[nok, ] <- f0
+      } else {
+        save.r[ok] <- z$residuals
+        save.r[nok] <- y0 - f0
+        save.f[ok] <- z$fitted.values
+        save.f[nok] <- f0
+      }
+      z$residuals <- save.r
+      z$fitted.values <- save.f
+      z$weights <- save.weights
+    }
+    if (!is.null(offset)) {
+      z$fitted.values <- z$fitted.values + offset
+    }
 
-  if (method == "qr") {
     if (z$pivoted) colnames(z$qr) <- colnames(x)[z$pivot]
     qr <- z[c("qr", "qraux", "pivot", "tol", "rank")]
     return(
@@ -171,5 +159,14 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = c("q
         )
       )
     )
+  }
+
+  if (method == "chol") {
+    z <- list()
+    z$xtx <- chol(crossprod(x * sqrt(weights)), pivot = TRUE)
+    z$pivot <- attributes(z$xtx)$"pivot"
+    z$pivoted <- TRUE
+    z$rank <- attributes(z$xtx)$"rank"
+    z$coefficients <- as(solve(z$xtx, crossprod(x, y * weights)), "numeric")
   }
 }
