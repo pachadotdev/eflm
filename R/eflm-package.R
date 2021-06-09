@@ -4,10 +4,6 @@
 #' @import stats
 NULL
 
-#' @importFrom tibble as_tibble
-#' @export
-tibble::as_tibble()
-
 # taken from vctrs
 #' @noRd
 s3_register <- function(generic, class, method = NULL) {

@@ -10,7 +10,7 @@ elm(
   subset,
   weights,
   na.action,
-  method = "qr",
+  method = c("qr", "chol"),
   model = TRUE,
   x = FALSE,
   y = FALSE,

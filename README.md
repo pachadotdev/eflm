@@ -25,7 +25,7 @@ observations is larger than the number of parameters to estimate. The
 speed gains are obtained by reducing the NxP model matrix to a PxP
 matrix, and the best computational performance is obtained when R is
 linked against OpenBLAS, Intel MKL or other optimized BLAS library. This
-implementation aims at being compatible with ‘broom’ and ‘sandwich’
+implementation aims at being compatible with `broom` and `sandwich`
 packages for summary statistics and clustering by providing S3 methods.
 
 ## Details
@@ -184,7 +184,7 @@ The original generalized linear model implementation via iteratively
 reweighted least squares for any family was written in R by Simon Davies
 in Dec, 1995. This implementation was later improved by Thomas Lumley
 back in Apr, 1997, and then other developers. In 2021, their work was
-adapted by me, Mauricio ‘Pachá’ Vargas Sepúlveda, for large datasets.
+adapted by me, Mauricio 'Pachá' Vargas Sepúlveda, for large datasets.
 
 This work got very well received feedback from:
 

@@ -11,16 +11,16 @@ Efficient Fitting of Linear and Generalized Linear Models by using
   and eglm(), with a significant speedup when the number of 
   observations is larger than the number of parameters to estimate. The speed
  gains are obtained by reducing the NxP model matrix to a PxP matrix, and the 
- best computational performance is obtained when R is linked against OpenBLAS,
- Intel MKL or other optimized BLAS library. This implementation aims at being
+ best computational performance is obtained when R is linked against 'OpenBLAS',
+ 'Intel MKL' or other optimized 'BLAS' library. This implementation aims at being
  compatible with 'broom' and 'sandwich' packages for summary statistics and
  clustering by providing S3 methods.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/pachamaltese/eflm/}
-  \item Report bugs at \url{https://github.com/pachamaltese/eflm/issues/}
+  \item \url{https://github.com/pachadotdev/eflm/}
+  \item Report bugs at \url{https://github.com/pachadotdev/eflm/issues/}
 }
 
 }

@@ -1,6 +1,6 @@
 Package: eflm
 Title: Efficient Fitting of Linear and Generalized Linear Models
-Version: 0.3
+Version: 0.3.0
 Authors@R: c( 
         person(given = "Mauricio",
                family = "Vargas",
@@ -33,17 +33,15 @@ Description: Efficient Fitting of Linear and Generalized Linear Models by using
   and eglm(), with a significant speedup when the number of 
   observations is larger than the number of parameters to estimate. The speed
  gains are obtained by reducing the NxP model matrix to a PxP matrix, and the 
- best computational performance is obtained when R is linked against OpenBLAS,
- Intel MKL or other optimized BLAS library. This implementation aims at being
+ best computational performance is obtained when R is linked against 'OpenBLAS',
+ 'Intel MKL' or other optimized 'BLAS' library. This implementation aims at being
  compatible with 'broom' and 'sandwich' packages for summary statistics and
  clustering by providing S3 methods.
-URL: https://github.com/pachamaltese/eflm/
-BugReports: https://github.com/pachamaltese/eflm/issues/
+URL: https://github.com/pachadotdev/eflm/
+BugReports: https://github.com/pachadotdev/eflm/issues/
 License: Apache License (>= 2)
 Imports:
-    stats,
-    utils,
-    tibble
+    stats
 Suggests:
     broom,
     sandwich,
@@ -53,6 +51,6 @@ Suggests:
     covr
 Encoding: UTF-8
 Depends: 
-    R (>= 3.5)
+    R (>= 4.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

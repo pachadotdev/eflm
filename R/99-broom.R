@@ -39,7 +39,8 @@ augment.eglm <- function(x,
     )
   }
 
-  return(as_tibble(df))
+  class(df) <- c("tbl_df", "tbl", "data.frame")
+  return(df)
 }
 
 glance.eglm <- function(x, ...) {
@@ -57,7 +58,8 @@ glance.eglm <- function(x, ...) {
     na_types = "rirrrrii"
   )
 
-  return(as_tibble(df))
+  class(df) <- c("tbl_df", "tbl", "data.frame")
+  return(df)
 }
 
 tidy.eglm <- function(x, conf.int = FALSE, conf.level = .95,
@@ -92,7 +94,8 @@ tidy.eglm <- function(x, conf.int = FALSE, conf.level = .95,
     }
   }
 
-  return(as_tibble(ret))
+  class(ret) <- c("tbl_df", "tbl", "data.frame")
+  return(ret)
 }
 
 # ELM ----
@@ -114,7 +117,8 @@ augment.elm <- function(x, data = model.frame(x), newdata = NULL,
     )
   }
 
-  return(as_tibble(df))
+  class(df) <- c("tbl_df", "tbl", "data.frame")
+  return(df)
 }
 
 glance.elm <- function(x, ...) {
@@ -159,7 +163,8 @@ glance.elm <- function(x, ...) {
     )
   )
 
-  return(as_tibble(df))
+  class(df) <- c("tbl_df", "tbl", "data.frame")
+  return(df)
 }
 
 tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
@@ -186,7 +191,8 @@ tidy.elm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
     ret <- merge(ret, ci, by = "term")
   }
 
-  return(as_tibble(ret))
+  class(ret) <- c("tbl_df", "tbl", "data.frame")
+  return(ret)
 }
 
 # utilities ----

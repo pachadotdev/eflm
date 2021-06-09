@@ -30,7 +30,7 @@
 #' elm(mpg ~ wt, data = mtcars)
 #' @export
 elm <- function(formula, data, subset, weights, na.action,
-                method = "qr", model = TRUE, x = FALSE, y = FALSE,
+                method = c("qr","chol"), model = TRUE, x = FALSE, y = FALSE,
                 qr = TRUE, singular.ok = TRUE, contrasts = NULL,
                 offset, reduce = TRUE, ...) {
   ret.x <- x
@@ -46,12 +46,10 @@ elm <- function(formula, data, subset, weights, na.action,
   ## need stats:: for non-standard evaluation
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
-  if (method == "model.frame") {
+  if (any(method %in% "model.frame")) {
     return(mf)
-  } else if (method != "qr") {
-    warning(gettextf("method = '%s' is not supported. Using 'qr'", method),
-      domain = NA
-    )
+  } else {
+    method <- match.arg(method)
   }
   mt <- attr(mf, "terms") # allow model.frame to update it
   y <- model.response(mf, "numeric")
@@ -97,7 +95,7 @@ elm <- function(formula, data, subset, weights, na.action,
     z <- elm.wfit(
       x = x, y = y, weights = w,
       offset = offset, singular.ok = singular.ok,
-      reduce = reduce, ...
+      reduce = reduce, method = method, ...
     )
   }
   class(z) <- c("elm", "lm", if (mlm) "melm")

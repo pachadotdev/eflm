@@ -21,7 +21,7 @@
 #' y <- mtcars$mpg
 #' elm.wfit(x, y)
 #' @export
-elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = "qr", tol = 1e-7,
+elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = c("qr","chol"), tol = 1e-7,
                      singular.ok = TRUE, reduce = TRUE, ...) {
   if (is.null(n <- nrow(x))) stop("'x' must be a matrix")
   if (n == 0) stop("0 (non-NA) cases")
@@ -76,13 +76,26 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = "qr"
       df.residual = 0L
     ))
   }
-  C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
-  z <- if (isTRUE(reduce)) {
-    # here I pass weights on the right side to avoid duplicating operations, because here (sqrt(w) * x , sqrt(w) * y) = (x , w * y)
-    .Call(C_Cdqrls, crossprod(x * sqrt(weights)), crossprod(x, y * weights), tol, FALSE)
-  } else {
-    .Call(C_Cdqrls, x * sqrt(weights), y * sqrt(weights), tol, FALSE)
+
+  if (method == "qr") {
+    C_Cdqrls <- getNativeSymbolInfo("Cdqrls", PACKAGE = getLoadedDLLs()$stats)
+    z <- if (isTRUE(reduce)) {
+      # here I pass weights on the right side to avoid duplicating operations, because here (sqrt(w) * x , sqrt(w) * y) = (x , w * y)
+      .Call(C_Cdqrls, crossprod(x * sqrt(weights)), crossprod(x, y * weights), tol, FALSE)
+    } else {
+      .Call(C_Cdqrls, x * sqrt(weights), y * sqrt(weights), tol, FALSE)
+    }
   }
+
+  if (method == "chol") {
+    z <- list()
+    z$xtx <- chol(crossprod(x * sqrt(weights)), pivot = TRUE)
+    z$pivot <- attributes(z$xtx)$"pivot"
+    z$pivoted <- TRUE
+    z$rank <- attributes(z$xtx)$"rank"
+    z$coefficients <- as(solve(z$xtx, crossprod(x, y * weights)), "numeric")
+  }
+
   if (!singular.ok && z$rank < p) stop("singular fit encountered")
   coef <- z$coefficients
   pivot <- z$pivot
@@ -141,19 +154,22 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = "qr"
   if (!is.null(offset)) {
     z$fitted.values <- z$fitted.values + offset
   }
-  if (z$pivoted) colnames(z$qr) <- colnames(x)[z$pivot]
-  qr <- z[c("qr", "qraux", "pivot", "tol", "rank")]
-  return(
-    c(
-      z[c(
-        "coefficients", "residuals", "fitted.values", "effects",
-        "weights", "rank"
-      )],
-      list(
-        assign = x.asgn,
-        qr = structure(qr, class = "qr"),
-        df.residual = n - z$rank
+
+  if (method == "qr") {
+    if (z$pivoted) colnames(z$qr) <- colnames(x)[z$pivot]
+    qr <- z[c("qr", "qraux", "pivot", "tol", "rank")]
+    return(
+      c(
+        z[c(
+          "coefficients", "residuals", "fitted.values", "effects",
+          "weights", "rank"
+        )],
+        list(
+          assign = x.asgn,
+          qr = structure(qr, class = "qr"),
+          df.residual = n - z$rank
+        )
       )
     )
-  )
+  }
 }
