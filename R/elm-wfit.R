@@ -162,11 +162,48 @@ elm.wfit <- function(x, y, weights = rep.int(1, n), offset = NULL, method = c("q
   }
 
   if (method == "chol") {
-    z <- list()
-    z$xtx <- chol(crossprod(x * sqrt(weights)), pivot = TRUE)
-    z$pivot <- attributes(z$xtx)$"pivot"
-    z$pivoted <- TRUE
-    z$rank <- attributes(z$xtx)$"rank"
-    z$coefficients <- as(solve(z$xtx, crossprod(x, y * weights)), "numeric")
+    xtx <- crossprod(x)
+
+    chol_xtx <- chol(xtx)
+    rank <- attributes(chol_xtx)$"rank"
+
+
+    coef <- as.numeric(backsolve(chol_xtx, backsolve(chol_xtx, crossprod(x, y),
+                                                     transpose = TRUE)))
+
+    coefficients <- rep(NA, ny)
+    coefficients[ok] <- coef
+
+    z <- list(
+      coefficients = coefficients,
+      weights = weights,
+      xtx = xtx,
+      rank = rank,
+      pivot = c(ok, nok)
+    )
+
+    return(
+      list(
+        coefficients = coefficients,
+        weights = weights,
+        xtx = xtx,
+        rank = rank,
+        pivot = c(ok, nok)
+      )
+    )
+
+    # return(
+    #   c(
+    #     z[c(
+    #       "coefficients", "residuals", "fitted.values", "effects",
+    #       "weights", "rank"
+    #     )],
+    #     list(
+    #       assign = x.asgn,
+    #       qr = structure(qr, class = "qr"),
+    #       df.residual = n - z$rank
+    #     )
+    #   )
+    # )
   }
 }
