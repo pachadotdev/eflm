@@ -1,6 +1,6 @@
 Package: eflm
-Title: Efficient Fitting of Linear and Generalized Linear Models
-Version: 0.3.0
+Title: Efficient Fitting of Linear Models
+Version: 0.4
 Authors@R: c( 
         person(given = "Mauricio",
                family = "Vargas",
@@ -10,47 +10,33 @@ Authors@R: c(
         person(given = "Alexey",
                family = "Kravchenko",
                role = c("ths")),
+        person(given = "Luis",
+               family = "Gutierrez",
+               role = c("ths")),
         person(given = "Constanza",
                family = "Prado",
                role = c("ths")),
         person(given = "Yoto",
                family = "Yotov",
                role = c("ths")),
-        person(given = "Neal",
-               family = "Fulz",
-               role = c("rev"),
-               comment = "independent code auditing"),
-        person(given = "Rahul",
-               family = "Saxena",
-               role = c("ctb"),
-               comment = "improved broom integration"),
         person(family = "The United Nations",
                role = c("dtc", "cph", "fnd")
         )
     )
-Description: Efficient Fitting of Linear and Generalized Linear Models by using
-  just base R. As an alternative to lm() and glm(), this package provides elm()
-  and eglm(), with a significant speedup when the number of 
-  observations is larger than the number of parameters to estimate. The speed
- gains are obtained by reducing the NxP model matrix to a PxP matrix, and the 
- best computational performance is obtained when R is linked against 'OpenBLAS',
- 'Intel MKL' or other optimized 'BLAS' library. This implementation aims at being
- compatible with 'broom' and 'sandwich' packages for summary statistics and
- clustering by providing S3 methods.
-URL: https://github.com/pachadotdev/eflm/
-BugReports: https://github.com/pachadotdev/eflm/issues/
+Description: A C++ re-implementation of glm() that offers the eglm() function
+ with a significant speedup when the number of observations is larger than the
+ number of parameters to estimate. The iteratively reweighted least squares 
+ implementation utilizes the step-halving approach of Marschner (2011) 
+ <doi:10.32614/RJ-2011-012> to help safeguard against convergence issues.
+ The best computational performance is obtained when R is linked against 
+ OpenBLAS, Intel MKL or other optimized BLAS library. This implementation aims 
+ at being compatible with R default output and also with 'broom' and 'sandwich'
+ packages for summary statistics and clustering by providing S3 methods.
 License: Apache License (>= 2)
-Imports:
-    stats
-Suggests:
-    broom,
-    sandwich,
-    testthat,
-    patrick,
-    rlang,
-    covr
 Encoding: UTF-8
-Depends: 
-    R (>= 4.0)
-Roxygen: list(markdown = TRUE)
+Imports: Rcpp (>= 0.12.13)
+LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 7.1.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+NeedsCompilation: yes
