@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Efficient Fitting of Linear and Generalized Linear Models <img src="https://pacha.dev/eflm/hexicon.svg" width=150 align="right" alt="sticker"/>
+# Efficient Fitting of Linear and Generalized Linear Models
 
 <!-- badges: start -->
 
@@ -12,8 +12,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/gravity)](https://cran.r-project.org/package=eflm)
-[![codecov](https://codecov.io/gh/pachamaltese/eflm/branch/main/graph/badge.svg?token=XI59cmGd15)](https://codecov.io/gh/pachamaltese/eflm)
-[![R-CMD-check](https://github.com/pachamaltese/eflm/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/eflm/actions)
+[![codecov](https://codecov.io/gh/pachadotdev/eflm/branch/main/graph/badge.svg?token=XI59cmGd15)](https://codecov.io/gh/pachadotdev/eflm)
+[![R-CMD-check](https://github.com/pachadotdev/eflm/workflows/R-CMD-check/badge.svg)](https://github.com/pachadotdev/eflm/actions)
 <!-- badges: end -->
 
 ## Description
@@ -84,7 +84,7 @@ install.packages("eflm")
 And the development version with:
 
 ``` r
-remotes::install_github("pachamaltese/eflm")
+remotes::install_github("pachadotdev/eflm")
 ```
 
 ## Benchmarks
@@ -128,6 +128,8 @@ DigitalOcean droplet.*
 
 The general equation for this model is:
 
+    log_trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
+
 By running regressions with cumulative subset of the data for 1986, …,
 2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),
 we obtain the next fitting times and memory allocation depending on the
@@ -141,6 +143,8 @@ design matrix dimensions:
 DigitalOcean droplet.*
 
 The general equation for this model is:
+
+    trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
 
 By running regressions with cumulative subset of the data for 1986, …,
 2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),

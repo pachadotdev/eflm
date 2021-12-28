@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Efficient Fitting of Linear and Generalized Linear Models <img src="https://pacha.dev/eflm/hexicon.svg" width=150 align="right" alt="sticker"/>
+# Efficient Fitting of Linear and Generalized Linear Models
 
 <!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable
@@ -25,8 +25,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/gravity)](https://cran.r-project.org/package=eflm)
-[![codecov](https://codecov.io/gh/pachamaltese/eflm/branch/main/graph/badge.svg?token=XI59cmGd15)](https://codecov.io/gh/pachamaltese/eflm)
-[![R-CMD-check](https://github.com/pachamaltese/eflm/workflows/R-CMD-check/badge.svg)](https://github.com/pachamaltese/eflm/actions)
+[![codecov](https://codecov.io/gh/pachadotdev/eflm/branch/main/graph/badge.svg?token=XI59cmGd15)](https://codecov.io/gh/pachadotdev/eflm)
+[![R-CMD-check](https://github.com/pachadotdev/eflm/workflows/R-CMD-check/badge.svg)](https://github.com/pachadotdev/eflm/actions)
 <!-- badges: end -->
 
 ## Description
@@ -89,7 +89,7 @@ install.packages("eflm")
 
 And the development version with:
 ``` r
-remotes::install_github("pachamaltese/eflm")
+remotes::install_github("pachadotdev/eflm")
 ```
 
 ## Benchmarks
@@ -135,6 +135,10 @@ The general equation for this model is:
 \log X_{ij,t} =& \:\pi_{i,t} + \chi_{i,t} + \beta_1 \log(DIST)_{i,j} + \beta_2 CNTG_{i,j} + \beta_3 LANG_{i,j} +\\
 \text{ }& \:\beta_4 CLNY_{i,j} + \varepsilon_{ij,t}
 \end{align}
+
+```
+log_trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
+```
 
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times and memory allocation depending on the design matrix dimensions:
 
@@ -184,6 +188,10 @@ The general equation for this model is:
 X_{ij,t} =& \:\exp\left[\pi_{i,t} + \chi_{i,t} + \beta_1 \log(DIST)_{i,j} + \beta_2 CNTG_{i,j} +\right.\\
 \text{ }& \:\left.\beta_3 LANG_{i,j} + \beta_4 CLNY_{i,j}\right] \times \varepsilon_{ij,t}
 \end{align}
+
+```
+trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
+```
 
 By running regressions with cumulative subset of the data for 1986, ..., 2006 (e.g. regress for 1986, then 1986 and 1990, ..., then 1986 to 2006), we obtain the next fitting times depending on the design matrix dimensions:
 
