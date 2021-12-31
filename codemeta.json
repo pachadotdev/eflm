@@ -1,0 +1,190 @@
+{
+  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@type": "SoftwareSourceCode",
+  "identifier": "eflm",
+  "description": "Efficient Fitting of Linear and Generalized Linear Models by using\n  just base R. As an alternative to lm() and glm(), this package provides elm()\n  and eglm(), with a significant speedup when the number of \n  observations is larger than the number of parameters to estimate. The speed\n gains are obtained by reducing the NxP model matrix to a PxP matrix, and the \n best computational performance is obtained when R is linked against OpenBLAS,\n Intel MKL or other optimized BLAS library. This implementation aims at being\n compatible with 'broom' and 'sandwich' packages for summary statistics and\n clustering by providing S3 methods.",
+  "name": "eflm: Efficient Fitting of Linear and Generalized Linear Models",
+  "codeRepository": "https://github.com/pachamaltese/eflm/",
+  "issueTracker": "https://github.com/pachamaltese/eflm/issues/",
+  "license": "Apache License 2",
+  "version": "0.3.1",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.1.2 (2021-11-01)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Mauricio",
+      "familyName": "Vargas",
+      "email": "mavargas11@uc.cl",
+      "@id": "https://orcid.org/0000-0003-1017-7574"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Rahul",
+      "familyName": "Saxena"
+    },
+    {
+      "@type": "Organization",
+      "name": "The United Nations"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Alexey",
+      "familyName": "Kravchenko"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Constanza",
+      "familyName": "Prado"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Yoto",
+      "familyName": "Yotov"
+    }
+  ],
+  "copyrightHolder": [
+    {
+      "@type": "Organization",
+      "name": "The United Nations"
+    }
+  ],
+  "funder": [
+    {
+      "@type": "Organization",
+      "name": "The United Nations"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Mauricio",
+      "familyName": "Vargas",
+      "email": "mavargas11@uc.cl",
+      "@id": "https://orcid.org/0000-0003-1017-7574"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "broom",
+      "name": "broom",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=broom"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "sandwich",
+      "name": "sandwich",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=sandwich"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "patrick",
+      "name": "patrick",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=patrick"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rlang",
+      "name": "rlang",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rlang"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "covr",
+      "name": "covr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=covr"
+    }
+  ],
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 3.5"
+    }
+  ],
+  "releaseNotes": "https://github.com/pachamaltese/eflm/blob/master/NEWS.md",
+  "readme": "https://github.com/pachadotdev/eflm/blob/main/README.md",
+  "fileSize": "312.977KB",
+  "contIntegration": ["https://codecov.io/gh/pachadotdev/eflm", "https://github.com/pachadotdev/eflm/actions"],
+  "developmentStatus": ["https://www.repostatus.org/#active", "https://www.tidyverse.org/lifecycle/#stable"],
+  "keywords": ["r", "lm", "glm", "broom", "sandwich"],
+  "relatedLink": "https://CRAN.R-project.org/package=eflm"
+}

@@ -9,3 +9,5 @@
 ^docs
 ^dev
 ^tests-extra
+^benchmarks$
+^codemeta\.json$
