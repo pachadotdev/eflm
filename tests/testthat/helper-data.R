@@ -23,7 +23,7 @@ eglm_cases <- function() {
 
   d <- rbind(d, d2)
 
-  d$test_name <- sprintf("model = %s - family = %s - reduce = %s",
+  d$`.test_name` <- sprintf("model = %s - family = %s - reduce = %s",
                          d$model, d$family, d$reduce)
 
   return(d)
@@ -35,7 +35,7 @@ elm_cases <- function() {
     reduce = c(T,F)
   )
 
-  d$test_name <- sprintf("model = %s - family = %s - reduce = %s",
+  d$`.test_name` <- sprintf("model = %s - family = %s - reduce = %s",
                          d$model, "gaussian", d$reduce)
 
   return(d)
@@ -51,7 +51,7 @@ elm_add1_cases <- function() {
 
   d <- merge(d, d2)
 
-  d$test_name <- sprintf("model = %s - family = %s - reduce = %s - test = %s",
+  d$`.test_name` <- sprintf("model = %s - family = %s - reduce = %s - test = %s",
                          d$model, "gaussian", d$reduce, d$test)
 
   return(d)
