@@ -174,14 +174,14 @@ specific country pair fixed effects and lagged RTAs.
 load("benchmarks/04-glm-vs-eglm.RData")
 t1 <- bind_rows(
   model_matrix_traditional_gravity %>% 
-    filter(fun %in% c("glm", "eglm"), model_matrix_ncol == max(model_matrix_ncol)),
+    filter(fun %in% c("eglm"), model_matrix_ncol == max(model_matrix_ncol)),
   model_matrix_distance_puzzle %>% 
-    filter(fun %in% c("glm", "eglm"), model_matrix_ncol == max(model_matrix_ncol)),
+    filter(fun %in% c("eglm"), model_matrix_ncol == max(model_matrix_ncol)),
   model_matrix_rtas %>% 
-    filter(fun %in% c("glm", "eglm"), model_matrix_ncol == max(model_matrix_ncol))
+    filter(fun %in% c("eglm"), model_matrix_ncol == max(model_matrix_ncol))
 ) %>% 
-  mutate(fun = ifelse(fun == "glm", "GLM", "EGLM"))
-colnames(t1) <- c("Model", "Function", "DM Rows", "DM Cols")
+  select(-fun)
+colnames(t1) <- c("Model", "Rows in design matrix", "Cols in design matrix")
 kable(t1)
 ```
 

@@ -157,14 +157,11 @@ DP means ‘Distance Puzzle’ and GB stands for ‘Globalization’, which are
 refinements of the simple PPML model and include dummy variables such as
 specific country pair fixed effects and lagged RTAs.
 
-| Model    | Function | DM Rows | DM Cols |
-|:---------|:---------|--------:|--------:|
-| TG, PPML | GLM      |   28152 |     831 |
-| TG, PPML | EGLM     |   28152 |     831 |
-| DP, FE   | GLM      |   28566 |     905 |
-| DP, FE   | EGLM     |   28566 |     905 |
-| RTAs, GB | GLM      |   28482 |    3175 |
-| RTAs, GB | EGLM     |   28482 |    3175 |
+| Model    | Rows in design matrix | Cols in design matrix |
+|:---------|----------------------:|----------------------:|
+| TG, PPML |                 28152 |                   831 |
+| DP, FE   |                 28566 |                   905 |
+| RTAs, GB |                 28482 |                  3175 |
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
 
