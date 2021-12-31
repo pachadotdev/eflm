@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Efficient Fitting of Linear and Generalized Linear Models
+# Efficient Fitting of Linear Models
 
 <!-- badges: start -->
 
@@ -16,25 +16,28 @@ status](https://www.r-pkg.org/badges/version/gravity)](https://cran.r-project.or
 [![R-CMD-check](https://github.com/pachadotdev/eflm/workflows/R-CMD-check/badge.svg)](https://github.com/pachadotdev/eflm/actions)
 <!-- badges: end -->
 
-## Description
+## Scope
 
-Efficient Fitting of Linear and Generalized Linear Models by using just
-base R. As an alternative to `lm()` and `glm()`, this package provides
-`elm()` and `eglm()`, with a significant speedup when the number of
-observations is larger than the number of parameters to estimate. The
-speed gains are obtained by reducing the NxP model matrix to a PxP
-matrix, and the best computational performance is obtained when R is
-linked against OpenBLAS, Intel MKL or other optimized BLAS library. This
-implementation aims at being compatible with ‘broom’ and ‘sandwich’
-packages for summary statistics and clustering by providing S3 methods.
+`eflm` package reduces the design matrix from *N* × *P* into *P* × *P*
+for reduced fitting time, and delivers functions that are drop-in
+replacements for `glm` and `lm`, like:
 
-## Details
+``` r
+# just append and 'e' to glm
+eglm(mpg ~ wt, data = mtcars)
+```
 
-This package takes ideas from glm2, speedglm, fastglm, and fixest
-packages, but the implementations here shall keep the functions and
-outputs as closely as possible to the stats package, therefore making
-the functions provided here compatible with packages such as sandwich
-for robust estimation, even if that means to attenuate the speed gains.
+The best computational performance is obtained when R is linked against
+OpenBLAS, Intel MKL or other optimized BLAS library. This implementation
+aims at being compatible with ‘broom’ and ‘sandwich’ packages for
+summary statistics and clustering by providing S3 methods.
+
+This package takes ideas from glm2, speedglm, fastglm, speedglm and
+fixest packages, but the implementations here shall keep the functions
+and outputs as closely as possible to the stats package, therefore
+making the functions provided here compatible with packages such as
+sandwich for robust estimation, even if that means to attenuate the
+speed gains.
 
 The greatest strength of this package is testing. With more than 1600
 (and counting) tests, we try to do exactly the same as lm/glm, even in
@@ -50,28 +53,8 @@ The ultimate aim of the project is to produce a package that:
 -   Can be used in Shiny dashboard and contexts where you need fast
     model fitting
 -   Is useful for memory consuming models
--   Allows model fitting with limited hardware
-
-## Minimal working example
-
-### Stats (base) package
-
-``` r
-formula <- "mpg ~ I(wt^2)"
-lm(formula, data = mtcars)$coefficients
-#> (Intercept)     I(wt^2) 
-#>  28.0510597  -0.7058275
-```
-
-### Eflm package
-
-``` r
-elm(formula, data = mtcars)$coefficients
-#> (Intercept)     I(wt^2) 
-#>  28.0510597  -0.7058275
-```
-
-Please read the documentation for the full details.
+-   Allows model fitting in cases demanding more memory than free RAM
+    (PENDING)
 
 ## Installation
 
@@ -87,112 +70,143 @@ And the development version with:
 remotes::install_github("pachadotdev/eflm")
 ```
 
-## Benchmarks
+## Progress list
 
-Let’s fit two computationally demanding models from [Yotov, et
-al. (2016)](https://pacha.dev/yotover/).
+### Stats compatibility
 
-The dataset for the benchmark was also taken from Yotov, et al. and
+-   [x] cooks.distance
+
+### Sandwich compatibility
+
+-   [x] estfun
+-   [x] bread
+-   [x] vcovCL
+-   [x] meatCL
+-   [x] vcovCL
+-   [x] vcovBS
+-   [ ] vcovHC
+-   [ ] meatHC
+-   [ ] vcovPC
+-   [ ] meatPC
+-   [ ] vcovPL
+-   [ ] meatPL
+
+### Broom compatibility
+
+-   [x] augment
+-   [x] tidy
+-   [x] glance
+
+### Lmtest compatibility
+
+-   [x] resettest
+
+## Benchmarking
+
+The dataset for this benchmark was taken from Yotov et al. (2016) and
 consists in a 28,152 x 8 data frame with 6 numeric and 2 categorical
-columns:
+columns of the form:
 
-    # A tibble: 28,152 x 8
-        year  trade   dist  cntg  lang  clny exp_year imp_year
-       <int>  <dbl>  <dbl> <int> <int> <int> <chr>    <chr>   
-     1  1986  27.8  12045.     0     0     0 ARG1986  AUS1986 
-     2  1986   3.56 11751.     0     0     0 ARG1986  AUT1986 
-     3  1986  96.1  11305.     0     0     0 ARG1986  BEL1986 
-     4  1986   3.13 12116.     0     0     0 ARG1986  BGR1986 
-     5  1986  52.7   1866.     1     1     0 ARG1986  BOL1986 
-     6  1986 405.    2392.     1     0     0 ARG1986  BRA1986 
-     7  1986  48.3   9391.     0     0     0 ARG1986  CAN1986 
-     8  1986  23.6  11233.     0     0     0 ARG1986  CHE1986 
-     9  1986 109.    1157.     1     1     0 ARG1986  CHL1986 
-    10  1986 161.   19110.     0     0     0 ARG1986  CHN1986 
-    # … with 28,142 more rows
+| Year (*t*) | Trade (*X*) | DIST  | CNTG | LANG | CLNY | Exp Year (*π*) | Imp Year (*χ*) |
+|------------|-------------|-------|------|------|------|----------------|----------------|
+| 1986       | 27.8        | 12045 | 0    | 0    | 0    | ARG1986        | AUS1986        |
+| 1986       | 3.56        | 11751 | 0    | 0    | 0    | ARG1986        | AUT1986        |
+| 1986       | 96.1        | 11305 | 0    | 0    | 0    | ARG1986        | BEL1986        |
+
+This data can be found in the `tradepolicy` package.
 
 The variables are:
 
--   year: time of export/import flow
--   trade: bilateral trade
--   log\_dist: log of distance
--   cntg: contiguity
--   lang: common language
--   clny: colonial relation
--   exp\_year/imp\_year: exporter/importer time fixed effects
+-   `year`: time of export/import flow
+-   `trade`: bilateral trade
+-   `log_dist`: log of distance
+-   `cntg`: contiguity (0/1)
+-   `lang`: common language (0/1)
+-   `clny`: colonial relation (0/1)
+-   `exp_year`/`imp_year`: exporter/importer time fixed effects
 
-### OLS estimation controlling for multilateral resistance terms with fixed effects
+For benchmarking I’ll fit a PPML model, as it’s a computationally
+expensive model.
 
-*This test was conducted on a 2 dedicated CPUs and 4GB of RAM
-DigitalOcean droplet.*
+``` r
+ch1_application1 <- tradepolicy::agtpa_applications %>%
+  select(exporter, importer, pair_id, year, trade, dist, cntg, lang, clny) %>%
+  filter(year %in% seq(1986, 2006, 4))
+  
+formula <- trade ~ log(dist) + cntg + lang + clny + exp_year + imp_year
+eglm(formula, quasipoisson, ch1_application1)
+```
 
-The general equation for this model is:
+To compare `glm`, the proposed `eglm` and Stata’s `ppml`, I conducted a
+test with 500 repetitions locally, and reported the median of the
+realizations as the fitting time. The plots on the right report the
+fitting times and used memory by running regressions with cumulative
+subset of the data for 1986, …, 2006 (e.g. regress for 1986, then 1986
+and 1990, …, then 1986 to 2006), we obtain the next fitting times and
+memory allocation depending on the design matrix dimensions:
 
-    log_trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
 
-By running regressions with cumulative subset of the data for 1986, …,
-2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),
-we obtain the next fitting times and memory allocation depending on the
-design matrix dimensions:
+Yotov et al. (2016) features complex both partial and general
+equilibrium models. Some partial equilibrium models are particularly
+slow to fit because of the allocated memory and the number of fixed
+effects, such as the Regional Trade Agreements (RTAs) model.
 
-<img src="man/figures/README-elm-benchmark-1.png" width="100%" /><img src="man/figures/README-elm-benchmark-2.png" width="100%" />
+In the next table, TG means ‘Traditional Gravity’ (e.g. vanilla PPML),
+DP means ‘Distance Puzzle’ and GB stands for ‘Globalization’, which are
+refinements of the simple PPML model and include dummy variables such as
+specific country pair fixed effects and lagged RTAs.
 
-### PPML estimation controlling for multilateral resistance terms with fixed effects:
+| Model    | Function | DM Rows | DM Cols |
+|:---------|:---------|--------:|--------:|
+| TG, PPML | GLM      |   28152 |     831 |
+| TG, PPML | EGLM     |   28152 |     831 |
+| DP, FE   | GLM      |   28566 |     905 |
+| DP, FE   | EGLM     |   28566 |     905 |
+| RTAs, GB | GLM      |   28482 |    3175 |
+| RTAs, GB | EGLM     |   28482 |    3175 |
 
-*This test was conducted on a 2 dedicated CPUs and 4GB of RAM
-DigitalOcean droplet.*
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
 
-The general equation for this model is:
+The results for the RTA model show that the speedups can be scaled, and
+we can show both time reduction and required memory increases.
 
-    trade ~ log_dist + cntg + lang + clny + exp_year + imp_year
+| Model    | GLM Time (s) | EGLM Time (s) | Time Gain (%) |
+|:---------|-------------:|--------------:|:--------------|
+| DP, FE   |        111.0 |          9.08 | 91.82%        |
+| RTAs, GB |       1824.0 |        161.40 | 91.15%        |
+| TG, PPML |        108.6 |          9.06 | 91.66%        |
 
-By running regressions with cumulative subset of the data for 1986, …,
-2006 (e.g. regress for 1986, then 1986 and 1990, …, then 1986 to 2006),
-we obtain the next fitting times depending on the design matrix
-dimensions:
+Is it important to mention that the increase in memory results in
+reduced object size for the stored model.
 
-<img src="man/figures/README-eglm-benchmark-1.png" width="100%" /><img src="man/figures/README-eglm-benchmark-2.png" width="100%" />
+| Model    | GLM Size (MB) | EGLM Size (MB) | Memory Savings (%) |
+|:---------|--------------:|---------------:|:-------------------|
+| DP, FE   |        231.04 |          37.26 | 83.87%             |
+| RTAs, GB |        824.89 |         263.36 | 68.07%             |
+| TG, PPML |        210.88 |          34.69 | 83.55%             |
 
-<!-- ## Progress list -->
-<!-- ### Sandwich compatibility -->
-<!-- - [x] estfun -->
-<!-- - [x] bread -->
-<!-- - [x] vcovCL -->
-<!-- - [x] meatCL -->
-<!-- - [x] vcovCL -->
-<!-- - [x] vcovBS -->
-<!-- - [ ] vcovHC -->
-<!-- - [ ] meatHC -->
-<!-- - [ ] vcovPC -->
-<!-- - [ ] meatPC -->
-<!-- - [ ] vcovPL -->
-<!-- - [ ] meatPL -->
-<!-- ### Broom compatibility -->
-<!-- - [x] augment -->
-<!-- - [x] tidy -->
-<!-- ### CAR  -->
-<!-- RESIDUALPLOTS -->
-<!-- cooks.distance? -->
-<!-- hatvalues? -->
-<!-- influenceIndexPlot -->
-<!-- influencePlot -->
-<!-- QQpLOT -->
-<!-- compareCoefs -->
-<!-- ver fit4 <- update(fit, subset=!(rownames(datos2) %in% c("NY","SD","TX","NV","CT"))  ) -->
+To conclude my benchmarks, I fitted the PPML model again on DigitalOcean
+droplets, leading to consistent times across scaled hardware. The
+results can be seen in the next plot:
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" />
 
-## Acknowledgements
+## Edge cases
 
-*“If I have seen further it is by standing on the shoulders of Giants.”*
+An elementary example that breaks `eflm` even with QR decomposition can
+be found in Golub et al. (2013), which consists in passing an ill
+conditioned matrix:
 
-The original generalized linear model implementation via iteratively
-reweighted least squares for any family was written in R by Simon Davies
-in Dec, 1995. This implementation was later improved by Thomas Lumley
-back in Apr, 1997, and then other developers. In 2021, their work was
-adapted by me, Mauricio ‘Pachá’ Vargas Sepúlveda, for large datasets.
+| Model | (Intercept) | *x*<sub>1</sub> | *x*<sub>2</sub> |
+|-------|-------------|-----------------|-----------------|
+| REG 1 | 1.98        | 2.98            | 1.02            |
+| REG 2 | 1.98        | 4.00            | NA              |
 
-This work got very well received feedback from:
+# References
 
--   Constanza Prado
--   Alexey Kravchenko
--   Yoto Yotov
--   Joshua Kunst
+Golub, Gene H, and Charles F Van Loan. 2013. *Matrix Computations*. Vol.
+3. JHU press.
+
+Yotov, Yoto V, Roberta Piermartini, José-Antonio Monteiro, and Mario
+Larch. 2016. *An Advanced Guide to Trade Policy Analysis: The Structural
+Gravity Model*. World Trade Organization Geneva.
