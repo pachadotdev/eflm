@@ -6,7 +6,7 @@ NULL
 
 #' @importFrom tibble as_tibble
 #' @export
-tibble::as_tibble()
+tibble::as_tibble
 
 # taken from vctrs
 #' @noRd
