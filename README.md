@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+See pacha.dev/capybara for a much better GLM implementation.
+
 # Efficient Fitting of Linear Models
 
 <!-- badges: start -->
